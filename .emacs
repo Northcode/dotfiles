@@ -7,28 +7,42 @@
 (defvar my-packages '())
 (setq my-packages
       '(
+	;; evil
 	evil
 	evil-surround
+	evil-org
+	evil-magit
+	
+	;; other keybind 
+	bind-key
 	key-chord
 	expand-region
 	mark-multiple
 
+	;; auto completion 
 	company
 	company-c-headers
 	company-jedi
 	company-web
+	yasnippet
 
+	;; helm 
 	helm
 	helm-projectile
 	helm-company
+	helm-swoop
 
+	;; ace 
 	ace-window
 	ace-isearch
+
+	;; project management
 	projectile
 	magit
-	bind-key
 
-	yasnippet
+	;; theme 
+	spacegray-theme
+	powerline
 
 	))
 
@@ -66,11 +80,13 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(backup-directory-alist (quote (("." . "~/.emacs.saves"))))
  '(company-auto-complete (quote (quote company-explicit-action-p)))
  '(custom-enabled-themes (quote (spacegray)))
  '(custom-safe-themes
    (quote
     ("d8f76414f8f2dcb045a37eb155bfaa2e1d17b6573ed43fb1d18b936febc7bbc2" default)))
+ '(eshell-buffer-shorthand t)
  '(evil-indent-convert-tabs nil)
  '(evil-mode t)
  '(evil-want-C-u-scroll t)
@@ -86,6 +102,8 @@
  '(tool-bar-mode nil)
  '(yas-global-mode t nil (yasnippet)))
 (evil-magit-init)
+
+;; set themes
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -112,7 +130,6 @@
   (setq indent-tabs-mode t)
   (setq flycheck-clang-language-standard "c++11")
   )
-
 (add-hook 'c++-mode-hook 'my-c++-mode-hook)
 
 ;; set html files to load web-mode
@@ -120,6 +137,7 @@
 ;; enable isearch fuzzy searching
 (setq search-whitespace-regexp ".*?")
 
+;; set keybinds
 (global-unset-key (kbd "M-2"))
 (global-unset-key (kbd "M-3"))
 (key-chord-define evil-insert-state-map  "jk" 'evil-normal-state)
@@ -138,3 +156,5 @@
  )
 
 (put 'narrow-to-region 'disabled nil)
+
+(provide 'emacs)
