@@ -1,4 +1,6 @@
 * My linux config files
-   the .emacs file does all .emacs configuration, as well as download packages needed. 
-   most other config files are in .config. 
-   to install run the install.sh script, this will REMOVE ALL YOUR PREVIOUS CONFIGS, so BACK them UP first. 
+   The .emacs file does all .emacs configuration, as well as download packages needed. 
+
+   Most other config files are in .config. 
+** Installing
+   To install run the install.sh script, this will REMOVE ALL YOUR PREVIOUS CONFIGS, so BACK them UP first. 
