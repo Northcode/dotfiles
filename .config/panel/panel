@@ -1,0 +1,65 @@
+#!/bin/bash
+
+PANEL_FIFO="/tmp/panelfifo"
+PANEL_FONT_FAMILY="-*-terminus-medium-r-*-*-12-*-*-*-*-*-iso10646-*"
+
+PATH=$PATH:$HOME/bin
+
+if [ $(pgrep -cx panel) -gt 1 ] ; then
+	printf "%s\n" "The panel is already running." >&2
+	exit 1
+fi
+
+trap 'trap - TERM; kill 0' INT TERM QUIT EXIT
+
+[ -e "$PANEL_FIFO" ] && rm "$PANEL_FIFO"
+mkfifo "$PANEL_FIFO"
+
+bspc config top_padding $PANEL_HEIGHT
+
+bspc control --subscribe > "$PANEL_FIFO" &
+
+xtitle -sf 'T%s' > "$PANEL_FIFO" &
+
+function clock {
+    date +S%H:%M:%S
+}
+
+function current_playing {
+    echo -n "M/v:"
+    for i in $(seq 1 $(echo $(amixer sget Master | awk -F"[][]" '/dB/ {print$2}' | head -c 2) / 10 | bc)); do echo -n "-"; done
+    echo -n "/ "
+    mpc current -f "%title% / %album% / %artist%"
+    echo ""
+}
+
+function batteryinfo {
+    #bat=$(upower -i /org/freedesktop/UPower/devices/battery_BAT0 | grep per | awk '{ print $2; }')
+    bat=$(acpi -b | awk '{print$4;}')
+    echo 'Z'"$bat"
+}
+
+function loadavg {
+    echo 'L'$( cat /proc/loadavg )
+}
+
+function printinfo {
+    while true
+    do
+#	batteryinfo
+	loadavg
+#	current_playing
+	clock
+	sleep 1
+    done
+}
+
+printinfo > "$PANEL_FIFO" &
+
+. panel_colors
+
+cat "$PANEL_FIFO" | panel_bar | lemonbar -g x23++ -f "$PANEL_FONT_FAMILY" -F $COLOR_FOREGROUND -B $COLOR_BACKGROUND &
+
+# cat "$PANEL_FIFO" | panel_bar2 | bar -g 1860x$PANEL_HEIGHT+1950+10 -f "$PANEL_FONT_FAMILY" -F "$COLOR_FOREGROUND" -B "$COLOR_BACKGROUND" &
+
+wait

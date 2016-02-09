@@ -1,0 +1,34 @@
+#include "colors"
+
+URxvt*scrollBar: false
+URxvt*cursorUnderline: 1
+!URxvt*letterspace: -5
+URxvt*letterspace: 20
+!URxvt*fading: 10
+URxvt*fadeColor: #000000
+URxvt*cursorBlink: false
+URxvt*depth: 32
+URxvt*internalBorder: 10
+URxvt*dynamicColors: on
+URxvt.urgentOnBell: true
+
+URxvt*font: -*-terminus-medium-r-*-*-14-*-*-*-*-*-iso10646-*
+URxvt*boldFont: -*-terminus-bold-r-*-*-14-*-*-*-*-*-iso10646-*
+
+URxvt.tabbed.tabbar-fg: 0
+URxvt.tabbed.tabbar-bg: 8
+
+URxvt.iso14755: False
+
+Xft.antialias: 1
+Xft.autohint: 1
+Xft.dpi: 100
+Xft.hinting: 3
+Xft.hintstyle: hintfull
+Xft.lcdfilter: lcddefault
+Xft.rgba: rgb
+
+xclock*update: 1
+xclock*analog: true
+xclock*Foreground: #c5c8c6
+xclock*background: #1d1f21
