@@ -113,7 +113,6 @@
  '(tool-bar-mode nil)
  '(yas-global-mode t nil (yasnippet)))
 (evil-magit-init)
-(setq paradox-github-token "559df0a07865c0e627036199230dc15216d64d8b")
 ;; set themes
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
