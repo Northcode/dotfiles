@@ -133,7 +133,7 @@ super + alt + Return
 #
 
 super + p
-      ~/bin/panel
+      ~/.config/panel/panel
 
 super + control + p
       pkill panel
@@ -144,7 +144,7 @@ super + r
 
 #reload Xresouces
 ctrl + super + r
-     xrdb ~/.Xresouces
+     xrdb ~/.config/X/resources
 
 # clipboard syncing
 

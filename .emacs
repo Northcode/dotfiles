@@ -40,10 +40,18 @@
 	projectile
 	magit
 
+	auto-install
+
 	;; theme 
 	spacegray-theme
 	powerline
+	powerline-evil
 
+	;; org-mode
+	org
+	org-bullets
+	org-journal
+	
 	))
 
 (defun package-list-installed ()
@@ -75,12 +83,15 @@
       (require p)
     ))
 
+(require 'auto-install)
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(backup-directory-alist (quote (("." . "~/.emacs.saves"))))
+ '(blink-cursor-mode nil)
  '(company-auto-complete (quote (quote company-explicit-action-p)))
  '(custom-enabled-themes (quote (spacegray)))
  '(custom-safe-themes
@@ -102,7 +113,7 @@
  '(tool-bar-mode nil)
  '(yas-global-mode t nil (yasnippet)))
 (evil-magit-init)
-
+(setq paradox-github-token "559df0a07865c0e627036199230dc15216d64d8b")
 ;; set themes
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -110,7 +121,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
-(powerline-nano-theme)
+(powerline-evil-vim-theme)
 
 ;; custom defuns
 (defun save-all ()
@@ -152,6 +163,7 @@
  ("C-c j" . org-journal-new-entry)
  ("C-c s" . helm-swoop)
 
+ ("C-x C-b" . ibuffer)
  ("C-x C-f" . helm-find-files)
  )
 
