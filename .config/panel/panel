@@ -3,7 +3,7 @@
 PANEL_FIFO="/tmp/panelfifo"
 PANEL_FONT_FAMILY="-*-terminus-medium-r-*-*-12-*-*-*-*-*-iso10646-*"
 
-PATH=$PATH:$HOME/bin
+PATH=$PATH:$(readlink -f $(dirname $0))
 
 if [ $(pgrep -cx panel) -gt 1 ] ; then
 	printf "%s\n" "The panel is already running." >&2
@@ -56,7 +56,7 @@ function printinfo {
 
 printinfo > "$PANEL_FIFO" &
 
-. panel_colors
+. colors
 
 cat "$PANEL_FIFO" | panel_bar | lemonbar -g x23++ -f "$PANEL_FONT_FAMILY" -F $COLOR_FOREGROUND -B $COLOR_BACKGROUND &
 
