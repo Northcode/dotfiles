@@ -60,8 +60,8 @@ plugins=(git debian colored-man tmux colorize command-not-found compleat lol)
 # User configuration
 
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/home/andreas/bin"
-export EDITOR='emacsclient -c -a emacs'
-export VISUAL='emacsclient -c -a emacs'
+export EDITOR='emacsclient -c -a ""'
+export VISUAL='emacsclient -c -a ""'
 # export MANPATH="/usr/local/man:$MANPATH"
 
 source $ZSH/oh-my-zsh.sh
@@ -96,4 +96,6 @@ export DEBEMAIL="northcode.no@gmail.com"
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 export LANG=en_GB.UTF-8
 export LC_ALL=en_GB.UTF-8
+
+alias ec='emacsclient -c -a ""'
 fi

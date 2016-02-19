@@ -13,6 +13,8 @@ export SMTPSERVER="smtp.gmail.com"
 
 xrdb ~/.config/X/resources
 setxkbmap no
+setxkbmap -option caps:escape
+xset r rate 200 70
 xmodmap ~/.config/X/modmap
 sxhkd &
 bspwm

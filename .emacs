@@ -246,6 +246,7 @@
  ("C-c g" . magit-status)
  ("C-c j" . org-journal-new-entry)
  ("C-c s" . helm-swoop)
+ ("C-c c" . cmake-ide-run-cmake)
 
  ("C-x C-b" . ibuffer)
  ("C-x C-f" . helm-find-files)
