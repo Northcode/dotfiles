@@ -42,6 +42,7 @@
 	magit
 
 	;; build tools
+	flycheck
 	cmake-font-lock
 	cmake-mode
 	cmake-ide
@@ -57,7 +58,9 @@
 	org
 	org-bullets
 	org-journal
-	
+
+	;; misc stuff
+	haste
 	))
 
 (defun package-list-installed ()
