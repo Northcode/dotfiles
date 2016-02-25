@@ -61,6 +61,8 @@
 
 	;; misc stuff
 	haste
+	evil-mu4e
+	helm-mu
 	))
 
 (defun package-list-installed ()
@@ -111,9 +113,9 @@
  '(evil-mode t)
  '(evil-want-C-u-scroll t)
  '(global-company-mode t)
+ '(global-flycheck-mode t)
  '(helm-mode t)
  '(ido-vertical-mode t)
- '(global-flycheck-mode t)
  '(inhibit-startup-screen t)
  '(initial-buffer-choice "~/")
  '(initial-scratch-message "")
@@ -132,6 +134,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(mu4e-view-body-face ((t (:inherit default))))
  '(powerline-evil-emacs-face ((t (:inherit powerline-evil-base-face :background "purple3"))))
  '(powerline-evil-insert-face ((t (:inherit powerline-evil-base-face :background "RoyalBlue3"))))
  '(powerline-evil-motion-face ((t (:inherit powerline-evil-base-face :background "purple4"))))
@@ -139,6 +142,63 @@
  '(powerline-evil-visual-face ((t (:inherit powerline-evil-base-face :background "burlywood3")))))
 
 (powerline-evil-vim-color-theme)
+
+
+
+;;;; MU4E config
+
+(if (file-exists-p "/usr/share/emacs/site-lisp/mu4e")
+    (progn
+      (message "found mu4e!")
+      (add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e")
+      (require 'mu4e)
+
+      (setq mu4e-maildir "~/.mail")
+
+      (setq mu4e-drafts-folder "/[Gmail].Drafts")
+      (setq mu4e-sent-folder   "/[Gmail].Sent Mail")
+      (setq mu4e-trash-folder  "/[Gmail].Trash")
+
+      (setq mu4e-sent-messages-behavior 'delete)
+
+      (setq mu4e-maildir-shortcuts
+	    '( ("/INBOX"               . ?i)
+	       ("/[Gmail].Sent Mail"   . ?s)
+	       ("/[Gmail].Trash"       . ?t)
+	       ("/[Gmail].All Mail"    . ?a)))
+
+      (setq mu4e-get-mail-command "offlineimap")
+
+      (setq
+       user-mail-address "northcode.no@gmail.com"
+       user-full-name  "Andreas Larsen"
+       mu4e-compose-signature
+       (concat 
+	"Andreas Larsen\n"
+	"http://www.northcode.no\n"))
+
+      (require 'smtpmail)
+      (setq message-send-mail-function 'smtpmail-send-it
+	    starttls-use-gnutls t
+	    smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil))
+	    smtpmail-auth-credentials
+	    '(("smtp.gmail.com" 587 "northcode.no@gmail.com" nil))
+	    smtpmail-default-smtp-server "smtp.gmail.com"
+	    smtpmail-smtp-server "smtp.gmail.com"
+	    smtpmail-smtp-service 587)
+
+      (global-set-key (kbd "C-c m") 'mu4e)
+      (global-set-key (kbd "C-c M") 'mu4e-compose-new)
+      (define-key mu4e-headers-mode-map (kbd "C-s") 'helm-mu)
+      
+      (setq message-kill-buffer-on-exit t)
+      (setq mu4e-use-fancy-chars t)
+      (setq mu4e-view-show-images t)
+
+      (setq mu4e-html2text-command "pandoc -f html -t plain")
+      )
+  (message "mu4e not found")
+  )
 
 ;; custom defuns
 (defun save-all ()
@@ -255,6 +315,8 @@
  ("C-x C-f" . helm-find-files)
  ("C-x o" . ace-window)
  )
+
+
 
 (put 'narrow-to-region 'disabled nil)
 
