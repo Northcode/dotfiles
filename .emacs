@@ -195,7 +195,7 @@
       (setq mu4e-use-fancy-chars t)
       (setq mu4e-view-show-images t)
 
-      (setq mu4e-html2text-command "pandoc -f html -t plain")
+      (setq mu4e-html2text-command 'mu4e-shr2text)
       )
   (message "mu4e not found")
   )
