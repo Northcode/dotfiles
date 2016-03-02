@@ -15,7 +15,7 @@ localfolders = ~/.mail
 type = Gmail
 remoteuser = northcode.no@gmail.com
 remotepasseval = get_password_emacs("imap.gmail.com", "northcode.no@gmail.com", "imaps")
-folderfilter = lambda foldername: foldername not in ['[Gmail]/All Mail']
+#folderfilter = lambda foldername: foldername not in ['[Gmail]/All Mail']
 realdelete = no
 ssl = yes
 # Necessary as of OfflineIMAP 6.5.4
