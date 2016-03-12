@@ -1,5 +1,5 @@
 [general]
-accounts = gmail
+accounts = northcode, gmail
 pythonfile = ~/.config/offlineimap/getpass.py
 
 [Account gmail]
@@ -9,14 +9,29 @@ status_backend = sqlite
 
 [Repository gmail-local]
 type = Maildir
-localfolders = ~/.mail
+localfolders = ~/.mail/gmail/
 
 [Repository gmail-remote]
 type = Gmail
 remoteuser = northcode.no@gmail.com
 remotepasseval = get_password_emacs("imap.gmail.com", "northcode.no@gmail.com", "imaps")
-folderfilter = lambda foldername: foldername not in ['[Gmail]/All Mail']
 realdelete = no
 ssl = yes
 # Necessary as of OfflineIMAP 6.5.4
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+
+[Account northcode]
+localrepository = nc-local
+remoterepository = nc-remote
+status_backend = sqlite
+
+[Repository nc-local]
+type = Maildir
+localfolders = ~/.mail/northcode/
+
+[Repository nc-remote]
+type = IMAP
+remotehost = northcode.no
+remoteuser = andreas@northcode.no
+remotepasseval = get_password_emacs("northcode.no","andreas@northcode.no","imaps")
 sslcacertfile = /etc/ssl/certs/ca-certificates.crt

@@ -4,6 +4,12 @@
 
 (package-initialize)
 
+(if (not (package-installed-p 'paradox))
+    (package-install 'paradox)
+  )
+
+(require 'paradox)
+
 (defvar my-packages '())
 (setq my-packages
       '(
@@ -47,8 +53,6 @@
 	cmake-mode
 	cmake-ide
 	
-	auto-install
-
 	;; theme 
 	spacegray-theme
 	powerline
@@ -65,37 +69,10 @@
 	helm-mu
 	))
 
-(defun package-list-installed ()
-  "Check if all packages in my package list is installed."
-  (dolist (p my-packages)
-    (when (not (package-installed-p p))
-      'nil
-      't
-      )))
-
-(defun update-packages ()
-  "Check packages for updates and install if there are updates"
-  (unless (package-list-installed)
-    (message "Update package db")
-    (package-refresh-contents)
-    (message "Done")
-
-    (message "Updating packages")
-    (dolist (p my-packages)
-      (when (not (package-installed-p p))
-	(package-install p)))
-    (message "Packages updated!")
-    ))
-
-(update-packages)
 
 (dolist (p my-packages)
-  (if (featurep p)
-      (require p)
-    ))
-
-(require 'auto-install)
-
+  (paradox-require p)
+  )
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -143,29 +120,86 @@
 
 (powerline-evil-vim-color-theme)
 
-
-
 ;;;; MU4E config
-
 (if (file-exists-p "/usr/share/emacs/site-lisp/mu4e")
     (progn
       (message "found mu4e!")
       (add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e")
       (require 'mu4e)
+      (require 'smtpmail)
 
       (setq mu4e-maildir "~/.mail")
+      (setq mu4e-maildir-list '("~/.mail/gmail" "~/.mail/northcode"))
 
-      (setq mu4e-drafts-folder "/[Gmail].Drafts")
-      (setq mu4e-sent-folder   "/[Gmail].Sent Mail")
-      (setq mu4e-trash-folder  "/[Gmail].Trash")
+      (setq mu4e-contexts
+	    `( ,(make-mu4e-context
+		 :name "gmail"
+		 :enter-func (lambda () (progn (mu4e-message "Switch gmail") (message "GMAIL")))
+		 ;; leave-func not defined
+		 :match-func (lambda (msg)
+			       (when msg 
+				 (mu4e-message-contact-field-matches msg :to "northcode.no@gmail.com")))
+		 :vars '( 
+			  ( mu4e-inbox-folder . "/gmail/INBOX")
+			  ( mu4e-sent-folder . "/gmail/[Gmail].Sent Mail")
+			  ( mu4e-refile-folder . "/gmail/[Gmail].All Mail")
+			  ( mu4e-trash-folder . "/gmail/[Gmail].Bin")
+			  ( mu4e-drafts-folder  . "/gmail/[Gmail].Drafts")
+			  ( mu4e-maildir-shortcuts . (("/gmail/INBOX" . ?i)
+						      ("/gmail/[Gmail].All Mail" . ?a)
+						      ))
+			  ( user-mail-address	     . "northcode.no@gmail.com"  )
+			  ( user-full-name	    . "Andreas Larsen" )
+			  ( mu4e-compose-signature . (concat
+						    "Andreas Larsen ---\n"
+						    "northcode.no - Norway"))
+
+			  ( smtpmail-smtp-server . "smtp.gmail.com" )
+			  ( smtpmail-smtp-service . 587 )
+			  ( starttls-use-gnutls . t )
+			  ( smtpmail-starttls-credentials . '(("smtp.gmail.com" 587 nil nil)))
+			  ( smtpmail-auth-credentials . '(("smtp.gmail.com" 587 "northcode.no@gmail.com" nil)))
+			  ))
+	       ,(make-mu4e-context
+		 :name "northcode"
+		 :enter-func (lambda () (progn (mu4e-message "Switch to northcode") (message "NORTHCODE")))
+		 ;; leave-fun not defined
+		 :match-func (lambda (msg)
+			       (when msg 
+				 (mu4e-message-contact-field-matches msg :to "andreas@northcode.no")))
+		 :vars '( 
+			  (mu4e-inbox-folder . "/northcode/INBOX")
+			  ( mu4e-sent-folder . "/northcode/Sent")
+			  ( mu4e-drafts-folder  . "/northcode/Drafts")
+			  ( mu4e-trash-folder . "/northcode/Trash")
+			  ( mu4e-maildir-shortcuts . (("/northcode/INBOX" . ?i)))
+			  ( user-mail-address	     . "andreas@northcode.no" )
+			  ( user-full-name	    . "Andreas Larsen" )
+			  ( mu4e-compose-signature . (concat
+						    "Andreas Larsen ---\n"
+						    "northcode.no - Norway"))
+
+			  ( smtpmail-smtp-server . "northcode.no" )
+			  ( smtpmail-smtp-service . 587 )
+			  ( starttls-use-gnutls . t )
+			  ( smtpmail-starttls-credentials . '(("northcode.no" 587 nil nil)))
+			  ( smtpmail-auth-credentials . '(("northcode.no" 587 "andreas@northcode.no" nil)))
+			  ))))
+
+      
+      (setq mu4e-context-policy 'pick-first)
+      
+      ;; (setq mu4e-drafts-folder "/gmail/[Gmail].Drafts")
+      ;; (setq mu4e-sent-folder   "/gmail/[Gmail].Sent Mail")
+      ;; (setq mu4e-trash-folder  "/gmail/[Gmail].Trash")
 
       (setq mu4e-sent-messages-behavior 'delete)
 
-      (setq mu4e-maildir-shortcuts
-	    '( ("/INBOX"               . ?i)
-	       ("/[Gmail].Sent Mail"   . ?s)
-	       ("/[Gmail].Trash"       . ?t)
-	       ("/[Gmail].All Mail"    . ?a)))
+      ;; (setq mu4e-maildir-shortcuts
+      ;; 	    '( ("/gmail/INBOX"               . ?i)
+      ;; 	       ("/gmail/[Gmail].Sent Mail"   . ?s)
+      ;; 	       ("/gmail/[Gmail].Trash"       . ?t)
+      ;; 	       ("/gmail/[Gmail].All Mail"    . ?a)))
 
       (setq mu4e-get-mail-command "offlineimap")
 
@@ -177,7 +211,6 @@
 	"Andreas Larsen\n"
 	"http://www.northcode.no\n"))
 
-      (require 'smtpmail)
       (setq message-send-mail-function 'smtpmail-send-it
 	    starttls-use-gnutls t
 	    smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil))
@@ -185,11 +218,13 @@
 	    '(("smtp.gmail.com" 587 "northcode.no@gmail.com" nil))
 	    smtpmail-default-smtp-server "smtp.gmail.com"
 	    smtpmail-smtp-server "smtp.gmail.com"
-	    smtpmail-smtp-service 587)
+	    smtpmail-smtp-service 587
+	    )
 
       (global-set-key (kbd "C-c m") 'mu4e)
       (global-set-key (kbd "C-c M") 'mu4e-compose-new)
       (define-key mu4e-headers-mode-map (kbd "C-s") 'helm-mu)
+      (define-key mu4e-headers-mode-map (kbd "M") 'mu4e-headers-mark-for-something)
       
       (setq message-kill-buffer-on-exit t)
       (setq mu4e-use-fancy-chars t)
@@ -315,8 +350,6 @@
  ("C-x C-f" . helm-find-files)
  ("C-x o" . ace-window)
  )
-
-
 
 (put 'narrow-to-region 'disabled nil)
 
