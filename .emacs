@@ -55,6 +55,7 @@
 	
 	;; theme 
 	spacegray-theme
+	tango-plus-theme
 	powerline
 	powerline-evil
 
@@ -69,7 +70,6 @@
 	helm-mu
 	))
 
-
 (dolist (p my-packages)
   (paradox-require p)
   )
@@ -83,7 +83,7 @@
  '(backup-directory-alist (quote (("." . "~/.emacs.saves"))))
  '(blink-cursor-mode nil)
  '(company-auto-complete (quote (quote company-explicit-action-p)))
- '(custom-enabled-themes (quote (spacegray)))
+ '(custom-enabled-themes (quote (tango-plus)))
  '(custom-safe-themes
    (quote
     ("1012cf33e0152751078e9529a915da52ec742dabf22143530e86451ae8378c1a" "628278136f88aa1a151bb2d6c8a86bf2b7631fbea5f0f76cba2a0079cd910f7d" "1b8d67b43ff1723960eb5e0cba512a2c7a2ad544ddb2533a90101fd1852b426e" "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "bb08c73af94ee74453c90422485b29e5643b73b05e8de029a6909af6a3fb3f58" "82d2cac368ccdec2fcc7573f24c3f79654b78bf133096f9b40c20d97ec1d8016" "9cb6358979981949d1ae9da907a5d38fb6cde1776e8956a1db150925f2dad6c1" "8abee8a14e028101f90a2d314f1b03bed1cde7fd3f1eb945ada6ffc15b1d7d65" "d8f76414f8f2dcb045a37eb155bfaa2e1d17b6573ed43fb1d18b936febc7bbc2" default)))
