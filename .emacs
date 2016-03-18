@@ -80,8 +80,6 @@
  ;; If there is more than one, they won't work right.
  '(ansi-color-faces-vector
    [default bold shadow italic underline bold bold-italic bold])
- '(ansi-color-names-vector
-   ["#2e3436" "#a40000" "#4e9a06" "#c4a000" "#204a87" "#5c3566" "#729fcf" "#eeeeec"])
  '(backup-directory-alist (quote (("." . "~/.emacs.saves"))))
  '(blink-cursor-mode nil)
  '(company-auto-complete (quote (quote company-explicit-action-p)))
@@ -138,6 +136,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(default ((t (:inherit nil :stipple nil :background "#ffffff" :foreground "#000000" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 108 :width normal :foundry "unknown" :family "Inconsolata"))))
  '(mu4e-view-body-face ((t (:inherit default))))
  '(powerline-evil-emacs-face ((t (:inherit powerline-evil-base-face :background "purple3"))))
  '(powerline-evil-insert-face ((t (:inherit powerline-evil-base-face :background "RoyalBlue3"))))
