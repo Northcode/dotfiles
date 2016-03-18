@@ -8,7 +8,7 @@ for i in $(ls -a .config)
 do
     if test $i != "." && test $i != ".."
     then
-	rm ~/.config/$i
+	rm -r ~/.config/$i
 	ln -sf $BASEDIR/.config/$i ~/.config/$i
     fi
 done

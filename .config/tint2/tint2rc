@@ -1,0 +1,64 @@
+# Backgrounds
+font_color = #000000 100
+# ID 1
+rounded = 0
+border_width = 0
+background_color = #eeeeee 100
+border_color #000000 0
+# ID 2
+rounded = 0
+border_width = 0
+background_color = #dddddd 100
+border_color #000000 0
+# ID 3
+rounded = 0
+border_width = 0
+background_color = #333 100
+border_color = #000000 0
+
+#Panel
+panel_items = TSBC
+
+#Position
+panel_position = top center
+panel_monitor = all
+panel_size = 1920 23
+panel_padding = 25 0 2
+panel_background_id = 1
+
+#Launcher
+launcher_padding = 10 2 10
+launcher_icon_size = 22
+launcher_icon_theme_override = 1
+launcher_icon_theme = "Numix-Circle"
+
+launcher_item_app = /usr/share/applications/firefox.desktop
+
+#taskbar
+taskbar_mode = multi_desktop
+taskbar_background_id = 1
+taskbar_active_background_id = 2
+taskbar_padding = 15
+taskbar_font_color = #000000 100
+task_font = "Inconsolata" 12
+task_icon = 0
+task_text = 1
+
+#clock
+time1_format = %H:%M:%S
+time1_font = "Inconsolata" bold 12
+clock_font_color = #000000 100
+clock_padding = 10 2
+clock_background_id = 1
+
+#Systray
+systray = 1
+systray_sort = left2right
+systray_icon_size = 16
+systray_background_id = 1
+systray_icon_asb = 100 100 -100
+
+#Battery
+battery_hide = never
+bat1_font = "Liberation Mono" 12
+battery_font_color = #000000 100

@@ -31,6 +31,8 @@ if [ -d "$HOME/bin" ] ; then
     export PATH="$HOME/bin:$PATH"
 fi
 
-~/.config/panel/panel &
+#~/.config/panel/panel &
 ~/.fehbg &
 #sudo xboxdrv --detach-kernel-driver --mimic-xpad &
+compton -f -c &
+tint2 &
