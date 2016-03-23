@@ -32,7 +32,8 @@ if [ -d "$HOME/bin" ] ; then
 fi
 
 #~/.config/panel/panel &
-~/.fehbg &
+# ~/.fehbg &
 #sudo xboxdrv --detach-kernel-driver --mimic-xpad &
+hsetroot -solid "#335566"
 compton -f -c &
 tint2 &

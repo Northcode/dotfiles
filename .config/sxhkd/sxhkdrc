@@ -6,7 +6,7 @@ super + alt + Escape
 	bspc quit
 
 super + w
-	bspc window -c
+	bspc node -c
 
 super + t
 	bspc desktop -l next
@@ -15,19 +15,19 @@ super + b
 	bspc desktop -B
 
 super + {s,f}
-	bspc window -t {floating,fullscreen}
+	bspc node -t {floating,fullscreen}
 
 super + {_,shift + }{h,j,k,l}
-	bspc window -{f,s} {left,down,up,right}
+	bspc node -{f,s} {west,south,north,east}
 
 super + {_, shift + }{a,e}
-      	bspc {desktop -f,window -d} {prev,next}
+      	bspc {desktop -f,node -d} {prev,next}
 
 super + o
       bspc desktop focused -f last
 
 super + {control,shift} + o
-      bspc query -D | dmenu -p "switch to: " -h 20 -w 800 -x 600 -y 250 | xargs bspc {desktop -f,window -d}
+      bspc query -D | dmenu -p "switch to: " -h 20 -w 800 -x 600 -y 250 | xargs bspc {desktop -f,node -d}
 
 super + d
       bspc query -D | dmenu -p "switch to: " -h 20 -w 800 -x 600 -y 250 | xargs -I __ bspc desktop __ -r
@@ -35,23 +35,23 @@ super + d
 super + v
       dmenu -l 8 -i -p "workspace name: " -fn "-*-terminus-medium-r-*-*-12-*-*-*-*-*-iso10646-*" -nb "#111" -sb "#555" -h 40 -x 550 -y 250 -w 800 -q < /dev/null | xargs bspc monitor -a
 
-super + bracket{left,right}
+super + bracket{west,east}
 	bspc desktop -f {prev,next}
 
 super + ctrl + {h,j,k,l}
-	bspc window -p {left,down,up,right}
+	bspc node -p {west,south,north,east}
 
 super + space
-	bspc window -p cancel
+	bspc node -p cancel
 
 super + alt + {h,j,k,l}
-	bspc window -e {left -10,down +10,up -10,right +10}
+	bspc node -e {west -10,south +10,north -10,east +10}
 
 super + alt + shift + {h,j,k,l}
-	bspc window -e {right -10,up +10,down -10,left +10}
+	bspc node -e {east -10,north +10,south -10,west +10}
 
 super + {_,shift + }{1-9,0}
-	bspc {desktop -f,window -d} ^{1-9,10}
+	bspc {desktop -f,node -d} ^{1-9,10}
 
 ~button1
 	bspc pointer -g focus
@@ -66,13 +66,13 @@ super + @button{1-3}
 	bspc pointer -u
 
 super + g
-      bspc window -t pseudo_tiled
+      bspc node -t pseudo_tiled
 
 #
 # Audio controls
 #
 
-super + shift + {Page_Up,Page_Down}
+super + shift + {Page_North,Page_South}
 #      amixer set Master 1{+,-}
        pactl set-sink-volume alsa_output.pci-0000_00_1b.0.analog-stereo {+,-}10%
 
