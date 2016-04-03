@@ -1,3 +1,6 @@
 *~
 /.config/systemd/user/default.target.wants/
 *.pyc
+/.config/gtk-3.0/servers
+/.config/tint2/snap.jpg
+/.config/tint2/tint2rc.backup.1459174017

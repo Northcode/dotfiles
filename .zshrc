@@ -97,5 +97,9 @@ source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zs
 export LANG=en_GB.UTF-8
 export LC_ALL=en_GB.UTF-8
 
+if [ -d "$HOME/.composer/vendor/laravel/installer/" ]; then
+    export PATH=$PATH:"$HOME/.composer/vendor/laravel/installer/"
+fi
+
 alias ec='emacsclient -c -a ""'
 fi
