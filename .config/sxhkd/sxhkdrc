@@ -68,6 +68,9 @@ super + @button{1-3}
 super + g
       bspc node -t pseudo_tiled
 
+super + n
+      bspc node -t tiled
+
 #
 # Audio controls
 #
