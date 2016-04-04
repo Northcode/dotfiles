@@ -137,6 +137,8 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:inherit nil :stipple nil :background "#ffffff" :foreground "#000000" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 108 :width normal :foundry "unknown" :family "Inconsolata"))))
+ '(custom-state ((t (:foreground "lime green"))))
+ '(erc-input-face ((t (:foreground "#30A32A"))))
  '(mu4e-view-body-face ((t (:inherit default))))
  '(org-level-1 ((t (:foreground "#204a87" :weight bold :height 3.0))))
  '(org-level-2 ((t (:foreground "#204a87" :height 2.0))))
@@ -145,7 +147,8 @@
  '(powerline-evil-insert-face ((t (:inherit powerline-evil-base-face :background "RoyalBlue3"))))
  '(powerline-evil-motion-face ((t (:inherit powerline-evil-base-face :background "purple4"))))
  '(powerline-evil-normal-face ((t (:inherit powerline-evil-base-face :background "PaleGreen3"))))
- '(powerline-evil-visual-face ((t (:inherit powerline-evil-base-face :background "burlywood3")))))
+ '(powerline-evil-visual-face ((t (:inherit powerline-evil-base-face :background "burlywood3"))))
+ '(widget-field ((t (:background "#343d46" :foreground "white" :box (:line-width 1 :color "#ffffff"))))))
 
 (powerline-evil-vim-color-theme)
 
