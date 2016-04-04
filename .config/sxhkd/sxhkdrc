@@ -72,9 +72,10 @@ super + g
 # Audio controls
 #
 
-super + shift + {Page_North,Page_South}
+super + shift + {Page_Up,Page_Down}
 #      amixer set Master 1{+,-}
-       pactl set-sink-volume alsa_output.pci-0000_00_1b.0.analog-stereo {+,-}10%
+      pactl set-sink-volume 1 {+,-}10%
+
 
 super + shift + {Home,End,Insert,Delete}
       mpc {prev,next,play,pause}
