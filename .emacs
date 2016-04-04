@@ -137,6 +137,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:inherit nil :stipple nil :background "#ffffff" :foreground "#000000" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 108 :width normal :foundry "unknown" :family "Inconsolata"))))
+ '(font-lock-preprocessor-face ((t (:foreground "goldenrod"))))
  '(mu4e-view-body-face ((t (:inherit default))))
  '(org-level-1 ((t (:foreground "#204a87" :weight bold :height 3.0))))
  '(org-level-2 ((t (:foreground "#204a87" :height 2.0))))
