@@ -1,6 +1,7 @@
-tmpfile="/tmp/scrot.png"
-scrot $tmpfile
-#convert $tmpfile -scale 10% -scale 1000% $tmpfile
-convert $tmpfile -blur 0x4 $tmpfile
-i3lock -i $tmpfile
-xset dpms force standby
+# tmpfile="/tmp/scrot.png"
+# scrot $tmpfile
+# #convert $tmpfile -scale 10% -scale 1000% $tmpfile
+# convert $tmpfile -blur 0x4 $tmpfile
+# i3lock -i $tmpfile
+# xset dpms force standby
+i3lock -i ~/bin/lock.png -t -d
