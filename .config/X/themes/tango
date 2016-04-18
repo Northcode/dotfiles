@@ -1,0 +1,35 @@
+! Tango colour theme for rxvt-unicode
+URxvt.background: #FFFFFF
+URxvt.foreground: #000000
+
+! Black
+URxvt.color0: #2E3436
+URxvt.color8: #757773
+
+! Red
+URxvt.color1: #CC0000
+URxvt.color9: #EF2929
+
+! Green
+URxvt.color2: #4E9A06
+URxvt.color10: #8AE234
+
+! Yellow
+URxvt.color3: #C4A000
+URxvt.color11: #FCE94F
+
+! Blue
+URxvt.color4: #3465A4
+URxvt.color12: #729FCF
+
+! Magenta
+URxvt.color5: #75507B
+URxvt.color13: #AD7FA8
+
+! Cyan
+URxvt.color6: #06989A
+URxvt.color14: #34E2E2
+
+! White
+URxvt.color7: #D3D7CF
+URxvt.color15: #EEEEEC
