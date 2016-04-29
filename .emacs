@@ -1,6 +1,11 @@
+;;; .emacs -- Emacs config
+;;; Commentary:
+;;; My Emacs config
+;;; Code:
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
 (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
+(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
 
 (package-initialize)
 
@@ -18,6 +23,7 @@
 	evil-surround
 	evil-org
 	evil-magit
+	evil-commentary
 	
 	;; other keybind 
 	bind-key
@@ -64,16 +70,24 @@
 	org-bullets
 	org-journal
 
+	;; calendar stuff
+	calfw
+	calfw-ical
+
 	;; misc stuff
 	haste
 	evil-mu4e
 	helm-mu
 	web-mode
+	mingus
+	highlight-parentheses
+	generic
 	))
 
 (dolist (p my-packages)
   (paradox-require p)
   )
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -88,9 +102,17 @@
  '(custom-safe-themes
    (quote
     ("0022e0b80aaf697a4dc41322d5270aff5c4dae342c09a559abb91fd2bc64e755" "1012cf33e0152751078e9529a915da52ec742dabf22143530e86451ae8378c1a" "628278136f88aa1a151bb2d6c8a86bf2b7631fbea5f0f76cba2a0079cd910f7d" "1b8d67b43ff1723960eb5e0cba512a2c7a2ad544ddb2533a90101fd1852b426e" "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "bb08c73af94ee74453c90422485b29e5643b73b05e8de029a6909af6a3fb3f58" "82d2cac368ccdec2fcc7573f24c3f79654b78bf133096f9b40c20d97ec1d8016" "9cb6358979981949d1ae9da907a5d38fb6cde1776e8956a1db150925f2dad6c1" "8abee8a14e028101f90a2d314f1b03bed1cde7fd3f1eb945ada6ffc15b1d7d65" "d8f76414f8f2dcb045a37eb155bfaa2e1d17b6573ed43fb1d18b936febc7bbc2" default)))
+ '(elfeed-feeds (quote ("https://northcode.no/rss")))
+ '(erc-nick "northcode")
+ '(erc-user-full-name "Andreas Larsen")
  '(eshell-buffer-shorthand t)
+ '(evil-commentary-mode t)
+ '(evil-emacs-state-modes
+   (quote
+    (archive-mode bbdb-mode biblio-selection-mode bookmark-bmenu-mode bookmark-edit-annotation-mode browse-kill-ring-mode bzr-annotate-mode calc-mode cfw:calendar-mode completion-list-mode Custom-mode debugger-mode delicious-search-mode desktop-menu-blist-mode desktop-menu-mode doc-view-mode dvc-bookmarks-mode dvc-diff-mode dvc-info-buffer-mode dvc-log-buffer-mode dvc-revlist-mode dvc-revlog-mode dvc-status-mode dvc-tips-mode ediff-mode ediff-meta-mode efs-mode Electric-buffer-menu-mode emms-browser-mode emms-mark-mode emms-metaplaylist-mode emms-playlist-mode ess-help-mode etags-select-mode fj-mode gc-issues-mode gdb-breakpoints-mode gdb-disassembly-mode gdb-frames-mode gdb-locals-mode gdb-memory-mode gdb-registers-mode gdb-threads-mode gist-list-mode gnus-article-mode gnus-browse-mode gnus-group-mode gnus-server-mode gnus-summary-mode google-maps-static-mode ibuffer-mode jde-javadoc-checker-report-mode magit-popup-mode magit-popup-sequence-mode magit-branch-manager-mode magit-commit-mode magit-key-mode magit-rebase-mode magit-wazzup-mode mh-folder-mode monky-mode notmuch-hello-mode notmuch-search-mode notmuch-show-mode occur-mode org-agenda-mode package-menu-mode proced-mode rcirc-mode rebase-mode recentf-dialog-mode reftex-select-bib-mode reftex-select-label-mode reftex-toc-mode sldb-mode slime-inspector-mode slime-thread-control-mode slime-xref-mode sr-buttons-mode sr-mode sr-tree-mode sr-virtual-mode tar-mode tetris-mode tla-annotate-mode tla-archive-list-mode tla-bconfig-mode tla-bookmarks-mode tla-branch-list-mode tla-browse-mode tla-category-list-mode tla-changelog-mode tla-follow-symlinks-mode tla-inventory-file-mode tla-inventory-mode tla-lint-mode tla-logs-mode tla-revision-list-mode tla-revlog-mode tla-tree-lint-mode tla-version-list-mode twittering-mode urlview-mode vc-annotate-mode vc-dir-mode vc-git-log-view-mode vc-hg-log-view-mode vc-svn-log-view-mode vm-mode vm-summary-mode w3m-mode wab-compilation-mode xgit-annotate-mode xgit-changelog-mode xgit-diff-mode xgit-revlog-mode xhg-annotate-mode xhg-log-mode xhg-mode xhg-mq-mode xhg-mq-sub-mode xhg-status-extra-mode elfeed-search elfeed-show)))
  '(evil-indent-convert-tabs nil)
  '(evil-mode t)
+ '(evil-space-mode t)
  '(evil-want-C-u-scroll t)
  '(fci-rule-color "#d6d6d6")
  '(global-company-mode t)
@@ -101,9 +123,16 @@
  '(initial-buffer-choice "~/")
  '(initial-scratch-message "")
  '(menu-bar-mode nil)
+ '(package-archives
+   (quote
+    (("gnu" . "https://elpa.gnu.org/packages/")
+     ("gnu" . "http://elpa.gnu.org/packages/")
+     ("melpa" . "http://melpa.org/packages/")
+     ("marmalade" . "http://marmalade-repo.org/packages/"))))
  '(paradox-github-token t)
  '(projectile-global-mode t)
  '(scroll-bar-mode nil)
+ '(sunshine-appid "aede69fcc20d90d09c30f60d3bedacf2")
  '(tab-always-indent t)
  '(tool-bar-mode nil)
  '(vc-annotate-background nil)
@@ -128,6 +157,10 @@
      (340 . "#eab700")
      (360 . "#718c00"))))
  '(vc-annotate-very-old-color nil)
+ '(weather-metno-location-latitude 67.28267)
+ '(weather-metno-location-longitude 14.37513)
+ '(weather-metno-location-name "Bodø")
+ '(yahoo-weather-mode nil)
  '(yas-global-mode t nil (yasnippet)))
 (evil-magit-init)
 (ido-vertical-mode t)
@@ -140,6 +173,7 @@
  '(default ((t (:inherit nil :stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 108 :width normal :foundry "PfEd" :family "Inconsolata"))))
  '(custom-state ((t (:foreground "lime green"))))
  '(erc-input-face ((t (:foreground "#30A32A"))))
+ '(helm-selection ((t (:inherit highlight :background "#eeeeec" :foreground "black"))))
  '(mu4e-view-body-face ((t (:inherit default))))
  '(org-level-1 ((t (:foreground "#204a87" :weight bold :height 3.0))))
  '(org-level-2 ((t (:foreground "#204a87" :height 2.0))))
@@ -276,6 +310,18 @@
   (interactive)
   (save-some-buffers t))
 
+;; from http://ergoemacs.org/emacs/elisp_read_file_content.html thanks!
+(defun get-string-from-file (filePath)
+  "Return filePath's file content."
+  (with-temp-buffer
+    (insert-file-contents filePath)
+    (buffer-string)))
+
+(defun open-ical-calendar ()
+  "Open calendar stored in .calendar file"
+  (interactive)
+  (cfw:open-ical-calendar (get-string-from-file "~/.calendar")))
+
 ;; hooks
 (add-hook 'focus-out-hook 'save-all)
 
@@ -361,6 +407,7 @@
 
 ;; set html files to load web-mode
 (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.php\\'" . web-mode))
 ;; enable isearch fuzzy searching
 (setq search-whitespace-regexp ".*?")
 
@@ -378,13 +425,33 @@
  ("C-c g" . magit-status)
  ("C-c j" . org-journal-new-entry)
  ("C-c s" . helm-swoop)
- ("C-c c" . cmake-ide-run-cmake)
+ ("C-c c" . open-ical-calendar)
+ ("C-c d" . mingus)
 
  ("C-x C-b" . ibuffer)
  ("C-x C-f" . helm-find-files)
  ("C-x o" . ace-window)
  )
 
+(defun revbuf ()
+  "Revert buffer without asking."
+  (interactive)
+  (revert-buffer t t))
+
+(define-key evil-normal-state-map (kbd "gr") 'revbuf)
+
 (put 'narrow-to-region 'disabled nil)
 
+(define-generic-mode
+    'authinfo-mode
+  '("#")
+  '("machine" "login" "port" "password")
+  '()
+  '("\\.authinfo$" "\\.authinfo.gpg")
+  nil
+  "Mode for authinfo files"
+  )
+
+
 (provide 'emacs)
+;;; .emacs ends here

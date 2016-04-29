@@ -11,8 +11,8 @@ progressbar_look = "-> "
 progressbar_color = "blue"
 progressbar_elapsed_color = "blue"
 
-color1 = "white"
-color2 = "black"
+#color1 = "white"
+#color2 = "black"
 
 header_visibility = "no"
 autocenter_mode = "yes"
