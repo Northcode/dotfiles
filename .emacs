@@ -175,6 +175,7 @@
  '(custom-state ((t (:foreground "lime green"))))
  '(erc-input-face ((t (:foreground "#30A32A"))))
  '(helm-selection ((t (:inherit highlight :background "#eeeeec" :foreground "black"))))
+ '(mode-line ((t (:background "#5f615c" :foreground "#eeeeec" :family "Inconsolata"))))
  '(mu4e-view-body-face ((t (:inherit default))))
  '(org-level-1 ((t (:foreground "#204a87" :weight bold :height 2.2))))
  '(org-level-2 ((t (:foreground "#204a87" :height 1.4))))
@@ -435,6 +436,23 @@
  ("C-x C-f" . helm-find-files)
  ("C-x o" . ace-window)
  )
+
+
+;; helm evil keys
+
+(bind-keys 
+ :map helm-map
+ ("C-j". helm-next-line)
+ ("C-k". helm-previous-line)
+ ("C-l". helm-execute-persistent-action)
+ )
+
+(bind-keys 
+ :map helm-find-files-map
+ ("C-h". helm-find-files-up-one-level)
+ )
+
+
 
 (defun revbuf ()
   "Revert buffer without asking."

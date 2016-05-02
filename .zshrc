@@ -103,4 +103,5 @@ fi
 
 alias ec='emacsclient -c -a ""'
 eval $(thefuck --alias)
+alias -g grt='$(git rev-parse --show-toplevel)'
 fi
