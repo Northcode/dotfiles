@@ -185,6 +185,8 @@
  '(powerline-evil-visual-face ((t (:inherit powerline-evil-base-face :background "burlywood3"))))
  '(widget-field ((t (:background "#343d46" :foreground "white" :box (:line-width 1 :color "#ffffff"))))))
 
+(defalias 'yes-or-no-p 'y-or-n-p)
+
 (powerline-evil-vim-color-theme)
 
 ;;;; MU4E config
