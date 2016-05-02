@@ -102,4 +102,5 @@ if [ -d "$HOME/.composer/vendor/laravel/installer/" ]; then
 fi
 
 alias ec='emacsclient -c -a ""'
+eval $(thefuck --alias)
 fi
