@@ -2,342 +2,117 @@
 ;;; Commentary:
 ;;; My Emacs config
 ;;; Code:
+
 (require 'package)
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
+(setq package-enable-at-startup nil)
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
 (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
 (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
 
 (package-initialize)
 
-(if (not (package-installed-p 'paradox))
-    (package-install 'paradox)
-  )
+;; Bootstrap `use-package'
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
 
-(require 'paradox)
-
-(defvar my-packages '())
-(setq my-packages
-      '(
-	;; evil
-	evil
-	evil-surround
-	evil-org
-	evil-magit
-	evil-commentary
-	
-	;; other keybind 
-	bind-key
-	key-chord
-	expand-region
-	mark-multiple
-
-	;; auto completion 
-	company
-	company-c-headers
-	company-jedi
-	company-web
-	yasnippet
-
-	;; helm 
-	helm
-	helm-projectile
-	helm-company
-	helm-swoop
-	ido-vertical-mode
-
-	;; ace 
-	ace-window
-	ace-isearch
-
-	;; project management
-	projectile
-	magit
-
-	;; build tools
-	flycheck
-	cmake-font-lock
-	cmake-mode
-	cmake-ide
-	
-	;; theme 
-	spacegray-theme
-	tango-plus-theme
-	powerline
-	powerline-evil
-
-	;; org-mode
-	org
-	org-bullets
-	org-journal
-
-	;; calendar stuff
-	calfw
-	calfw-ical
-
-	;; misc stuff
-	haste
-	evil-mu4e
-	helm-mu
-	web-mode
-	mingus
-	highlight-parentheses
-	generic
-	))
-
-(dolist (p my-packages)
-  (paradox-require p)
-  )
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(ansi-color-faces-vector
-   [default bold shadow italic underline bold bold-italic bold])
- '(backup-directory-alist (quote (("." . "~/.emacs.saves"))))
- '(blink-cursor-mode nil)
- '(company-auto-complete (quote (quote company-explicit-action-p)))
- '(custom-enabled-themes (quote (tango-plus)))
- '(custom-safe-themes
-   (quote
-    ("0022e0b80aaf697a4dc41322d5270aff5c4dae342c09a559abb91fd2bc64e755" "1012cf33e0152751078e9529a915da52ec742dabf22143530e86451ae8378c1a" "628278136f88aa1a151bb2d6c8a86bf2b7631fbea5f0f76cba2a0079cd910f7d" "1b8d67b43ff1723960eb5e0cba512a2c7a2ad544ddb2533a90101fd1852b426e" "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "bb08c73af94ee74453c90422485b29e5643b73b05e8de029a6909af6a3fb3f58" "82d2cac368ccdec2fcc7573f24c3f79654b78bf133096f9b40c20d97ec1d8016" "9cb6358979981949d1ae9da907a5d38fb6cde1776e8956a1db150925f2dad6c1" "8abee8a14e028101f90a2d314f1b03bed1cde7fd3f1eb945ada6ffc15b1d7d65" "d8f76414f8f2dcb045a37eb155bfaa2e1d17b6573ed43fb1d18b936febc7bbc2" default)))
- '(elfeed-feeds (quote ("https://northcode.no/rss")))
- '(erc-nick "northcode")
- '(erc-user-full-name "Andreas Larsen")
- '(eshell-buffer-shorthand t)
- '(evil-commentary-mode t)
- '(evil-emacs-state-modes
-   (quote
-    (archive-mode bbdb-mode biblio-selection-mode bookmark-bmenu-mode bookmark-edit-annotation-mode browse-kill-ring-mode bzr-annotate-mode calc-mode cfw:calendar-mode completion-list-mode Custom-mode debugger-mode delicious-search-mode desktop-menu-blist-mode desktop-menu-mode doc-view-mode dvc-bookmarks-mode dvc-diff-mode dvc-info-buffer-mode dvc-log-buffer-mode dvc-revlist-mode dvc-revlog-mode dvc-status-mode dvc-tips-mode ediff-mode ediff-meta-mode efs-mode Electric-buffer-menu-mode emms-browser-mode emms-mark-mode emms-metaplaylist-mode emms-playlist-mode ess-help-mode etags-select-mode fj-mode gc-issues-mode gdb-breakpoints-mode gdb-disassembly-mode gdb-frames-mode gdb-locals-mode gdb-memory-mode gdb-registers-mode gdb-threads-mode gist-list-mode gnus-article-mode gnus-browse-mode gnus-group-mode gnus-server-mode gnus-summary-mode google-maps-static-mode ibuffer-mode jde-javadoc-checker-report-mode magit-popup-mode magit-popup-sequence-mode magit-branch-manager-mode magit-commit-mode magit-key-mode magit-rebase-mode magit-wazzup-mode mh-folder-mode monky-mode notmuch-hello-mode notmuch-search-mode notmuch-show-mode occur-mode org-agenda-mode package-menu-mode proced-mode rcirc-mode rebase-mode recentf-dialog-mode reftex-select-bib-mode reftex-select-label-mode reftex-toc-mode sldb-mode slime-inspector-mode slime-thread-control-mode slime-xref-mode sr-buttons-mode sr-mode sr-tree-mode sr-virtual-mode tar-mode tetris-mode tla-annotate-mode tla-archive-list-mode tla-bconfig-mode tla-bookmarks-mode tla-branch-list-mode tla-browse-mode tla-category-list-mode tla-changelog-mode tla-follow-symlinks-mode tla-inventory-file-mode tla-inventory-mode tla-lint-mode tla-logs-mode tla-revision-list-mode tla-revlog-mode tla-tree-lint-mode tla-version-list-mode twittering-mode urlview-mode vc-annotate-mode vc-dir-mode vc-git-log-view-mode vc-hg-log-view-mode vc-svn-log-view-mode vm-mode vm-summary-mode w3m-mode wab-compilation-mode xgit-annotate-mode xgit-changelog-mode xgit-diff-mode xgit-revlog-mode xhg-annotate-mode xhg-log-mode xhg-mode xhg-mq-mode xhg-mq-sub-mode xhg-status-extra-mode elfeed-search elfeed-show mingus-playlist-mode mingus-browse-mode)))
- '(evil-indent-convert-tabs nil)
- '(evil-mode t)
- '(evil-space-mode t)
- '(evil-want-C-u-scroll t)
- '(fci-rule-color "#d6d6d6")
- '(global-company-mode t)
- '(global-flycheck-mode t)
- '(gradle-mode nil)
- '(helm-mode t)
- '(ido-vertical-mode t)
- '(inhibit-startup-screen t)
- '(initial-buffer-choice "~/")
- '(initial-scratch-message "")
- '(menu-bar-mode nil)
- '(package-archives
-   (quote
-    (("gnu" . "https://elpa.gnu.org/packages/")
-     ("gnu" . "http://elpa.gnu.org/packages/")
-     ("melpa" . "http://melpa.org/packages/")
-     ("marmalade" . "http://marmalade-repo.org/packages/"))))
- '(paradox-github-token t)
- '(projectile-global-mode t)
- '(scroll-bar-mode nil)
- '(sunshine-appid "aede69fcc20d90d09c30f60d3bedacf2")
- '(tab-always-indent t)
- '(tool-bar-mode nil)
- '(vc-annotate-background nil)
- '(vc-annotate-color-map
-   (quote
-    ((20 . "#c82829")
-     (40 . "#f5871f")
-     (60 . "#eab700")
-     (80 . "#718c00")
-     (100 . "#3e999f")
-     (120 . "#4271ae")
-     (140 . "#8959a8")
-     (160 . "#c82829")
-     (180 . "#f5871f")
-     (200 . "#eab700")
-     (220 . "#718c00")
-     (240 . "#3e999f")
-     (260 . "#4271ae")
-     (280 . "#8959a8")
-     (300 . "#c82829")
-     (320 . "#f5871f")
-     (340 . "#eab700")
-     (360 . "#718c00"))))
- '(vc-annotate-very-old-color nil)
- '(weather-metno-location-latitude 67.28267)
- '(weather-metno-location-longitude 14.37513)
- '(weather-metno-location-name "Bodø")
- '(yahoo-weather-mode nil)
- '(yas-global-mode t nil (yasnippet)))
-(evil-magit-init)
-(ido-vertical-mode t)
-;; set themes
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 108 :width normal :foundry "PfEd" :family "Inconsolata"))))
- '(custom-state ((t (:foreground "lime green"))))
- '(erc-input-face ((t (:foreground "#30A32A"))))
- '(helm-selection ((t (:inherit highlight :background "#eeeeec" :foreground "black"))))
- '(mode-line ((t (:background "#5f615c" :foreground "#eeeeec" :family "Inconsolata"))))
- '(mu4e-view-body-face ((t (:inherit default))))
- '(org-level-1 ((t (:foreground "#204a87" :weight bold :height 2.2))))
- '(org-level-2 ((t (:foreground "#204a87" :height 1.4))))
- '(org-level-3 ((t (:foreground "#204a87" :height 1.5))))
- '(powerline-evil-emacs-face ((t (:inherit powerline-evil-base-face :background "purple3"))))
- '(powerline-evil-insert-face ((t (:inherit powerline-evil-base-face :background "RoyalBlue3"))))
- '(powerline-evil-motion-face ((t (:inherit powerline-evil-base-face :background "purple4"))))
- '(powerline-evil-normal-face ((t (:inherit powerline-evil-base-face :background "PaleGreen3"))))
- '(powerline-evil-visual-face ((t (:inherit powerline-evil-base-face :background "burlywood3"))))
- '(widget-field ((t (:background "#343d46" :foreground "white" :box (:line-width 1 :color "#ffffff"))))))
+(require 'use-package)
+(require 'bind-key)
+(require 'diminish)
+(setq use-package-always-ensure t)
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 
-(powerline-evil-vim-color-theme)
+(use-package evil
+  :init (evil-mode t))
+(use-package evil-surround
+  :diminish t)
+(use-package evil-org)
+(use-package evil-magit
+  :init (evil-magit-init))
+(use-package evil-commentary)
 
-;;;; MU4E config
-(if (file-exists-p "/usr/share/emacs/site-lisp/mu4e")
-    (progn
-      (message "found mu4e!")
-      (add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e")
-      (require 'mu4e)
-      (require 'smtpmail)
+(use-package expand-region
+  :bind (("M-2". er/expand-region)))
+(use-package mark-multiple
+  :bind (("M-3". mark-next-like-this)))
 
-      (setq mu4e-maildir "~/.mail")
-      (setq mu4e-maildir-list '("~/.mail/gmail" "~/.mail/northcode"))
+(use-package key-chord
+  :init (key-chord-mode t))
+(use-package yasnippet
+  :init (add-hook 'prog-mode-hook #'yas-minor-mode))
 
-      (setq mu4e-contexts
-	    `( ,(make-mu4e-context
-		 :name "gmail"
-		 :enter-func (lambda () (progn (mu4e-message "Switch gmail") (message "GMAIL")))
-		 ;; leave-func not defined
-		 :match-func (lambda (msg)
-			       (when msg 
-				 (mu4e-message-contact-field-matches msg :to "northcode.no@gmail.com")))
-		 :vars '( 
-			  ( mu4e-inbox-folder . "/gmail/INBOX")
-			  ( mu4e-sent-folder . "/gmail/[Gmail].Sent Mail")
-			  ( mu4e-refile-folder . "/gmail/[Gmail].All Mail")
-			  ( mu4e-trash-folder . "/gmail/[Gmail].Bin")
-			  ( mu4e-drafts-folder  . "/gmail/[Gmail].Drafts")
-			  ( mu4e-maildir-shortcuts . (("/gmail/INBOX" . ?i)
-						      ("/gmail/[Gmail].All Mail" . ?a)
-						      ))
-			  ( user-mail-address	     . "northcode.no@gmail.com"  )
-			  ( user-full-name	    . "Andreas Larsen" )
-			  ( mu4e-compose-signature . (concat
-						    "Andreas Larsen ---\n"
-						    "northcode.no - Norway"))
+(use-package company)
+(use-package company-c-headers)
+(use-package company-jedi)
+(use-package company-web)
 
-			  ( smtpmail-smtp-server . "smtp.gmail.com" )
-			  ( smtpmail-smtp-service . 587 )
-			  ( starttls-use-gnutls . t )
-			  ( smtpmail-starttls-credentials . '(("smtp.gmail.com" 587 nil nil)))
-			  ( smtpmail-auth-credentials . '(("smtp.gmail.com" 587 "northcode.no@gmail.com" nil)))
-			  ))
-	       ,(make-mu4e-context
-		 :name "northcode"
-		 :enter-func (lambda () (progn (mu4e-message "Switch to northcode") (message "NORTHCODE")))
-		 ;; leave-fun not defined
-		 :match-func (lambda (msg)
-			       (when msg 
-				 (mu4e-message-contact-field-matches msg :to "andreas@northcode.no")))
-		 :vars '( 
-			  (mu4e-inbox-folder . "/northcode/INBOX")
-			  ( mu4e-sent-folder . "/northcode/Sent")
-			  ( mu4e-drafts-folder  . "/northcode/Drafts")
-			  ( mu4e-trash-folder . "/northcode/Trash")
-			  ( mu4e-maildir-shortcuts . (("/northcode/INBOX" . ?i)))
-			  ( user-mail-address	     . "andreas@northcode.no" )
-			  ( user-full-name	    . "Andreas Larsen" )
-			  ( mu4e-compose-signature . (concat
-						    "Andreas Larsen ---\n"
-						    "northcode.no - Norway"))
+(use-package helm
+  :init (helm-mode t)
+  :diminish t
+  :config
+  (bind-keys
+   :map helm-map
+   ("C-j". helm-next-line)
+   ("C-k". helm-previous-line)
+   ("C-l". helm-execute-persistent-action)
+   :map helm-find-files-map
+   ("C-h". helm-find-files-up-one-level)))
+(use-package helm-projectile)
+(use-package helm-company)
+(use-package helm-swoop)
+(use-package ido-vertical-mode
+  :init (ido-vertical-mode t))
 
-			  ( smtpmail-smtp-server . "northcode.no" )
-			  ( smtpmail-smtp-service . 587 )
-			  ( starttls-use-gnutls . t )
-			  ( smtpmail-starttls-credentials . '(("northcode.no" 587 nil nil)))
-			  ( smtpmail-auth-credentials . '(("northcode.no" 587 "andreas@northcode.no" nil)))
-			  ))))
+(use-package projectile
+  :init (projectile-global-mode t))
+(use-package magit)
 
-      
-      (setq mu4e-context-policy 'pick-first)
-      
-      ;; (setq mu4e-drafts-folder "/gmail/[Gmail].Drafts")
-      ;; (setq mu4e-sent-folder   "/gmail/[Gmail].Sent Mail")
-      ;; (setq mu4e-trash-folder  "/gmail/[Gmail].Trash")
+(use-package flycheck)
+(use-package cmake-font-lock)
+(use-package cmake-mode)
+(use-package cmake-ide)
+(use-package web-mode
+  :mode ("\\.html\\'" "\\.php\\'"))
+(use-package scss-mode)
+(use-package cider)
 
-      (setq mu4e-sent-messages-behavior 'delete)
+(use-package tango-plus-theme)
+(use-package spacegray-theme)
+(enable-theme 'spacegray)
+(use-package powerline)
+(use-package powerline-evil
+  :init (powerline-evil-vim-color-theme))
 
-      ;; (setq mu4e-maildir-shortcuts
-      ;; 	    '( ("/gmail/INBOX"               . ?i)
-      ;; 	       ("/gmail/[Gmail].Sent Mail"   . ?s)
-      ;; 	       ("/gmail/[Gmail].Trash"       . ?t)
-      ;; 	       ("/gmail/[Gmail].All Mail"    . ?a)))
+(use-package org)
+(use-package org-bullets)
+(use-package org-journal)
 
-      (setq mu4e-get-mail-command "offlineimap")
+;; calendar stuff
+(use-package calfw
+  :init (require 'calfw-ical))
 
-      (setq
-       user-mail-address "northcode.no@gmail.com"
-       user-full-name  "Andreas Larsen"
-       mu4e-compose-signature
-       (concat 
-	"Andreas Larsen\n"
-	"http://www.northcode.no\n"))
+;; misc stuff
+(use-package haste)
+(use-package evil-mu4e)
+(use-package helm-mu)
+(use-package mingus)
+(use-package highlight-parentheses)
 
-      (setq message-send-mail-function 'smtpmail-send-it
-	    starttls-use-gnutls t
-	    smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil))
-	    smtpmail-auth-credentials
-	    '(("smtp.gmail.com" 587 "northcode.no@gmail.com" nil))
-	    smtpmail-default-smtp-server "smtp.gmail.com"
-	    smtpmail-smtp-server "smtp.gmail.com"
-	    smtpmail-smtp-service 587
-	    )
+(setq search-whitespace-regexp ".*?")
 
-      (global-set-key (kbd "C-c m") 'mu4e)
-      (global-set-key (kbd "C-c M") 'mu4e-compose-new)
-      (define-key mu4e-headers-mode-map (kbd "C-s") 'helm-mu)
-      (define-key mu4e-headers-mode-map (kbd "M") 'mu4e-headers-mark-for-something)
-      
-      (setq message-kill-buffer-on-exit t)
-      (setq mu4e-use-fancy-chars t)
-      (setq mu4e-view-show-images t)
+(diminish 'helm-mode)
+(diminish 'undo-tree-mode)
+(diminish 'auto-revert-mode)
+(diminish 'company-mode)
 
-      (setq mu4e-html2text-command 'mu4e-shr2text)
-      (require 'evil-mu4e)
-      )
-  (message "mu4e not found")
-  )
-
-;; custom defuns
-(defun save-all ()
-    ;;; documentation-string
-  "Save all files."
+(defun lastbuf () "Switch to last buffer instantly."
+  (interactive)
+  (switch-to-buffer (other-buffer (current-buffer))))
+(defun save-all () "Save all files."
   (interactive)
   (save-some-buffers t))
-
-;; from http://ergoemacs.org/emacs/elisp_read_file_content.html thanks!
-(defun get-string-from-file (filePath)
-  "Return filePath's file content."
-  (with-temp-buffer
-    (insert-file-contents filePath)
-    (buffer-string)))
-
-(defun open-ical-calendar ()
-  "Open calendar stored in .calendar file"
-  (interactive)
-  (cfw:open-ical-calendar (get-string-from-file "~/.calendar")))
-
-;; hooks
 (add-hook 'focus-out-hook 'save-all)
-
-(defun my-c++-mode-hook ()
-  (setq c-basic-offset 4)
-  (c-set-offset 'substatement-open 0)
-  (setq c++-tab-always-indent t)
-  (setq tab-width 4)
-  (setq indent-tabs-mode t)
-  (setq flycheck-clang-language-standard "c++11")
-  )
-(add-hook 'c++-mode-hook 'my-c++-mode-hook)
 
  ;; autoinsert C/C++ header
 (define-auto-insert
@@ -383,7 +158,7 @@
     ))
 
 (defun inside-class-enum-p (pos)
-  "Checks if POS is within the braces of a C++ \"enum class\"."
+  "Check if POS is within the braces of a C++ \"enum class\"."
   (ignore-errors
     (save-excursion
       (goto-char pos)
@@ -393,11 +168,13 @@
       ;; (looking-back "enum[ \t\n]+class[ \t\n]+[^}]+"))))
 
 (defun align-enum-class (langelem)
+  "Align enum class content of LANGELEM."
   (if (inside-class-enum-p (c-langelem-pos langelem))
       0
     (c-lineup-topmost-intro-cont langelem)))
 
 (defun align-enum-class-closing-brace (langelem)
+  "Align closing brace line of enum class LANGELEM."
   (if (inside-class-enum-p (c-langelem-pos langelem))
       '-
     '+))
@@ -409,70 +186,74 @@
 
 (add-hook 'c++-mode-hook 'fix-enum-class)
 
-;; set html files to load web-mode
-(add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.php\\'" . web-mode))
-;; enable isearch fuzzy searching
-(setq search-whitespace-regexp ".*?")
-
-;; set keybinds
-(global-unset-key (kbd "M-2"))
-(global-unset-key (kbd "M-3"))
 (key-chord-define evil-insert-state-map "jk" 'evil-normal-state)
-(bind-keys
- ("M-2" . er/expand-region)
- ("M-3" . mark-next-like-this)
 
+(bind-keys
  ("C-c e" . eshell)
  ("C-c h" . helm-mini)
  ("C-c x" . helm-M-x)
  ("C-c g" . magit-status)
  ("C-c j" . org-journal-new-entry)
  ("C-c s" . helm-swoop)
- ("C-c c" . open-ical-calendar)
+ ;; ("C-c c" . open-ical-calendar)
  ("C-c d" . mingus)
 
- ("C-x C-b" . ibuffer)
+ ("C-x C-b" . lastbuf)
  ("C-x C-f" . helm-find-files)
- ("C-x o" . ace-window)
  )
 
 
-;; helm evil keys
+;; (defvar user-mailconf nil)
+;; (setq user-mailconf
+;;       '(:maildir "~/.mail"
+;; 	:full-name "Andreas Larsen"
+;; 	:accounts
+;; 	'((:name "gmail" :maildir "/gmail/")
+;; 	  (:name "northcode" :maildir "/northcode/")
+;; 	  )))
 
-(bind-keys 
- :map helm-map
- ("C-j". helm-next-line)
- ("C-k". helm-previous-line)
- ("C-l". helm-execute-persistent-action)
- )
+;; (message (plist-get user-mailconf :maildir))
 
-(bind-keys 
- :map helm-find-files-map
- ("C-h". helm-find-files-up-one-level)
- )
+;; (defun load-mu4e-conf ()
+;;   (add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e")
+;;   (require 'mu4e)
+;;   (require 'smtpmail)
 
+;;   (setq mu4e-maildir (plist-get user-mailconf :maildir))
+;;   )
 
+;; (if (file-exists-p "/usr/share/emacs/site-lisp/mu4e")
+;;     (progn
+;;       (message "loading mu4e config")
+;;       (load-mu4e-conf)))
 
-(defun revbuf ()
-  "Revert buffer without asking."
-  (interactive)
-  (revert-buffer t t))
-
-(define-key evil-normal-state-map (kbd "gr") 'revbuf)
-
-(put 'narrow-to-region 'disabled nil)
-
-(define-generic-mode
-    'authinfo-mode
-  '("#")
-  '("machine" "login" "port" "password")
-  '()
-  '("\\.authinfo$" "\\.authinfo.gpg")
-  nil
-  "Mode for authinfo files"
-  )
-
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   (quote
+    ("d8f76414f8f2dcb045a37eb155bfaa2e1d17b6573ed43fb1d18b936febc7bbc2" "9cb6358979981949d1ae9da907a5d38fb6cde1776e8956a1db150925f2dad6c1" default)))
+ '(erc-modules
+   (quote
+    (autojoin button completion fill irccontrols list match menu move-to-prompt netsplit networks noncommands notifications readonly ring scrolltobottom services stamp track)))
+ '(erc-notify-list (quote ("okknor")))
+ '(erc-notify-mode t)
+ '(evil-want-C-u-scroll t)
+ '(inhibit-startup-screen t)
+ '(initial-buffer-choice "~/.emacs")
+ '(menu-bar-mode nil)
+ '(scroll-bar-mode nil)
+ '(tool-bar-mode nil))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(default ((t (:inherit nil :stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 108 :width normal :family "Inconsolata"))))
+ '(mode-line ((t (:family "Liberation Mono"))))
+ '(widget-field ((t (:box (:line-width 1 :color "#ffffff"))))))
 
 (provide 'emacs)
 ;;; .emacs ends here
