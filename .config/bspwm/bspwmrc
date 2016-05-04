@@ -37,3 +37,4 @@ fi
 hsetroot -solid "#335566"
 compton -f -c &
 tint2 &
+dunst &

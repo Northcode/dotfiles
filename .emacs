@@ -153,6 +153,7 @@
  ("C-x C-f" . helm-find-files)
  )
 
+
 ;; MU4E config
 (defvar user-mailconf nil)
 (setq user-mailconf
@@ -331,15 +332,19 @@
     ("d8f76414f8f2dcb045a37eb155bfaa2e1d17b6573ed43fb1d18b936febc7bbc2" "9cb6358979981949d1ae9da907a5d38fb6cde1776e8956a1db150925f2dad6c1" default)))
  '(erc-modules
    (quote
-    (autojoin button completion fill irccontrols list match menu move-to-prompt netsplit networks noncommands notifications readonly ring scrolltobottom services stamp track)))
+    (autojoin button completion fill irccontrols list match menu move-to-prompt netsplit networks noncommands notifications readonly ring scrolltobottom stamp track)))
  '(erc-notify-list (quote ("okknor")))
+ '(erc-nick "northcode")
+ '(erc-user-full-name "Andreas Larsen")
  '(erc-notify-mode t)
  '(evil-want-C-u-scroll t)
  '(inhibit-startup-screen t)
  '(initial-buffer-choice "~/")
  '(menu-bar-mode nil)
+ '(mingus-use-mouse-p nil)
  '(scroll-bar-mode nil)
  '(tool-bar-mode nil))
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
