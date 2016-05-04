@@ -57,7 +57,9 @@
    ("C-k". helm-previous-line)
    ("C-l". helm-execute-persistent-action)
    :map helm-find-files-map
-   ("C-h". helm-find-files-up-one-level)))
+   ("C-l". helm-execute-persistent-action)
+   ("C-b". helm-find-files-up-one-level)))
+
 (use-package helm-projectile)
 (use-package helm-company)
 (use-package helm-swoop)
