@@ -113,6 +113,73 @@
   (interactive)
   (save-some-buffers t))
 (add-hook 'focus-out-hook 'save-all)
+;; from http://ergoemacs.org/emacs/elisp_read_file_content.html thanks!
+(defun get-string-from-file (filePath) "Return filePath's file content."
+  (with-temp-buffer
+    (insert-file-contents filePath)
+    (buffer-string)))
+(defun open-ical-calendar () "Open calendar stored in .calendar file"
+  (interactive)
+  (cfw:open-ical-calendar (get-string-from-file "~/.calendar")))
+(defun revbuf () "Revert buffer without asking."
+  (interactive)
+  (revert-buffer t t))
+
+(define-key evil-normal-state-map (kbd "gr") 'revbuf)
+(key-chord-define evil-insert-state-map "jk" 'evil-normal-state)
+(bind-keys
+ ("C-c e" . eshell)
+ ("C-c h" . helm-mini)
+ ("C-c x" . helm-M-x)
+ ("C-c g" . magit-status)
+ ("C-c j" . org-journal-new-entry)
+ ("C-c s" . helm-swoop)
+ ("C-c c" . open-ical-calendar)
+ ("C-c d" . mingus)
+ ("C-c m" . mu4e)
+
+ ("C-x C-b" . lastbuf)
+ ("C-x C-o" . other-window)
+ ("C-x C-f" . helm-find-files)
+ )
+
+;; MU4E config
+(defvar user-mailconf nil)
+(setq user-mailconf
+      '(:maildir "~/.mail/"
+	:name "Andreas Larsen"
+	:signature "----\nAndreas Larsen - northcode.no"
+	:accounts
+	((:name "gmail"
+	   :email "northcode.no@gmail.com"
+	   :smtp "smtp.gmail.com"
+	   :inbox "Inbox"
+	   :sent "[Gmail]/Sent Mail"
+	   :archive "[Gmail]/All Mail"
+	   :draft "drafts"
+	   :trash "[Gmail]/Bin")
+	  (:name "northcode"
+	   :email "andreas@northcode.no"
+	   :smtp "northcode.no"
+	   :inbox "Inbox"
+	   :sent "Sent"
+	   :archive "Archive"
+	   :draft "drafts"
+	   :trash "Trash")
+	  )
+	))
+
+;; ------------------- MOST STUFF BELOW THIS LINE IS FUNCTIONS AND CUSTOM GENERATED STUFF --------------------
+
+(define-generic-mode
+    'authinfo-mode
+  '("#")
+  '("machine" "login" "port" "password")
+  '()
+  '("\\.authinfo$" "\\.authinfo.gpg")
+  nil
+  "Mode for authinfo files"
+  )
 
  ;; autoinsert C/C++ header
 (define-auto-insert
@@ -186,46 +253,59 @@
 
 (add-hook 'c++-mode-hook 'fix-enum-class)
 
-(key-chord-define evil-insert-state-map "jk" 'evil-normal-state)
 
-(bind-keys
- ("C-c e" . eshell)
- ("C-c h" . helm-mini)
- ("C-c x" . helm-M-x)
- ("C-c g" . magit-status)
- ("C-c j" . org-journal-new-entry)
- ("C-c s" . helm-swoop)
- ;; ("C-c c" . open-ical-calendar)
- ("C-c d" . mingus)
+(defun load-mailconf (conf)
+  (setq
+   mu4e-maildir (plist-get conf :maildir)
+   user-full-name (plist-get conf :name)
+   mu4e-compose-signature (plist-get conf :signature)
+   mu4e-get-mail-command "mbsync gmail northcode"
+   mu4e-update-interval 300
+   mu4e-contexts nil)
 
- ("C-x C-b" . lastbuf)
- ("C-x C-f" . helm-find-files)
- )
+  (dolist (account (plist-get conf :accounts))
+    (add-to-list 'mu4e-user-mail-address-list (plist-get account :emal))
+    (add-to-list 'mu4e-contexts (make-mu4e-context
+	:name (eval (plist-get account :name))
+	:enter-func (lambda () (mu4e-message "Swiched contexts"))
+	:match-func (lambda (msg)
+		      (when msg
+			(mu4e-message-contact-field-matches-me msg)))
+	:vars `(
+		(mu4e-inbox-folder      . , (concat "/" (plist-get account :name) "/" (plist-get account :inbox)))
+		(mu4e-sent-folder       . , (concat "/" (plist-get account :name) "/" (plist-get account :sent)))
+		(mu4e-refile-folder     . , (concat "/" (plist-get account :name) "/" (plist-get account :archive)))
+		(mu4e-drafts-folder     . , (concat "/" (plist-get account :name) "/" (plist-get account :draft)))
+		(mu4e-trash-folder      . , (concat "/" (plist-get account :name) "/" (plist-get account :trash)))
+		(user-mail-address      . , (concat "/" (plist-get account :name) "/" (plist-get account :email)))
+		(mu4e-maildir-shortcuts    . (
+					   (,(concat "/" (plist-get account :name) "/" (plist-get account :inbox)) . ?i)
+					   (,(concat "/" (plist-get account :name) "/" (plist-get account :sent)) . ?s)
+					   (,(concat "/" (plist-get account :name) "/" (plist-get account :draft)) . ?s)
+					   (,(concat "/" (plist-get account :name) "/" (plist-get account :archive)) . ?a))
+					)
+		(smtpmail-smtp-server   , (plist-get account :smtp))
+		(smtpmail-smtp-service  , 587)
+		(starttls-use-gnutls    , t)
+		)
+	))
+    )
+  )
 
+(defun load-mu4e-conf ()
+  (add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e")
+  (require 'mu4e)
+  (require 'smtpmail)
 
-;; (defvar user-mailconf nil)
-;; (setq user-mailconf
-;;       '(:maildir "~/.mail"
-;; 	:full-name "Andreas Larsen"
-;; 	:accounts
-;; 	'((:name "gmail" :maildir "/gmail/")
-;; 	  (:name "northcode" :maildir "/northcode/")
-;; 	  )))
+  (load-mailconf user-mailconf)
+  )
 
-;; (message (plist-get user-mailconf :maildir))
+(if (file-exists-p "/usr/share/emacs/site-lisp/mu4e")
+    (progn
+      (message "loading mu4e config")
+      (load-mu4e-conf)))
 
-;; (defun load-mu4e-conf ()
-;;   (add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e")
-;;   (require 'mu4e)
-;;   (require 'smtpmail)
-
-;;   (setq mu4e-maildir (plist-get user-mailconf :maildir))
-;;   )
-
-;; (if (file-exists-p "/usr/share/emacs/site-lisp/mu4e")
-;;     (progn
-;;       (message "loading mu4e config")
-;;       (load-mu4e-conf)))
+(put 'narrow-to-region 'disabled nil)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -242,7 +322,7 @@
  '(erc-notify-mode t)
  '(evil-want-C-u-scroll t)
  '(inhibit-startup-screen t)
- '(initial-buffer-choice "~/.emacs")
+ '(initial-buffer-choice "~/")
  '(menu-bar-mode nil)
  '(scroll-bar-mode nil)
  '(tool-bar-mode nil))
