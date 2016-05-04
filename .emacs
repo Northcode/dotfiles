@@ -101,7 +101,15 @@
 (use-package mingus)
 (use-package highlight-parentheses)
 
-(setq search-whitespace-regexp ".*?")
+(setq search-whitespace-regexp ".*?"
+      backup-by-copying t
+      backup-directory-alist
+      '(("." . "~/.saves"))
+      delete-old-versions t
+      kept-new-versions 6
+      kept-old-versions 2
+      version-control t
+      )
 
 (diminish 'helm-mode)
 (diminish 'undo-tree-mode)
@@ -262,7 +270,6 @@
    user-full-name (plist-get conf :name)
    mu4e-compose-signature (plist-get conf :signature)
    mu4e-get-mail-command "mbsync gmail northcode"
-   mu4e-update-interval 300
    mu4e-context-policy 'pick-first
    mu4e-contexts nil
    mu4e-sent-messages-behavior 'delete

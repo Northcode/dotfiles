@@ -1,0 +1,49 @@
+IMAPAccount gmail
+Host imap.gmail.com
+User northcode.no@gmail.com
+PassCmd "gpg -d --no-tty -q ~/.authinfo.gpg | grep machine imap.gmail.com | cut -d ' ' -f 8"
+SSLType IMAPS
+CertificateFile /etc/ssl/certs/ca-certificates.crt
+
+IMAPStore gmail-remote
+Account gmail
+
+MaildirStore gmail-local
+Path ~/.mail/gmail/
+Inbox ~/.mail/gmail/Inbox
+SubFolders verbatim
+
+Channel gmail
+Master :gmail-remote:
+Slave :gmail-local:
+MaxMessages 0
+Patterns * ![Gmail]* "[Gmail]/All Mail" "[Gmail]/Sent Mail"
+Create Both
+Remove Both
+Sync All
+SyncState *
+
+IMAPAccount northcode
+Host northcode.no
+User andreas@northcode.no
+PassCmd "gpg -d --no-tty -q ~/.authinfo.gpg | grep login andreas@northcode.no | cut -d ' ' -f 8"
+SSLType IMAPS
+CertificateFile /etc/ssl/certs/ca-certificates.crt
+
+IMAPStore northcode-remote
+Account northcode
+
+MaildirStore northcode-local
+Path ~/.mail/northcode/
+Inbox ~/.mail/northcode/Inbox
+SubFolders verbatim
+
+Channel northcode
+Master :northcode-remote:
+Slave :northcode-local:
+MaxMessages 0
+Patterns * 
+Create Both
+Remove Both
+Sync All
+SyncState *
