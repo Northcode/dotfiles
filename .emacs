@@ -263,7 +263,11 @@
    mu4e-compose-signature (plist-get conf :signature)
    mu4e-get-mail-command "mbsync gmail northcode"
    mu4e-update-interval 300
-   mu4e-contexts nil)
+   mu4e-context-policy 'pick-first
+   mu4e-contexts nil
+   mu4e-sent-messages-behavior 'delete
+   message-send-mail-function 'smtpmail-send-it
+)
 
   (dolist (account (plist-get conf :accounts))
     (add-to-list 'mu4e-user-mail-address-list (plist-get account :emal))
@@ -272,23 +276,23 @@
 	:enter-func (lambda () (mu4e-message "Swiched contexts"))
 	:match-func (lambda (msg)
 		      (when msg
-			(mu4e-message-contact-field-matches-me msg)))
+			(mu4e-message-contact-field-matches-me msg '(:to))))
 	:vars `(
 		(mu4e-inbox-folder      . , (concat "/" (plist-get account :name) "/" (plist-get account :inbox)))
 		(mu4e-sent-folder       . , (concat "/" (plist-get account :name) "/" (plist-get account :sent)))
 		(mu4e-refile-folder     . , (concat "/" (plist-get account :name) "/" (plist-get account :archive)))
 		(mu4e-drafts-folder     . , (concat "/" (plist-get account :name) "/" (plist-get account :draft)))
 		(mu4e-trash-folder      . , (concat "/" (plist-get account :name) "/" (plist-get account :trash)))
-		(user-mail-address      . , (concat "/" (plist-get account :name) "/" (plist-get account :email)))
+		(user-mail-address      . , (plist-get account :email))
 		(mu4e-maildir-shortcuts    . (
 					   (,(concat "/" (plist-get account :name) "/" (plist-get account :inbox)) . ?i)
 					   (,(concat "/" (plist-get account :name) "/" (plist-get account :sent)) . ?s)
 					   (,(concat "/" (plist-get account :name) "/" (plist-get account :draft)) . ?s)
 					   (,(concat "/" (plist-get account :name) "/" (plist-get account :archive)) . ?a))
 					)
-		(smtpmail-smtp-server   , (plist-get account :smtp))
-		(smtpmail-smtp-service  , 587)
-		(starttls-use-gnutls    , t)
+		(smtpmail-smtp-server   . , (plist-get account :smtp))
+		(smtpmail-smtp-service  . 587)
+		(starttls-use-gnutls    . t)
 		)
 	))
     )
@@ -298,6 +302,7 @@
   (add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e")
   (require 'mu4e)
   (require 'smtpmail)
+  (require 'evil-mu4e)
 
   (load-mailconf user-mailconf)
   )
