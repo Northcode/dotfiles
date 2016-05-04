@@ -5,8 +5,9 @@
 
 (require 'package)
 (setq package-enable-at-startup nil)
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
-(add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
+;; (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+(add-to-list 'package-archives '("melpa" . "https://stable.melpa.org/packages/"))
+(add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
 (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
 
 (package-initialize)
@@ -30,7 +31,9 @@
 (use-package evil-org)
 (use-package evil-magit
   :init (evil-magit-init))
-(use-package evil-commentary)
+(use-package evil-commentary
+  :init (evil-commentary-mode)
+  :diminish t)
 
 (use-package expand-region
   :bind (("M-2". er/expand-region)))
@@ -91,8 +94,11 @@
 (use-package org-journal)
 
 ;; calendar stuff
-(use-package calfw
-  :init (require 'calfw-ical))
+(use-package calfw :init (progn
+			   (require 'calfw)
+			   (require 'calfw-ical))
+			   )
+(use-package calfw-gcal :init (require 'calfw-gcal))
 
 ;; misc stuff
 (use-package haste)
@@ -100,6 +106,7 @@
 (use-package helm-mu)
 (use-package mingus)
 (use-package highlight-parentheses)
+(use-package xkcd)
 
 (setq search-whitespace-regexp ".*?"
       backup-by-copying t
@@ -115,6 +122,7 @@
 (diminish 'undo-tree-mode)
 (diminish 'auto-revert-mode)
 (diminish 'company-mode)
+(diminish 'evil-commentary-mode)
 
 (defun lastbuf () "Switch to last buffer instantly."
   (interactive)
@@ -264,6 +272,9 @@
 
 (add-hook 'c++-mode-hook 'fix-enum-class)
 
+;; add hooks to mingus for emacs modes because apparently the mode list doesn't work for it....
+(add-hook 'mingus-playlist-hooks (lambda () (evil-emacs-state t)))
+(add-hook 'mingus-browse-hooks (lambda () (evil-emacs-state t))) ;; also mingus-browse does not seem to load hooks as of 2016-05-04... great
 
 (defun load-mailconf (conf)
   (setq
@@ -333,10 +344,10 @@
  '(erc-modules
    (quote
     (autojoin button completion fill irccontrols list match menu move-to-prompt netsplit networks noncommands notifications readonly ring scrolltobottom stamp track)))
- '(erc-notify-list (quote ("okknor")))
  '(erc-nick "northcode")
- '(erc-user-full-name "Andreas Larsen")
+ '(erc-notify-list (quote ("okknor")))
  '(erc-notify-mode t)
+ '(erc-user-full-name "Andreas Larsen")
  '(evil-want-C-u-scroll t)
  '(inhibit-startup-screen t)
  '(initial-buffer-choice "~/")
