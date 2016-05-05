@@ -151,6 +151,8 @@
  ("C-c x" . helm-M-x)
  ("C-c g" . magit-status)
  ("C-c j" . org-journal-new-entry)
+
+
  ("C-c s" . helm-swoop)
  ("C-c c" . open-ical-calendar)
  ("C-c d" . mingus)
@@ -338,6 +340,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(blink-cursor-mode nil)
  '(custom-safe-themes
    (quote
     ("d8f76414f8f2dcb045a37eb155bfaa2e1d17b6573ed43fb1d18b936febc7bbc2" "9cb6358979981949d1ae9da907a5d38fb6cde1776e8956a1db150925f2dad6c1" default)))
