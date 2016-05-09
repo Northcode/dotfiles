@@ -34,6 +34,7 @@ zstyle ':prezto:load' pmodule \
   'completion' \
   'pacman' \
   'screen' \
+  'git' \
   'prompt'
 
 #

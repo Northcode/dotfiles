@@ -30,4 +30,6 @@ alias ec='emacsclient -s /tmp/emacs1000/server -c -a ""'
 alias em='emacsclient -s /tmp/emacs1000/server -nw -a ""'
 alias -g grt='$(git rev-parse --show-toplevel)'
 
+alias prezget='git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"'
+
 fi
