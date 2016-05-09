@@ -350,6 +350,7 @@
  '(custom-safe-themes
    (quote
     ("d8f76414f8f2dcb045a37eb155bfaa2e1d17b6573ed43fb1d18b936febc7bbc2" "9cb6358979981949d1ae9da907a5d38fb6cde1776e8956a1db150925f2dad6c1" default)))
+ '(default-frame-alist (quote ((vertical-scroll-bars))))
  '(erc-modules
    (quote
     (autojoin button completion fill irccontrols list match menu move-to-prompt netsplit networks noncommands notifications readonly ring scrolltobottom stamp track)))
@@ -394,7 +395,6 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:inherit nil :stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 108 :width normal :family "Inconsolata"))))
- '(helm-selection ((t (:inherit highlight :background "#ffffff" :foreground "black"))))
  '(mode-line ((t (:family "Liberation Mono"))))
  '(widget-field ((t (:box (:line-width 1 :color "#ffffff"))))))
 

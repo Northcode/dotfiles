@@ -35,3 +35,6 @@ ln -sf $BASEDIR/.mbsyncrc ~/.mbsyncrc
 echo "linking zshrc"
 rm ~/.zshrc
 ln -sf $BASEDIR/.zshrc ~/.zshrc
+
+rm ~/.zpreztorc 
+ln -sf $BASEDIR/zpreztorc ~/.zpreztorc
