@@ -2,6 +2,11 @@
 # bspwm hotkeys
 #
 
+
+
+
+
+
 super + alt + Escape
 	bspc quit
 
@@ -14,8 +19,11 @@ super + t
 super + b
 	bspc desktop -B
 
-super + {s,f}
-	bspc node -t {floating,fullscreen}
+# super + {s,f}
+# 	bspc node -t {floating,fullscreen}
+
+super + s ; {a,s,d,c}
+      urxvt -e {ncmpcpp,htop,alsamixer,zsh}
 
 super + {_,shift + }{h,j,k,l}
 	bspc node -{f,s} {west,south,north,east}
@@ -108,6 +116,9 @@ super + control + Return
 super + z
 	dmenu_run -l 8 -i -p run: -fn "-*-terminus-medium-r-*-*-12-*-*-*-*-*-iso10646-*" -nb "#1d1f21" -sb "#81a2be" -h 30 -x 100 -y 250 -w 1620 -q
 
+super + control + c
+      urxvt
+
 super + control + a
       urxvt -e ncmpcpp
 
@@ -124,7 +135,7 @@ super + control + q
       telegram
 
 super + control + e
-      emacsclient -c -a emacs 
+      emacsclient -s /tmp/emacs1000/server -c -a "urxvt"
 
 super + control + w
       pavucontrol
@@ -161,3 +172,4 @@ super + shift + c
 # make sxhkd reload its configuration files:
 super + Escape
 	pkill -USR1 -x sxhkd
+
