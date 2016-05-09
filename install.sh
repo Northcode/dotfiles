@@ -28,6 +28,10 @@ echo "linking xinitrc"
 rm ~/.xinitrc
 ln -sf ~/.config/X/xinitrc ~/.xinitrc 
 
+echo "linking xinitrc"
+rm ~/.mbsyncrc
+ln -sf $BASEDIR/.mbsyncrc ~/.mbsyncrc 
+
 echo "linking zshrc"
 rm ~/.zshrc
 ln -sf $BASEDIR/.zshrc ~/.zshrc
