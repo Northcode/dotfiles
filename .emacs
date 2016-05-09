@@ -111,7 +111,7 @@
 (setq search-whitespace-regexp ".*?"
       backup-by-copying t
       backup-directory-alist
-      '(("." . "~/.saves"))
+      '(("." . "~/.emacs.saves"))
       delete-old-versions t
       kept-new-versions 6
       kept-old-versions 2
@@ -276,7 +276,9 @@
 
 ;; add hooks to mingus for emacs modes because apparently the mode list doesn't work for it....
 (add-hook 'mingus-playlist-hooks (lambda () (evil-emacs-state t)))
-(add-hook 'mingus-browse-hooks (lambda () (evil-emacs-state t))) ;; also mingus-browse does not seem to load hooks as of 2016-05-04... great
+(add-hook 'mingus-browse-hook (lambda () (evil-emacs-state t)))
+
+(add-hook 'prog-mode-hook 'company-mode)
 
 (defun load-mailconf (conf)
   (setq
@@ -340,7 +342,9 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(blink-cursor-mode nil)
+ '(ansi-color-faces-vector
+   [default bold shadow italic underline bold bold-italic bold])
+ '(custom-enabled-themes (quote (tango-plus)))
  '(custom-safe-themes
    (quote
     ("d8f76414f8f2dcb045a37eb155bfaa2e1d17b6573ed43fb1d18b936febc7bbc2" "9cb6358979981949d1ae9da907a5d38fb6cde1776e8956a1db150925f2dad6c1" default)))
@@ -352,12 +356,35 @@
  '(erc-notify-mode t)
  '(erc-user-full-name "Andreas Larsen")
  '(evil-want-C-u-scroll t)
+ '(fci-rule-color "#343d46")
  '(inhibit-startup-screen t)
  '(initial-buffer-choice "~/")
  '(menu-bar-mode nil)
  '(mingus-use-mouse-p nil)
  '(scroll-bar-mode nil)
- '(tool-bar-mode nil))
+ '(tool-bar-mode nil)
+ '(vc-annotate-background nil)
+ '(vc-annotate-color-map
+   (quote
+    ((20 . "#bf616a")
+     (40 . "#DCA432")
+     (60 . "#ebcb8b")
+     (80 . "#B4EB89")
+     (100 . "#89EBCA")
+     (120 . "#89AAEB")
+     (140 . "#C189EB")
+     (160 . "#bf616a")
+     (180 . "#DCA432")
+     (200 . "#ebcb8b")
+     (220 . "#B4EB89")
+     (240 . "#89EBCA")
+     (260 . "#89AAEB")
+     (280 . "#C189EB")
+     (300 . "#bf616a")
+     (320 . "#DCA432")
+     (340 . "#ebcb8b")
+     (360 . "#B4EB89"))))
+ '(vc-annotate-very-old-color nil))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
