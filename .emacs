@@ -5,8 +5,8 @@
 
 (require 'package)
 (setq package-enable-at-startup nil)
-;; (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
-(add-to-list 'package-archives '("melpa" . "https://stable.melpa.org/packages/"))
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+;; (add-to-list 'package-archives '("melpa" . "https://stable.melpa.org/packages/"))
 (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
 (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
 
@@ -52,16 +52,18 @@
 
 (use-package helm
   :init (helm-mode t)
-  :diminish t
   :config
-  (bind-keys
-   :map helm-map
-   ("C-j". helm-next-line)
-   ("C-k". helm-previous-line)
-   ("C-l". helm-execute-persistent-action)
-   :map helm-find-files-map
-   ("C-l". helm-execute-persistent-action)
-   ("C-b". helm-find-files-up-one-level)))
+  (progn
+    (bind-keys
+     :map helm-map
+     ("C-j". helm-next-line)
+     ("C-k". helm-previous-line)
+     ("C-l". helm-execute-persistent-action))
+    
+    (bind-keys
+     :map helm-find-files-map
+     ("C-l". helm-execute-persistent-action)
+     ("C-b". helm-find-files-up-one-level))))
 
 (use-package helm-projectile)
 (use-package helm-company)
@@ -97,8 +99,8 @@
 (use-package calfw :init (progn
 			   (require 'calfw)
 			   (require 'calfw-ical))
-			   )
-(use-package calfw-gcal :init (require 'calfw-gcal))
+  )
+(use-package calfw-gcal)
 
 ;; misc stuff
 (use-package haste)
@@ -125,23 +127,23 @@
 (diminish 'evil-commentary-mode)
 
 (defun lastbuf () "Switch to last buffer instantly."
-  (interactive)
-  (switch-to-buffer (other-buffer (current-buffer))))
+       (interactive)
+       (switch-to-buffer (other-buffer (current-buffer))))
 (defun save-all () "Save all files."
-  (interactive)
-  (save-some-buffers t))
+       (interactive)
+       (save-some-buffers t))
 (add-hook 'focus-out-hook 'save-all)
 ;; from http://ergoemacs.org/emacs/elisp_read_file_content.html thanks!
 (defun get-string-from-file (filePath) "Return filePath's file content."
-  (with-temp-buffer
-    (insert-file-contents filePath)
-    (buffer-string)))
+       (with-temp-buffer
+	 (insert-file-contents filePath)
+	 (buffer-string)))
 (defun open-ical-calendar () "Open calendar stored in .calendar file"
-  (interactive)
-  (cfw:open-ical-calendar (get-string-from-file "~/.calendar")))
+       (interactive)
+       (cfw:open-ical-calendar (get-string-from-file "~/.calendar")))
 (defun revbuf () "Revert buffer without asking."
-  (interactive)
-  (revert-buffer t t))
+       (interactive)
+       (revert-buffer t t))
 
 (define-key evil-normal-state-map (kbd "gr") 'revbuf)
 (key-chord-define evil-insert-state-map "jk" 'evil-normal-state)
@@ -166,27 +168,27 @@
 (defvar user-mailconf nil)
 (setq user-mailconf
       '(:maildir "~/.mail/"
-	:name "Andreas Larsen"
-	:signature "----\nAndreas Larsen - northcode.no"
-	:accounts
-	((:name "gmail"
-	   :email "northcode.no@gmail.com"
-	   :smtp "smtp.gmail.com"
-	   :inbox "Inbox"
-	   :sent "[Gmail]/Sent Mail"
-	   :archive "[Gmail]/All Mail"
-	   :draft "drafts"
-	   :trash "[Gmail]/Bin")
-	  (:name "northcode"
-	   :email "andreas@northcode.no"
-	   :smtp "northcode.no"
-	   :inbox "Inbox"
-	   :sent "Sent"
-	   :archive "Archive"
-	   :draft "drafts"
-	   :trash "Trash")
-	  )
-	))
+		 :name "Andreas Larsen"
+		 :signature "----\nAndreas Larsen - northcode.no"
+		 :accounts
+		 ((:name "gmail"
+			 :email "northcode.no@gmail.com"
+			 :smtp "smtp.gmail.com"
+			 :inbox "Inbox"
+			 :sent "[Gmail]/Sent Mail"
+			 :archive "[Gmail]/All Mail"
+			 :draft "drafts"
+			 :trash "[Gmail]/Bin")
+		  (:name "northcode"
+			 :email "andreas@northcode.no"
+			 :smtp "northcode.no"
+			 :inbox "Inbox"
+			 :sent "Sent"
+			 :archive "Archive"
+			 :draft "drafts"
+			 :trash "Trash")
+		  )
+		 ))
 
 ;; ------------------- MOST STUFF BELOW THIS LINE IS FUNCTIONS AND CUSTOM GENERATED STUFF --------------------
 
@@ -200,7 +202,7 @@
   "Mode for authinfo files"
   )
 
- ;; autoinsert C/C++ header
+;; autoinsert C/C++ header
 (define-auto-insert
   (cons "\\.\\([Hh]\\|hh\\|hpp\\)\\'" "My C / C++ header")
   '(nil
@@ -251,7 +253,7 @@
       (up-list -1)
       (backward-sexp 1)
       (looking-back "enum[ \t\n]+class[ \t\n]+"))))
-      ;; (looking-back "enum[ \t\n]+class[ \t\n]+[^}]+"))))
+;; (looking-back "enum[ \t\n]+class[ \t\n]+[^}]+"))))
 
 (defun align-enum-class (langelem)
   "Align enum class content of LANGELEM."
@@ -286,34 +288,34 @@
    mu4e-contexts nil
    mu4e-sent-messages-behavior 'delete
    message-send-mail-function 'smtpmail-send-it
-)
+   )
 
   (dolist (account (plist-get conf :accounts))
     (add-to-list 'mu4e-user-mail-address-list (plist-get account :emal))
     (add-to-list 'mu4e-contexts (make-mu4e-context
-	:name (eval (plist-get account :name))
-	:enter-func (lambda () (mu4e-message "Swiched contexts"))
-	:match-func (lambda (msg)
-		      (when msg
-			(mu4e-message-contact-field-matches-me msg '(:to))))
-	:vars `(
-		(mu4e-inbox-folder      . , (concat "/" (plist-get account :name) "/" (plist-get account :inbox)))
-		(mu4e-sent-folder       . , (concat "/" (plist-get account :name) "/" (plist-get account :sent)))
-		(mu4e-refile-folder     . , (concat "/" (plist-get account :name) "/" (plist-get account :archive)))
-		(mu4e-drafts-folder     . , (concat "/" (plist-get account :name) "/" (plist-get account :draft)))
-		(mu4e-trash-folder      . , (concat "/" (plist-get account :name) "/" (plist-get account :trash)))
-		(user-mail-address      . , (plist-get account :email))
-		(mu4e-maildir-shortcuts    . (
-					   (,(concat "/" (plist-get account :name) "/" (plist-get account :inbox)) . ?i)
-					   (,(concat "/" (plist-get account :name) "/" (plist-get account :sent)) . ?s)
-					   (,(concat "/" (plist-get account :name) "/" (plist-get account :draft)) . ?s)
-					   (,(concat "/" (plist-get account :name) "/" (plist-get account :archive)) . ?a))
-					)
-		(smtpmail-smtp-server   . , (plist-get account :smtp))
-		(smtpmail-smtp-service  . 587)
-		(starttls-use-gnutls    . t)
-		)
-	))
+				 :name (eval (plist-get account :name))
+				 :enter-func (lambda () (mu4e-message "Swiched contexts"))
+				 :match-func (lambda (msg)
+					       (when msg
+						 (mu4e-message-contact-field-matches-me msg '(:to))))
+				 :vars `(
+					 (mu4e-inbox-folder      . , (concat "/" (plist-get account :name) "/" (plist-get account :inbox)))
+					 (mu4e-sent-folder       . , (concat "/" (plist-get account :name) "/" (plist-get account :sent)))
+					 (mu4e-refile-folder     . , (concat "/" (plist-get account :name) "/" (plist-get account :archive)))
+					 (mu4e-drafts-folder     . , (concat "/" (plist-get account :name) "/" (plist-get account :draft)))
+					 (mu4e-trash-folder      . , (concat "/" (plist-get account :name) "/" (plist-get account :trash)))
+					 (user-mail-address      . , (plist-get account :email))
+					 (mu4e-maildir-shortcuts    . (
+								       (,(concat "/" (plist-get account :name) "/" (plist-get account :inbox)) . ?i)
+								       (,(concat "/" (plist-get account :name) "/" (plist-get account :sent)) . ?s)
+								       (,(concat "/" (plist-get account :name) "/" (plist-get account :draft)) . ?s)
+								       (,(concat "/" (plist-get account :name) "/" (plist-get account :archive)) . ?a))
+								    )
+					 (smtpmail-smtp-server   . , (plist-get account :smtp))
+					 (smtpmail-smtp-service  . 587)
+					 (starttls-use-gnutls    . t)
+					 )
+				 ))
     )
   )
 
@@ -362,6 +364,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:inherit nil :stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 108 :width normal :family "Inconsolata"))))
+ '(helm-selection ((t (:inherit highlight :background "#ffffff" :foreground "black"))))
  '(mode-line ((t (:family "Liberation Mono"))))
  '(widget-field ((t (:box (:line-width 1 :color "#ffffff"))))))
 
