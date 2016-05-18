@@ -149,6 +149,7 @@
 (key-chord-define evil-insert-state-map "jk" 'evil-normal-state)
 (bind-keys
  ("C-c e" . eshell)
+ ("C-c a" . org-agenda)
  ("C-c h" . helm-mini)
  ("C-c x" . helm-M-x)
  ("C-c g" . magit-status)
@@ -160,11 +161,20 @@
  ("C-c d" . mingus)
  ("C-c m" . mu4e)
 
+ ("C-<tab>" . hippie-expand)
+
  ("C-x C-b" . lastbuf)
  ("C-x C-o" . other-window)
  ("C-x C-f" . helm-find-files)
  )
 
+(defhydra space-key-popup
+  (evil-normal-state-map "SPC")
+  ("f" helm-find-files "Find files")
+  ("b" lastbuf "switch to last buffer")
+  ("B" switch-to-buffer "switch to buffer"))
+
+(define-key evil-normal-state-map (kbd "SPC") 'space-key-popup)
 
 ;; MU4E config
 (defvar user-mailconf nil)
@@ -277,8 +287,10 @@
 (add-hook 'c++-mode-hook 'fix-enum-class)
 
 ;; add hooks to mingus for emacs modes because apparently the mode list doesn't work for it....
-(add-hook 'mingus-playlist-hooks (lambda () (evil-emacs-state t)))
-(add-hook 'mingus-browse-hook (lambda () (evil-emacs-state t)))
+;; (add-hook 'mingus-playlist-hooks (lambda () (evil-emacs-state t)))
+;; (add-hook 'mingus-browse-hook (lambda () (evil-emacs-state t)))
+(setq mingus-playlist-hooks '())
+(setq mingus-browse-hook '())
 
 (add-hook 'prog-mode-hook 'company-mode)
 
@@ -339,6 +351,10 @@
 
 (put 'narrow-to-region 'disabled nil)
 
+(evil-set-initial-state 'mingus-help-mode 'emacs)
+(evil-set-initial-state 'mingus-browse-mode 'emacs)
+(evil-set-initial-state 'mingus-playlist-mode 'emacs)
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -349,7 +365,7 @@
  '(custom-enabled-themes (quote (tango-plus)))
  '(custom-safe-themes
    (quote
-    ("d8f76414f8f2dcb045a37eb155bfaa2e1d17b6573ed43fb1d18b936febc7bbc2" "9cb6358979981949d1ae9da907a5d38fb6cde1776e8956a1db150925f2dad6c1" default)))
+    ("0f98f9c2f1241c3b6227af48dc96e708ec023dd68363edb5d36dc7beaad64c23" "d8f76414f8f2dcb045a37eb155bfaa2e1d17b6573ed43fb1d18b936febc7bbc2" "9cb6358979981949d1ae9da907a5d38fb6cde1776e8956a1db150925f2dad6c1" default)))
  '(default-frame-alist (quote ((vertical-scroll-bars))))
  '(erc-modules
    (quote
@@ -358,6 +374,11 @@
  '(erc-notify-list (quote ("okknor")))
  '(erc-notify-mode t)
  '(erc-user-full-name "Andreas Larsen")
+ '(evil-commentary-mode t)
+ '(evil-emacs-state-modes
+   (quote
+    (archive-mode bbdb-mode biblio-selection-mode bookmark-bmenu-mode bookmark-edit-annotation-mode browse-kill-ring-mode bzr-annotate-mode calc-mode cfw:calendar-mode completion-list-mode Custom-mode debugger-mode delicious-search-mode desktop-menu-blist-mode desktop-menu-mode doc-view-mode dvc-bookmarks-mode dvc-diff-mode dvc-info-buffer-mode dvc-log-buffer-mode dvc-revlist-mode dvc-revlog-mode dvc-status-mode dvc-tips-mode ediff-mode ediff-meta-mode efs-mode Electric-buffer-menu-mode emms-browser-mode emms-mark-mode emms-metaplaylist-mode emms-playlist-mode ess-help-mode etags-select-mode fj-mode gc-issues-mode gdb-breakpoints-mode gdb-disassembly-mode gdb-frames-mode gdb-locals-mode gdb-memory-mode gdb-registers-mode gdb-threads-mode gist-list-mode gnus-article-mode gnus-browse-mode gnus-group-mode gnus-server-mode gnus-summary-mode google-maps-static-mode ibuffer-mode jde-javadoc-checker-report-mode magit-popup-mode magit-popup-sequence-mode magit-branch-manager-mode magit-commit-mode magit-key-mode magit-rebase-mode magit-wazzup-mode mh-folder-mode monky-mode notmuch-hello-mode notmuch-search-mode notmuch-show-mode occur-mode org-agenda-mode package-menu-mode pdf-outline-buffer-mode pdf-view-mode proced-mode rcirc-mode rebase-mode recentf-dialog-mode reftex-select-bib-mode reftex-select-label-mode reftex-toc-mode sldb-mode slime-inspector-mode slime-thread-control-mode slime-xref-mode sr-buttons-mode sr-mode sr-tree-mode sr-virtual-mode tar-mode tetris-mode tla-annotate-mode tla-archive-list-mode tla-bconfig-mode tla-bookmarks-mode tla-branch-list-mode tla-browse-mode tla-category-list-mode tla-changelog-mode tla-follow-symlinks-mode tla-inventory-file-mode tla-inventory-mode tla-lint-mode tla-logs-mode tla-revision-list-mode tla-revlog-mode tla-tree-lint-mode tla-version-list-mode twittering-mode urlview-mode vc-annotate-mode vc-dir-mode vc-git-log-view-mode vc-hg-log-view-mode vc-svn-log-view-mode vm-mode vm-summary-mode w3m-mode wab-compilation-mode xgit-annotate-mode xgit-changelog-mode xgit-diff-mode xgit-revlog-mode xhg-annotate-mode xhg-log-mode xhg-mode xhg-mq-mode xhg-mq-sub-mode xhg-status-extra-mode mingus-playlist-mode mingus-browse-mode)))
+ '(evil-mode t)
  '(evil-want-C-u-scroll t)
  '(fci-rule-color "#343d46")
  '(inhibit-startup-screen t)
@@ -387,6 +408,16 @@
      (320 . "#DCA432")
      (340 . "#ebcb8b")
      (360 . "#B4EB89"))))
+ '(org-capture-templates
+   (quote
+    (("a" "Todo item" entry
+      (file "~/Journal/todo.org")
+      "* TODO "))))
+ '(org-journal-dir "~/Journal/")
+ '(org-journal-file-format "%Y-%m-%d.org")
+ '(org-journal-time-format "<%Y-%m-%d %R>")
+ '(org-journal-time-prefix "** Journal Entry ")
+ '(org-agenda-files (quote ("~/Journal")))
  '(vc-annotate-very-old-color nil))
 
 (custom-set-faces
@@ -396,6 +427,7 @@
  ;; If there is more than one, they won't work right.
  '(default ((t (:inherit nil :stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 108 :width normal :family "Inconsolata"))))
  '(mode-line ((t (:family "Liberation Mono"))))
+ '(mu4e-unread-face ((t (:inherit font-lock-keyword-face :foreground "#11aaff" :weight bold))))
  '(widget-field ((t (:box (:line-width 1 :color "#ffffff"))))))
 
 (provide 'emacs)
