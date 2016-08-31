@@ -86,10 +86,12 @@
 
 (use-package tango-plus-theme)
 (use-package spacegray-theme)
-(enable-theme 'spacegray)
+(use-package foggy-night)
+(enable-theme 'foggy-night)
 (use-package powerline)
 (use-package powerline-evil
-  :init (powerline-evil-vim-color-theme))
+  ;; :init (powerline-evil-vim-color-theme)
+  )
 
 (use-package org)
 (use-package org-bullets)
@@ -149,6 +151,7 @@
 (key-chord-define evil-insert-state-map "jk" 'evil-normal-state)
 (bind-keys
  ("C-c e" . eshell)
+ ("C-c E" . ansi-term)
  ("C-c a" . org-agenda)
  ("C-c h" . helm-mini)
  ("C-c x" . helm-M-x)
@@ -190,7 +193,10 @@
 			 :sent "[Gmail]/Sent Mail"
 			 :archive "[Gmail]/All Mail"
 			 :draft "drafts"
-			 :trash "[Gmail]/Bin")
+			 :trash "[Gmail]/Bin"
+			 :match-func (lambda (msg)
+				       (when msg
+					 (mu4e-message-contact-field-matches :to "northcode.no@gmail.com"))))
 		  (:name "northcode"
 			 :email "andreas@northcode.no"
 			 :smtp "northcode.no"
@@ -198,7 +204,10 @@
 			 :sent "Sent"
 			 :archive "Archive"
 			 :draft "drafts"
-			 :trash "Trash")
+			 :trash "Trash"
+			 :match-func (lambda (msg)
+				       (when msg
+					 (mu4e-message-contact-field-matches :to "andreas@northcode.no"))))
 		  )
 		 ))
 
@@ -307,13 +316,16 @@
    )
 
   (dolist (account (plist-get conf :accounts))
-    (add-to-list 'mu4e-user-mail-address-list (plist-get account :emal))
+    (add-to-list 'mu4e-user-mail-address-list (plist-get account :email))
     (add-to-list 'mu4e-contexts (make-mu4e-context
 				 :name (eval (plist-get account :name))
 				 :enter-func (lambda () (mu4e-message "Swiched contexts"))
-				 :match-func (lambda (msg)
-					       (when msg
-						 (mu4e-message-contact-field-matches-me msg '(:to))))
+				 :match-func (plist-get account :match-func)
+				 ;; (lambda (msg)
+				 ;; 	       (when msg
+				 ;; 		 (message (concat "checking mail: " ,@(plist-get account :email)))
+				 ;; 		 (mu4e-message-contact-field-matches-me msg '(:to ,@(plist-get account :email)))
+				 ;; 		 ))
 				 :vars `(
 					 (mu4e-inbox-folder      . , (concat "/" (plist-get account :name) "/" (plist-get account :inbox)))
 					 (mu4e-sent-folder       . , (concat "/" (plist-get account :name) "/" (plist-get account :sent)))
@@ -340,8 +352,15 @@
   (require 'mu4e)
   (require 'smtpmail)
   (require 'evil-mu4e)
+  (require 'mu4e-maildirs-extension)
 
   (load-mailconf user-mailconf)
+  (mu4e-maildirs-extension)
+  (mu4e-alert-set-default-style 'libnotify)
+  (add-hook 'after-init-hook #'mu4e-alert-enable-notifications)
+  (add-hook 'after-init-hook #'mu4e-alert-enable-mode-line-display)
+  (mu4e-alert-enable-notifications)
+  (mu4e-alert-enable-mode-line-display)
   )
 
 (if (file-exists-p "/usr/share/emacs/site-lisp/mu4e")
@@ -362,10 +381,10 @@
  ;; If there is more than one, they won't work right.
  '(ansi-color-faces-vector
    [default bold shadow italic underline bold bold-italic bold])
- '(custom-enabled-themes (quote (tango-plus)))
+ '(custom-enabled-themes (quote (ample-zen)))
  '(custom-safe-themes
    (quote
-    ("0f98f9c2f1241c3b6227af48dc96e708ec023dd68363edb5d36dc7beaad64c23" "d8f76414f8f2dcb045a37eb155bfaa2e1d17b6573ed43fb1d18b936febc7bbc2" "9cb6358979981949d1ae9da907a5d38fb6cde1776e8956a1db150925f2dad6c1" default)))
+    ("d606ac41cdd7054841941455c0151c54f8bff7e4e050255dbd4ae4d60ab640c1" "1db337246ebc9c083be0d728f8d20913a0f46edc0a00277746ba411c149d7fe5" "0f98f9c2f1241c3b6227af48dc96e708ec023dd68363edb5d36dc7beaad64c23" "d8f76414f8f2dcb045a37eb155bfaa2e1d17b6573ed43fb1d18b936febc7bbc2" "9cb6358979981949d1ae9da907a5d38fb6cde1776e8956a1db150925f2dad6c1" default)))
  '(default-frame-alist (quote ((vertical-scroll-bars))))
  '(erc-modules
    (quote
@@ -377,14 +396,29 @@
  '(evil-commentary-mode t)
  '(evil-emacs-state-modes
    (quote
-    (archive-mode bbdb-mode biblio-selection-mode bookmark-bmenu-mode bookmark-edit-annotation-mode browse-kill-ring-mode bzr-annotate-mode calc-mode cfw:calendar-mode completion-list-mode Custom-mode debugger-mode delicious-search-mode desktop-menu-blist-mode desktop-menu-mode doc-view-mode dvc-bookmarks-mode dvc-diff-mode dvc-info-buffer-mode dvc-log-buffer-mode dvc-revlist-mode dvc-revlog-mode dvc-status-mode dvc-tips-mode ediff-mode ediff-meta-mode efs-mode Electric-buffer-menu-mode emms-browser-mode emms-mark-mode emms-metaplaylist-mode emms-playlist-mode ess-help-mode etags-select-mode fj-mode gc-issues-mode gdb-breakpoints-mode gdb-disassembly-mode gdb-frames-mode gdb-locals-mode gdb-memory-mode gdb-registers-mode gdb-threads-mode gist-list-mode gnus-article-mode gnus-browse-mode gnus-group-mode gnus-server-mode gnus-summary-mode google-maps-static-mode ibuffer-mode jde-javadoc-checker-report-mode magit-popup-mode magit-popup-sequence-mode magit-branch-manager-mode magit-commit-mode magit-key-mode magit-rebase-mode magit-wazzup-mode mh-folder-mode monky-mode notmuch-hello-mode notmuch-search-mode notmuch-show-mode occur-mode org-agenda-mode package-menu-mode pdf-outline-buffer-mode pdf-view-mode proced-mode rcirc-mode rebase-mode recentf-dialog-mode reftex-select-bib-mode reftex-select-label-mode reftex-toc-mode sldb-mode slime-inspector-mode slime-thread-control-mode slime-xref-mode sr-buttons-mode sr-mode sr-tree-mode sr-virtual-mode tar-mode tetris-mode tla-annotate-mode tla-archive-list-mode tla-bconfig-mode tla-bookmarks-mode tla-branch-list-mode tla-browse-mode tla-category-list-mode tla-changelog-mode tla-follow-symlinks-mode tla-inventory-file-mode tla-inventory-mode tla-lint-mode tla-logs-mode tla-revision-list-mode tla-revlog-mode tla-tree-lint-mode tla-version-list-mode twittering-mode urlview-mode vc-annotate-mode vc-dir-mode vc-git-log-view-mode vc-hg-log-view-mode vc-svn-log-view-mode vm-mode vm-summary-mode w3m-mode wab-compilation-mode xgit-annotate-mode xgit-changelog-mode xgit-diff-mode xgit-revlog-mode xhg-annotate-mode xhg-log-mode xhg-mode xhg-mq-mode xhg-mq-sub-mode xhg-status-extra-mode mingus-playlist-mode mingus-browse-mode)))
+    (archive-mode bbdb-mode biblio-selection-mode bookmark-bmenu-mode bookmark-edit-annotation-mode browse-kill-ring-mode bzr-annotate-mode calc-mode cfw:calendar-mode completion-list-mode Custom-mode debugger-mode delicious-search-mode desktop-menu-blist-mode desktop-menu-mode doc-view-mode dvc-bookmarks-mode dvc-diff-mode dvc-info-buffer-mode dvc-log-buffer-mode dvc-revlist-mode dvc-revlog-mode dvc-status-mode dvc-tips-mode ediff-mode ediff-meta-mode efs-mode Electric-buffer-menu-mode emms-browser-mode emms-mark-mode emms-metaplaylist-mode emms-playlist-mode ess-help-mode etags-select-mode fj-mode gc-issues-mode gdb-breakpoints-mode gdb-disassembly-mode gdb-frames-mode gdb-locals-mode gdb-memory-mode gdb-registers-mode gdb-threads-mode gist-list-mode gnus-article-mode gnus-browse-mode gnus-group-mode gnus-server-mode gnus-summary-mode google-maps-static-mode ibuffer-mode jde-javadoc-checker-report-mode magit-popup-mode magit-popup-sequence-mode magit-branch-manager-mode magit-commit-mode magit-key-mode magit-rebase-mode magit-wazzup-mode mh-folder-mode monky-mode notmuch-hello-mode notmuch-search-mode notmuch-show-mode occur-mode org-agenda-mode package-menu-mode pdf-outline-buffer-mode pdf-view-mode proced-mode rcirc-mode rebase-mode recentf-dialog-mode reftex-select-bib-mode reftex-select-label-mode reftex-toc-mode sldb-mode slime-inspector-mode slime-thread-control-mode slime-xref-mode sr-buttons-mode sr-mode sr-tree-mode sr-virtual-mode tar-mode tetris-mode tla-annotate-mode tla-archive-list-mode tla-bconfig-mode tla-bookmarks-mode tla-branch-list-mode tla-browse-mode tla-category-list-mode tla-changelog-mode tla-follow-symlinks-mode tla-inventory-file-mode tla-inventory-mode tla-lint-mode tla-logs-mode tla-revision-list-mode tla-revlog-mode tla-tree-lint-mode tla-version-list-mode twittering-mode urlview-mode vc-annotate-mode vc-dir-mode vc-git-log-view-mode vc-hg-log-view-mode vc-svn-log-view-mode vm-mode vm-summary-mode w3m-mode wab-compilation-mode xgit-annotate-mode xgit-changelog-mode xgit-diff-mode xgit-revlog-mode xhg-annotate-mode xhg-log-mode xhg-mode xhg-mq-mode xhg-mq-sub-mode xhg-status-extra-mode mingus-playlist-mode mingus-browse-mode cider-stacktrace-mode cider-docview-mode)))
  '(evil-mode t)
  '(evil-want-C-u-scroll t)
  '(fci-rule-color "#343d46")
+ '(forecast-api-key "5a07cfbffbf1ec37e3ac39a305903edc")
+ '(forecast-city "Bodø")
+ '(forecast-country "Norway")
+ '(forecast-latitude 67.285573)
+ '(forecast-longitude 14.561691)
  '(inhibit-startup-screen t)
  '(initial-buffer-choice "~/")
  '(menu-bar-mode nil)
  '(mingus-use-mouse-p nil)
+ '(org-agenda-files (quote ("~/Journal")))
+ '(org-capture-templates
+   (quote
+    (("a" "Todo item" entry
+      (file "~/Journal/todo.org")
+      "* TODO "))))
+ '(org-journal-dir "~/Journal/")
+ '(org-journal-file-format "%Y-%m-%d.org")
+ '(org-journal-time-format "<%Y-%m-%d %R>")
+ '(org-journal-time-prefix "** Journal Entry ")
  '(scroll-bar-mode nil)
  '(tool-bar-mode nil)
  '(vc-annotate-background nil)
@@ -408,16 +442,6 @@
      (320 . "#DCA432")
      (340 . "#ebcb8b")
      (360 . "#B4EB89"))))
- '(org-capture-templates
-   (quote
-    (("a" "Todo item" entry
-      (file "~/Journal/todo.org")
-      "* TODO "))))
- '(org-journal-dir "~/Journal/")
- '(org-journal-file-format "%Y-%m-%d.org")
- '(org-journal-time-format "<%Y-%m-%d %R>")
- '(org-journal-time-prefix "** Journal Entry ")
- '(org-agenda-files (quote ("~/Journal")))
  '(vc-annotate-very-old-color nil))
 
 (custom-set-faces
@@ -426,6 +450,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:inherit nil :stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 108 :width normal :family "Inconsolata"))))
+ '(helm-selection ((t (:inherit highlight :background "#eeeeec" :foreground "black"))))
  '(mode-line ((t (:family "Liberation Mono"))))
  '(mu4e-unread-face ((t (:inherit font-lock-keyword-face :foreground "#11aaff" :weight bold))))
  '(widget-field ((t (:box (:line-width 1 :color "#ffffff"))))))

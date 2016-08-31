@@ -4,10 +4,10 @@ case $1 in
     period-changed)
 	case $3 in
 	    night)
-		emacsclient -e "(load-theme 'spacegray)"
+		emacsclient -e "(enable-theme 'foggy-night)"
 		;;
 	    day)
-		emacsclient -e "(load-theme 'tango-plus)"
+		emacsclient -e "(disable-theme 'foggy-night)"
 		;;
 	esac
 	;;

@@ -3,7 +3,7 @@ Description=Mailbox synchronization service
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/mbsync -Va ;\
-	  /usr/sbin/mu index -m ~/.mail
+ExecStart=/home/andreas/dotfiles/syncmail.sh
 StandardOutput=syslog
 StandardError=syslog
+TimeoutStartSec=120s

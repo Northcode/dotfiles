@@ -1,0 +1,12 @@
+[Unit]
+Description=Redshift
+After=graphical.target
+
+[Service]
+Type=simple
+Environment=DISPLAY=:0
+ExecStart=/usr/bin/redshift
+Restart=always
+
+[Install]
+WantedBy=graphical.target

@@ -56,7 +56,10 @@ super + a ; q
       telegram-desktop
 
 super + a ; f
-      firefox-developer
+      firefox
+
+super + a ; s
+      pavucontrol
 
 super + a ; c
       urxvt
