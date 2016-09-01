@@ -25,8 +25,11 @@ super + alt + s
 super + alt + {h,l}
       bspc desktop -f {prev,next}
 
-super + {_,shift}{1-9,0}
-       bspc {desktop -f,node -d} focused:^{1-9,10}
+super + shift + {1-9,0}
+       bspc node -d ^{1-9,10}
+
+super + {1-9,0}
+      bspc desktop -f focused:^{1-9,10}
 
 super + meta + f
       # Find desktop
@@ -84,6 +87,9 @@ super + b
 
 super + alt + Return
       ~/bin/lockscreen
+
+control + Print
+	feh --bg-fill /data/Wallpapers/1920x1080/$(ls /data/Wallpapers/1920x1080/ | shuf | head -n 1) /data/Wallpapers/1920x1080/$(ls /data/Wallpapers/1920x1080/ | shuf | head -n 1)
 
 # make sxhkd reload its configuration files:
 super + Escape
