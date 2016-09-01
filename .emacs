@@ -86,7 +86,7 @@
 
 (use-package tango-plus-theme)
 (use-package spacegray-theme)
-(use-package foggy-night)
+(use-package foggy-night-theme)
 (enable-theme 'foggy-night)
 (use-package powerline)
 (use-package powerline-evil
