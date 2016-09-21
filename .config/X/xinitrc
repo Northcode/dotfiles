@@ -11,10 +11,16 @@ export EMAIL="northcode.no@gmail.com"
 export NAME="Andreas Larsen"
 export SMTPSERVER="smtp.gmail.com"
 
+if test $(hostname) == "andreas-l0"
+then
+	xrandr --setprovideroutputsource modesetting NVIDIA-0
+	xrandr --auto
+fi
+
 xrdb ~/.config/X/resources
 setxkbmap no
 setxkbmap -option caps:escape
 xset r rate 200 70
-xmodmap ~/.config/X/modmap
+#xmodmap ~/.config/X/modmap
 sxhkd &
 bspwm
