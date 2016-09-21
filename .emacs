@@ -52,6 +52,9 @@
 (use-package company-jedi)
 (use-package company-web)
 
+(use-package recentf
+  :init (recentf-mode 1))
+
 (use-package helm
   :init (helm-mode t)
   :config
@@ -171,6 +174,7 @@
  ("C-x C-b" . lastbuf)
  ("C-x C-o" . other-window)
  ("C-x C-f" . helm-find-files)
+ ("C-x C-r" . helm-recentf)
  )
 
 (defhydra space-key-popup
