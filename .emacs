@@ -112,6 +112,10 @@
 (use-package highlight-parentheses)
 (use-package xkcd)
 
+(use-package mu4e-maildirs-extension)
+(use-package mu4e-alert)
+
+
 (setq search-whitespace-regexp ".*?"
       backup-by-copying t
       backup-directory-alist
