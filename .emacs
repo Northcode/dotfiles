@@ -10,6 +10,8 @@
 (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
 (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
 
+(add-to-list 'load-path "~/build/org-mode/lisp")
+
 (package-initialize)
 
 ;; Bootstrap `use-package'
@@ -452,10 +454,13 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 108 :width normal :family "Inconsolata"))))
+ '(default ((t (:inherit nil :stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight light :height 90 :width normal :foundry "PfEd" :family "MesloLGMDZ"))))
  '(helm-selection ((t (:inherit highlight :background "#eeeeec" :foreground "black"))))
  '(mode-line ((t (:family "Liberation Mono"))))
  '(mu4e-unread-face ((t (:inherit font-lock-keyword-face :foreground "#11aaff" :weight bold))))
+ '(org-level-1 ((t (:foreground "#204a87" :weight bold :height 2.0))))
+ '(org-level-2 ((t (:foreground "#204a87" :height 1.7))))
+ '(org-level-3 ((t (:foreground "#204a87" :height 1.2))))
  '(widget-field ((t (:box (:line-width 1 :color "#ffffff"))))))
 
 (provide 'emacs)
