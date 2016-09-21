@@ -175,12 +175,6 @@
  ("C-x C-f" . helm-find-files)
  )
 
-(defhydra space-key-popup
-  (evil-normal-state-map "SPC")
-  ("f" helm-find-files "Find files")
-  ("b" lastbuf "switch to last buffer")
-  ("B" switch-to-buffer "switch to buffer"))
-
 (define-key evil-normal-state-map (kbd "SPC") 'space-key-popup)
 
 ;; MU4E config
