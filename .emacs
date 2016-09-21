@@ -202,7 +202,7 @@
 			 :trash "[Gmail]/Bin"
 			 :match-func (lambda (msg)
 				       (when msg
-					 (mu4e-message-contact-field-matches :to "northcode.no@gmail.com"))))
+					 (mu4e-message-contact-field-matches msg :to "northcode.no@gmail.com"))))
 		  (:name "northcode"
 			 :email "andreas@northcode.no"
 			 :smtp "northcode.no"
@@ -213,7 +213,7 @@
 			 :trash "Trash"
 			 :match-func (lambda (msg)
 				       (when msg
-					 (mu4e-message-contact-field-matches :to "andreas@northcode.no"))))
+					 (mu4e-message-contact-field-matches msg :to "andreas@northcode.no"))))
 		  )
 		 ))
 
