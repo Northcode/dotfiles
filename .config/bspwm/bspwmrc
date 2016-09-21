@@ -24,6 +24,7 @@ extrdesks="spc1 spc2"
 
 bspc monitor DVI-I-1 -d $maindesks $playdesks
 bspc monitor DVI-D-0 -d $browdesks
+bspc monitor LVDS-1 -d $maindesks $browdesks
 bspc monitor LVDS1 -d $maindesks $browdesks
 
 # set PATH so it includes user's private bin if it exists
