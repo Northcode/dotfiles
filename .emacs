@@ -120,7 +120,6 @@
 (use-package mu4e-maildirs-extension)
 (use-package mu4e-alert)
 
-
 (setq search-whitespace-regexp ".*?"
       backup-by-copying t
       backup-directory-alist
@@ -166,7 +165,6 @@
  ("C-c x" . helm-M-x)
  ("C-c g" . magit-status)
  ("C-c j" . org-journal-new-entry)
-
 
  ("C-c s" . helm-swoop)
  ("C-c c" . open-ical-calendar)
