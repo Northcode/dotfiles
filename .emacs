@@ -117,6 +117,18 @@
 (use-package mu4e-maildirs-extension)
 (use-package mu4e-alert)
 
+(use-package znc)
+
+(require 'tls)
+(setq tls-program '("openssl s_client -connect %h:%p -no_ssl2 -ign_eof
+                                       -CAfile /etc/ca-certificates/ca.pem 
+                                       -cert /home/andreas/user.pem"
+		    "gnutls-cli --priority secure256 
+                                 --x509cafile /home/ootput/.private/certs/CAs.pem 
+                                 --x509certfile /home/ootput/.private/certs/nick.pem -p %p %h" 
+		    "gnutls-cli --priority secure256 -p %p %h"))
+
+
 (setq search-whitespace-regexp ".*?"
       backup-by-copying t
       backup-directory-alist
@@ -172,7 +184,7 @@
  ("C-c x" . helm-M-x)
  ("C-c g" . magit-status)
  ("C-c j" . org-journal-new-entry)
- ("C-c i" . erc)
+ ("C-c i" . znc-all)
 
  ("C-c s" . helm-swoop)
  ("C-c S" . helm-ag)
@@ -382,6 +394,21 @@
 (evil-set-initial-state 'mingus-browse-mode 'emacs)
 (evil-set-initial-state 'mingus-playlist-mode 'emacs)
 
+(defun erc-tls-auth-source (a b c d e f g h)
+
+  (let ((secret (nth 0 (auth-source-search :max 1
+					   :host b
+					   :port d))))
+    (if secret
+	(let ((pass (plist-get secret :secret)))
+	  (let ((passwd (if (functionp pass)
+			    (funcall pass)
+			  pass)))
+	    (message passwd)
+	    (erc-tls a b c d e f g (concat f ":" passwd))))
+      (erc-tls a b c d e f g h))))
+
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -401,6 +428,7 @@
  '(erc-notify-list (quote ("okknor")))
  '(erc-notify-mode t)
  '(erc-port 8657)
+ '(erc-prompt-for-password nil)
  '(erc-server "northcode.no")
  '(erc-user-full-name "Andreas Larsen")
  '(evil-commentary-mode t)
@@ -444,7 +472,7 @@
  '(org-journal-time-prefix "** Journal Entry ")
  '(package-selected-packages
    (quote
-    (ibuffer-git ibuffer-projectile rainbow-mode hexrgb helm-ag yasnippet xkcd web-mode use-package tango-plus-theme spacegray-theme scss-mode powerline-evil org-journal org-bullets mu4e-maildirs-extension mu4e-alert mingus markdown-mode mark-multiple key-chord ido-vertical-mode howdoi highlight-parentheses helm-swoop helm-projectile helm-mu helm-company haste foggy-night-theme flycheck expand-region evil-surround evil-paredit evil-org evil-mu4e evil-magit evil-commentary darkokai-theme company-web company-jedi company-c-headers cmake-ide cmake-font-lock cider calfw-gcal calfw)))
+    (znc ibuffer-git ibuffer-projectile rainbow-mode hexrgb helm-ag yasnippet xkcd web-mode use-package tango-plus-theme spacegray-theme scss-mode powerline-evil org-journal org-bullets mu4e-maildirs-extension mu4e-alert mingus markdown-mode mark-multiple key-chord ido-vertical-mode howdoi highlight-parentheses helm-swoop helm-projectile helm-mu helm-company haste foggy-night-theme flycheck expand-region evil-surround evil-paredit evil-org evil-mu4e evil-magit evil-commentary darkokai-theme company-web company-jedi company-c-headers cmake-ide cmake-font-lock cider calfw-gcal calfw)))
  '(pos-tip-background-color "#E6DB74")
  '(pos-tip-foreground-color "#242728")
  '(scroll-bar-mode nil)
@@ -472,7 +500,14 @@
      (360 . "#B4EB89"))))
  '(vc-annotate-very-old-color nil)
  '(weechat-color-list
-   (unspecified "#242728" "#424748" "#F70057" "#ff0066" "#86C30D" "#63de5d" "#BEB244" "#E6DB74" "#40CAE4" "#06d8ff" "#FF61FF" "#ff8eff" "#00b2ac" "#53f2dc" "#f8fbfc" "#ffffff")))
+   (unspecified "#242728" "#424748" "#F70057" "#ff0066" "#86C30D" "#63de5d" "#BEB244" "#E6DB74" "#40CAE4" "#06d8ff" "#FF61FF" "#ff8eff" "#00b2ac" "#53f2dc" "#f8fbfc" "#ffffff"))
+ '(znc-erc-connector (quote erc))
+ '(znc-erc-ssl-connector (quote erc-tls-auth-source))
+ '(znc-servers
+   (quote
+    (("northcode.no" 8667 t
+      ((freenode "northcode"
+		 (quote nil))))))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
