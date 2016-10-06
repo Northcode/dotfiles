@@ -89,14 +89,9 @@
 (use-package scss-mode)
 (use-package cider)
 
-(use-package tango-plus-theme)
-(use-package spacegray-theme)
-(use-package foggy-night-theme)
-(enable-theme 'foggy-night)
-(use-package powerline)
-(use-package powerline-evil
-  ;; :init (powerline-evil-vim-color-theme)
-  )
+;; (use-package tango-plus-theme)
+;; (use-package spacegray-theme)
+;; (use-package foggy-night-theme)
 
 (use-package org)
 (use-package org-bullets)
@@ -178,8 +173,6 @@
  ("C-x C-f" . helm-find-files)
  ("C-x C-r" . helm-recentf)
  )
-
-(define-key evil-normal-state-map (kbd "SPC") 'space-key-popup)
 
 ;; MU4E config
 (defvar user-mailconf nil)
@@ -296,12 +289,6 @@
   (add-to-list 'c-offsets-alist '(statement-cont . align-enum-class-closing-brace)))
 
 (add-hook 'c++-mode-hook 'fix-enum-class)
-
-;; add hooks to mingus for emacs modes because apparently the mode list doesn't work for it....
-;; (add-hook 'mingus-playlist-hooks (lambda () (evil-emacs-state t)))
-;; (add-hook 'mingus-browse-hook (lambda () (evil-emacs-state t)))
-(setq mingus-playlist-hooks '())
-(setq mingus-browse-hook '())
 
 (add-hook 'prog-mode-hook 'company-mode)
 
