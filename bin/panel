@@ -1,0 +1,135 @@
+#!/bin/bash
+
+fifo=/tmp/panfifo
+bspcpidf=/run/user/1000/bspc.pid
+pidfile=/run/user/1000/panel_output.pid
+
+col_active=\#902222
+col_inactive=\#888888
+col_btn=\#8888ff
+lemonbar_conf="-g 330x25+25+10 -B #303030 -F #efefef -f -*-terminus-medium-r-*-*-12-*-*-*-*-*-iso10646-*"
+
+if [ -f $pidfile ]; then
+    running=true
+else
+    running=false
+fi
+
+function print_clock {
+    date +C%H:%M:%S
+}
+
+function print_battery {
+    echo "B"$(cat /sys/class/power_supply/BAT0/capacity)
+}
+
+function update_output {
+    while true; do
+	print_clock
+	print_battery
+
+	sleep 1
+    done
+}
+
+function stop {
+    echo "stopping panel.."
+    
+    # if pidfile exists, kill process and remove file
+    if $running; then
+	pkill -F $pidfile
+	rm $pidfile
+    fi
+
+    if [ -f $bspcpidf ]; then
+	pkill -F $bspcpidf
+	rm $bspcpidf
+    fi
+
+    #delete fifo
+    rm $fifo
+
+    running=false
+}
+
+function reader {
+    while read -r line; do
+	case $line in
+	    B*)
+		#battery
+		bat_info=${line#?}
+	    ;;
+	    C*)
+		#clock
+		clock_info=${line#?}
+	    ;;
+	    W*)
+		wm_info=""
+		line=${line#?}
+		IFS=':'
+		set -- ${line#?}
+		while [ $# -gt 0 ]; do
+		# for item in "${line[@]}"; do
+		    item=$1
+		    case $item in
+			O*|F*)
+			    #selected desktop
+			    wm_info="$wm_info %{F$col_active}${item#?}%{F-} "
+			;;
+			o*|f*)
+			    #other desktop
+			    wm_info="$wm_info %{F$col_inactive}${item#?}%{F-} "
+			;;
+		    esac
+		    shift
+		done
+		;;
+	esac
+
+	printf "%s\n" "${l}$wm_info  $clock_info  $bat_info %{F$col_btn}%{A:suspend:} susp %{A}%{F-} %{F$col_btn}%{A:logout:} bye %{A}%{F-}"
+    done
+}
+
+function command_reader {
+    while read -r command; do
+	case $command in
+	    suspend)
+		systemctl suspend
+		;;
+	    logout)
+		stop
+		bspc quit
+		;;
+	esac
+    done
+}
+
+function init {
+    if $running; then
+	echo "already running... doing nothing..."
+	exit
+    fi
+
+    if [ ! -f $fifo ]; then
+	mkfifo $fifo
+    fi
+
+    echo "starting panel..."
+
+    bspc subscribe > $fifo &
+    echo $! > $bspcpidf
+    update_output > $fifo &
+    echo $! > $pidfile
+
+    cat $fifo | reader | lemonbar $lemonbar_conf | command_reader &
+}
+
+
+if [ "$1" = "stop" ]; then
+    stop
+    exit
+elif [ "$1" = "restart" ]; then
+    stop
+fi
+init
+

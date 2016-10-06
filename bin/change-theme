@@ -1,0 +1,16 @@
+#!/bin/bash
+themes_path=~/.config/X/themes/
+selected=$1
+echo "changing theme to $selected"
+
+theme_path=$themes_path$selected
+
+if [ -f $theme_path ]; then
+    echo "theme found at $theme_path... linking..."
+    ln -fs "$theme_path" ~/.config/X/colors
+fi
+
+echo "updating emacs theme..."
+emacsclient --eval "(progn (mapcar #'disable-theme custom-enabled-themes) (enable-theme '$selected))"
+
+~/bin/xrdb-update 
