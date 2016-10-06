@@ -375,10 +375,8 @@
    [default bold shadow italic underline bold bold-italic bold])
  '(ansi-color-names-vector
    ["#2e3436" "#a40000" "#4e9a06" "#c4a000" "#204a87" "#5c3566" "#729fcf" "#eeeeec"])
- '(custom-enabled-themes (quote (ample)))
- '(custom-safe-themes
-   (quote
-    ("ad950f1b1bf65682e390f3547d479fd35d8c66cafa2b8aa28179d78122faa947" "db210d68e7231e5f2361cd8f6e6bc261f4ea02a72e695a5166eee940e7530a76" "7557aa0d3854c7e910121ba2ef94f4c4e70de7d32ddebb609719f545f7f7be0d" "70403e220d6d7100bae7775b3334eddeb340ba9c37f4b39c189c2c29d458543b" "d606ac41cdd7054841941455c0151c54f8bff7e4e050255dbd4ae4d60ab640c1" "1db337246ebc9c083be0d728f8d20913a0f46edc0a00277746ba411c149d7fe5" "0f98f9c2f1241c3b6227af48dc96e708ec023dd68363edb5d36dc7beaad64c23" "d8f76414f8f2dcb045a37eb155bfaa2e1d17b6573ed43fb1d18b936febc7bbc2" "9cb6358979981949d1ae9da907a5d38fb6cde1776e8956a1db150925f2dad6c1" default)))
+ '(compilation-message-face (quote default))
+ '(custom-enabled-themes (quote (wombat)))
  '(default-frame-alist (quote ((vertical-scroll-bars))))
  '(erc-modules
    (quote
@@ -399,9 +397,22 @@
  '(forecast-country "Norway")
  '(forecast-latitude 67.285573)
  '(forecast-longitude 14.561691)
+ '(highlight-changes-colors (quote ("#ff8eff" "#ab7eff")))
+ '(highlight-tail-colors
+   (quote
+    (("#424748" . 0)
+     ("#63de5d" . 20)
+     ("#4BBEAE" . 30)
+     ("#1DB4D0" . 50)
+     ("#9A8F21" . 60)
+     ("#A75B00" . 70)
+     ("#F309DF" . 85)
+     ("#424748" . 100))))
  '(inhibit-startup-screen t)
  '(initial-buffer-choice "~/")
+ '(magit-diff-use-overlays nil)
  '(menu-bar-mode nil)
+ '(mingus-mode-always-modeline t)
  '(mingus-use-mouse-p nil)
  '(org-agenda-files (quote ("~/Journal")))
  '(org-capture-templates
@@ -413,6 +424,11 @@
  '(org-journal-file-format "%Y-%m-%d.org")
  '(org-journal-time-format "<%Y-%m-%d %R>")
  '(org-journal-time-prefix "** Journal Entry ")
+ '(package-selected-packages
+   (quote
+    (ibuffer-git ibuffer-projectile rainbow-mode hexrgb helm-ag yasnippet xkcd web-mode use-package tango-plus-theme spacegray-theme scss-mode powerline-evil org-journal org-bullets mu4e-maildirs-extension mu4e-alert mingus markdown-mode mark-multiple key-chord ido-vertical-mode howdoi highlight-parentheses helm-swoop helm-projectile helm-mu helm-company haste foggy-night-theme flycheck expand-region evil-surround evil-paredit evil-org evil-mu4e evil-magit evil-commentary darkokai-theme company-web company-jedi company-c-headers cmake-ide cmake-font-lock cider calfw-gcal calfw)))
+ '(pos-tip-background-color "#E6DB74")
+ '(pos-tip-foreground-color "#242728")
  '(scroll-bar-mode nil)
  '(tool-bar-mode nil)
  '(vc-annotate-background nil)
@@ -436,21 +452,22 @@
      (320 . "#DCA432")
      (340 . "#ebcb8b")
      (360 . "#B4EB89"))))
- '(vc-annotate-very-old-color nil))
+ '(vc-annotate-very-old-color nil)
+ '(weechat-color-list
+   (unspecified "#242728" "#424748" "#F70057" "#ff0066" "#86C30D" "#63de5d" "#BEB244" "#E6DB74" "#40CAE4" "#06d8ff" "#FF61FF" "#ff8eff" "#00b2ac" "#53f2dc" "#f8fbfc" "#ffffff")))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight light :height 90 :width normal :foundry "PfEd" :family "MesloLGMDZ"))))
+ '(default ((t (:height 87 :family "Terminus"))))
  '(helm-selection ((t (:inherit highlight :background "#eeeeec" :foreground "black"))))
- '(mode-line ((t (:family "Liberation Mono"))))
  '(mu4e-unread-face ((t (:inherit font-lock-keyword-face :foreground "#11aaff" :weight bold))))
- '(org-level-1 ((t (:foreground "#204a87" :weight bold :height 2.0))))
- '(org-level-2 ((t (:foreground "#204a87" :height 1.7))))
- '(org-level-3 ((t (:foreground "#204a87" :height 1.2))))
- '(widget-field ((t (:box (:line-width 1 :color "#ffffff"))))))
+ '(org-level-1 ((t (:weight bold :height 2.0))))
+ '(org-level-2 ((t (:height 1.7))))
+ '(org-level-3 ((t (:height 1.2))))
+ '(widget-field ((t (:box (:line-width 1 :color "#666666"))))))
 
 (provide 'emacs)
 ;;; .emacs ends here
