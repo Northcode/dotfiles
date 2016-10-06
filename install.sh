@@ -2,7 +2,7 @@
 
 BASEDIR=$(readlink -f $(dirname $0))
 
-echo "linking config folders"
+echo "linking config folders to $BASEDIR"
 
 for i in $(ls -a .config)
 do
@@ -34,7 +34,11 @@ ln -sf $BASEDIR/.mbsyncrc ~/.mbsyncrc
 
 echo "linking zshrc"
 rm ~/.zshrc
-ln -sf $BASEDIR/.zshrc ~/.zshrc
+ln -sfv "$BASEDIR/zshrc" ~/.zshrc
 
 rm ~/.zpreztorc 
 ln -sf $BASEDIR/zpreztorc ~/.zpreztorc
+
+echo "linking screenrc"
+rm ~/.screenrc
+ln -sf $BASEDIR/.screenrc ~/.screenrc

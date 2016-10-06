@@ -35,4 +35,11 @@ else
 
     alias prezget='git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"'
 
+    if [ -z $STY ]; then
+	screen -x
+    else
+	PS1=screen$PS1
+    fi
+
+
 fi
