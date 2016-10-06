@@ -1,21 +1,21 @@
 #! /bin/sh
 
 bspc config border_width 1
-bspc config window_gap 25
+bspc config window_gap 20
 
 bspc config split_ratio         0.50
 bspc config borderless_monocle  true
 bspc config gapless_monocle     true
 bspc config focus_by_distance   true
 
-bspc config top_padding 23
+bspc config top_padding 25
 bspc config left_padding 0
 bspc config right_padding 0
 bspc config bottom_padding 0
 
-bspc config normal_border_color "#333333"
-bspc config focused_border_color "#eeeeee"
-bspc config presel_border_color "#FF8888"
+# bspc config normal_border_color "#333333"
+# bspc config focused_border_color "#eeeeee"
+# bspc config presel_border_color "#FF8888"
 
 maindesks="home emacs"
 browdesks="www music"
@@ -35,7 +35,12 @@ fi
 #~/.config/panel/panel &
 # ~/.fehbg &
 #sudo xboxdrv --detach-kernel-driver --mimic-xpad &
-hsetroot -solid "#335566"
+
+pkill compton
+panel_output stop
+pkill dunst
+
+hsetroot -solid "#252525"
 compton -f -c &
-tint2 &
+panel_output &
 dunst &

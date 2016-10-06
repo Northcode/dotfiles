@@ -1,0 +1,4 @@
+URxvt*font: -*-terminus-medium-r-*-*-14-*-*-*-*-*-iso10646-*
+URxvt*boldFont: -*-terminus-bold-r-*-*-14-*-*-*-*-*-iso10646-*
+! URxvt*font: xft:Inconsolata:size=12
+rofi.font: Terminus 12
