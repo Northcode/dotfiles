@@ -53,7 +53,7 @@ super + control + alt + {h,j,k,l}
       bspc monitor -f {west,south,north,east}
 
 super + a ; e
-      emacsclient -s /tmp/emacs1000/server -c -a "emacs"
+      emacsclient -s /tmp/emacs1000/server -c 
 
 super + a ; q
       telegram-desktop
@@ -87,6 +87,12 @@ super + b
 
 super + alt + Return
       ~/bin/lockscreen
+
+Print
+	scrot
+
+shift + Print
+      	scrot -s
 
 control + Print
 	feh --bg-fill /data/Wallpapers/1920x1080/$(ls /data/Wallpapers/1920x1080/ | shuf | head -n 1) /data/Wallpapers/1920x1080/$(ls /data/Wallpapers/1920x1080/ | shuf | head -n 1)
