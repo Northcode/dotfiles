@@ -10,7 +10,11 @@ if [ -f $theme_path ]; then
     ln -fs "$theme_path" ~/.config/X/colors
 fi
 
-echo "updating emacs theme..."
-emacsclient --eval "(progn (mapcar #'disable-theme custom-enabled-themes) (enable-theme '$selected))"
+~/bin/xrdb-update
 
-~/bin/xrdb-update 
+echo "updating emacs theme..."
+
+emacs_theme=$(xrdb -query | grep emacs.theme | cut -d ':' -f 2 | tr -d '\s')
+echo "emacs theme:" $emacs_theme
+
+emacsclient --eval "(progn (mapcar #'disable-theme custom-enabled-themes) (enable-theme '$emacs_theme))"

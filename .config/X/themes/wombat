@@ -42,3 +42,34 @@ rofi.color-enabled: true
 rofi.color-window: #242424, #252525, #f6f3e8
 rofi.color-normal: #242424, #c1c1c1, #202020, #252525, #e5786d
 rofi.color-active: #273238, #80cbc4, #273238, #394249, #80cbc4
+
+! wallpaper
+hsetroot.solid: #242424
+
+! bspwm config
+bspwm.border_width: 1
+bspwm.window_gap: 5
+
+bspwm.top_padding: 45
+bspwm.left_padding: 0
+bspwm.right_padding: 0
+bspwm.bottom_padding: 0
+
+bspwm.split_ratio: 0.50
+bspwm.borderless_monocle: true
+bspwm.gapless_monocle: true
+bspwm.focus_by_distance: true
+
+bspwm.normal_border_color:"#333333"
+bspwm.focused_border_color:"#eeeeee"
+bspwm.presel_border_color:"#8888ff"
+
+! panel config
+panel.col.active:#902222
+panel.col.inactive:#888888
+panel.col.btn:#8888ff
+panel.col.background:#303030
+panel.col.foreground:#efefef
+
+! Emacs theme select
+emacs.theme: wombat

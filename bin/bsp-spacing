@@ -1,0 +1,7 @@
+#!/bin/bash
+
+spacing=$1
+
+for d in $(bspc query -D); do
+    bspc config -d $d window_gap $spacing
+done

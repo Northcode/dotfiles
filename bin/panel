@@ -7,7 +7,22 @@ pidfile=/run/user/1000/panel_output.pid
 col_active=\#902222
 col_inactive=\#888888
 col_btn=\#8888ff
-lemonbar_conf="-g 330x25+25+10 -B #303030 -F #efefef -f -*-terminus-medium-r-*-*-12-*-*-*-*-*-iso10646-*"
+col_foreground=\#efefef
+col_background=\#303030
+
+for kv in $(xrdb -query | grep panel.col. | cut -c11- | while read -r c; do
+		key=$(echo $c | cut -d ':' -f 1)
+		val=$(echo $c | cut -d ':' -f 2 | tr -d '[[:space:]]')
+		echo $key":"$val
+	    done); do
+
+    key=$(echo $kv | cut -d ':' -f 1)
+    val=$(echo $kv | cut -d ':' -f 2)
+
+    declare col_$key=$val
+done
+
+lemonbar_conf="-g 330x25+25+10 -B $col_background -F $col_foreground -f -*-terminus-medium-r-*-*-12-*-*-*-*-*-iso10646-*"
 
 if [ -f $pidfile ]; then
     running=true

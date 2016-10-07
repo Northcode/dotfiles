@@ -1,4 +1,4 @@
 #!/bin/bash
-~/.config/bspwm/bspwmrc
 xrdb-update
+~/.config/bspwm/bspwmrc
 pkill -USR1 -x sxhkd

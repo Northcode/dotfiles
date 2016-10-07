@@ -1,21 +1,13 @@
 #! /bin/sh
 
-bspc config border_width 1
-bspc config window_gap 20
+# load bspwm config from xrdb
+xrdb -query | grep bspwm | cut -c7- | while read -r c; do
 
-bspc config split_ratio         0.50
-bspc config borderless_monocle  true
-bspc config gapless_monocle     true
-bspc config focus_by_distance   true
+    key=$(echo $c | cut -d ':' -f 1)
+    val=$(echo $c | cut -d ':' -f 2 | tr -d '[[:space:]]')
 
-bspc config top_padding 25
-bspc config left_padding 0
-bspc config right_padding 0
-bspc config bottom_padding 0
-
-# bspc config normal_border_color "#333333"
-# bspc config focused_border_color "#eeeeee"
-# bspc config presel_border_color "#FF8888"
+    bspc config $key $val
+done
 
 maindesks="home emacs"
 browdesks="www music"
@@ -32,15 +24,15 @@ if [ -d "$HOME/bin" ] ; then
     export PATH="$HOME/bin:$PATH"
 fi
 
-#~/.config/panel/panel &
-# ~/.fehbg &
 #sudo xboxdrv --detach-kernel-driver --mimic-xpad &
 
 pkill compton
-panel_output stop
+panel stop
 pkill dunst
 
-hsetroot -solid "#252525"
+bgcolor=$(xrdb -query | grep hsetroot.solid | cut -d ':' -f 2 | tr -d '[[:space:]]')
+
+hsetroot -solid $bgcolor
 compton -f -c &
-panel_output &
+panel &
 dunst &
