@@ -173,8 +173,8 @@
     (forward-char 2)))
 
 (evil-define-key 'normal eshell-mode-map "^" 'eshell-evil-hat)
+(evil-define-key 'normal dired-mode-map "gr" 'revbuf)
 
-(define-key evil-normal-state-map (kbd "gr") 'revbuf)
 (key-chord-define evil-insert-state-map "jk" 'evil-normal-state)
 (bind-keys
  ("C-c e" . eshell)
