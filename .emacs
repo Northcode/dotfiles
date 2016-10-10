@@ -395,7 +395,6 @@
 (evil-set-initial-state 'mingus-playlist-mode 'emacs)
 
 (defun erc-tls-auth-source (a b c d e f g h)
-
   (let ((secret (nth 0 (auth-source-search :max 1
 					   :host b
 					   :port d))))
@@ -420,6 +419,9 @@
    ["#2e3436" "#a40000" "#4e9a06" "#c4a000" "#204a87" "#5c3566" "#729fcf" "#eeeeec"])
  '(compilation-message-face (quote default))
  '(custom-enabled-themes (quote (wombat)))
+ '(custom-safe-themes
+   (quote
+    ("d8f76414f8f2dcb045a37eb155bfaa2e1d17b6573ed43fb1d18b936febc7bbc2" default)))
  '(default-frame-alist (quote ((vertical-scroll-bars))))
  '(erc-modules
    (quote

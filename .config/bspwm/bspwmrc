@@ -9,7 +9,7 @@ xrdb -query | grep bspwm | cut -c7- | while read -r c; do
     bspc config $key $val
 done
 
-maindesks="home emacs"
+maindesks="home emacs chat"
 browdesks="www music"
 playdesks="steam wine"
 extrdesks="spc1 spc2"
@@ -25,6 +25,13 @@ if [ -d "$HOME/bin" ] ; then
 fi
 
 #sudo xboxdrv --detach-kernel-driver --mimic-xpad &
+
+bspc rule -r "*"
+bspc rule -a Navigator desktop=www follow=off
+bspc rule -a Emacs desktop=emacs
+bspc rule -a MPlayer state=fullscreen
+bspc rule -a Screenkey manage=off
+bspc rule -a Telegram desktop=chat follow=off
 
 pkill compton
 panel stop

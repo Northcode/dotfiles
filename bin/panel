@@ -4,25 +4,31 @@ fifo=/tmp/panfifo
 bspcpidf=/run/user/1000/bspc.pid
 pidfile=/run/user/1000/panel_output.pid
 
-col_active=\#902222
-col_inactive=\#888888
-col_btn=\#8888ff
-col_foreground=\#efefef
-col_background=\#303030
+conf_col_active=\#902222
+conf_col_inactive=\#888888
+conf_col_btn=\#8888ff
+conf_col_foreground=\#efefef
+conf_col_background=\#303030
 
-for kv in $(xrdb -query | grep panel.col. | cut -c11- | while read -r c; do
+conf_geometry="330x25+25+10"
+conf_font="-*-terminus-medium-r-*-*-12-*-*-*-*-*-iso10646-*"
+
+for kv in $(xrdb -query | grep panel. | cut -c7- | while read -r c; do
 		key=$(echo $c | cut -d ':' -f 1)
-		val=$(echo $c | cut -d ':' -f 2 | tr -d '[[:space:]]')
+		val=$(echo $c | cut -d ':' -f 2- | sed -e "s/^\s*//" | sed -e "s/\s*$//g")
 		echo $key":"$val
 	    done); do
 
-    key=$(echo $kv | cut -d ':' -f 1)
+    key=$(echo $kv | cut -d ':' -f 1 | tr \. _)
     val=$(echo $kv | cut -d ':' -f 2)
 
-    declare col_$key=$val
+    declare conf_$key=$val
+
+    echo conf_$key":"$val
 done
 
-lemonbar_conf="-g 330x25+25+10 -B $col_background -F $col_foreground -f -*-terminus-medium-r-*-*-12-*-*-*-*-*-iso10646-*"
+
+lemonbar_conf="-g $conf_geometry -B $conf_col_background -F $conf_col_foreground -f $conf_font"
 
 if [ -f $pidfile ]; then
     running=true
@@ -86,14 +92,15 @@ function reader {
 		while [ $# -gt 0 ]; do
 		# for item in "${line[@]}"; do
 		    item=$1
+		    name=${item#?}
 		    case $item in
 			O*|F*)
 			    #selected desktop
-			    wm_info="$wm_info %{F$col_active}${item#?}%{F-} "
+			    wm_info="$wm_info %{F$conf_col_active}$name%{F-} "
 			;;
 			o*|f*)
 			    #other desktop
-			    wm_info="$wm_info %{F$col_inactive}${item#?}%{F-} "
+			    wm_info="$wm_info %{A:switch_$name:}%{F$conf_col_inactive}${item#?}%{F-A} "
 			;;
 		    esac
 		    shift
@@ -101,7 +108,7 @@ function reader {
 		;;
 	esac
 
-	printf "%s\n" "${l}$wm_info  $clock_info  $bat_info %{F$col_btn}%{A:suspend:} susp %{A}%{F-} %{F$col_btn}%{A:logout:} bye %{A}%{F-}"
+	printf "%s\n" "${l}$wm_info  $clock_info  $bat_info %{F$conf_col_btn}%{A:suspend:} susp %{A}%{F-} %{F$conf_col_btn}%{A:logout:} bye %{A}%{F-} %{A:rand-wall:}%{F$conf_col_btn}rwall%{AF-}"
     done
 }
 
@@ -114,6 +121,13 @@ function command_reader {
 	    logout)
 		stop
 		bspc quit
+		;;
+	    rand-wall)
+		~/bin/rand-wall
+		;;
+	    switch_*)
+		desk=$(echo $command | cut -c 8-)
+		bspc desktop -f $desk
 		;;
 	esac
     done

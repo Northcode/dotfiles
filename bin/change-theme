@@ -14,7 +14,7 @@ fi
 
 echo "updating emacs theme..."
 
-emacs_theme=$(xrdb -query | grep emacs.theme | cut -d ':' -f 2 | tr -d '\s')
+emacs_theme=$(xrdb -query | grep emacs.theme | cut -d ':' -f 2 | tr -d '[[:space:]]')
 echo "emacs theme:" $emacs_theme
 
 emacsclient --eval "(progn (mapcar #'disable-theme custom-enabled-themes) (enable-theme '$emacs_theme))"

@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/screen -DmS autoscreen
+ExecStart=/usr/bin/screen -aAURDmS autoscreen
 ExecStop=/usr/bin/screen -S autoscreen -X quit
 
 [Install]

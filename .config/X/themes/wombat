@@ -70,6 +70,8 @@ panel.col.inactive:#888888
 panel.col.btn:#8888ff
 panel.col.background:#303030
 panel.col.foreground:#efefef
+panel.font: -*-terminus-medium-r-*-*-12-*-*-*-*-*-iso10646-*
+panel.geometry: 360x25+25+10
 
 ! Emacs theme select
 emacs.theme: wombat

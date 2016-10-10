@@ -34,3 +34,7 @@ URxvt.cursorColor:  #c5c8c6
 ! white
 *.color7:       #707880
 *.color15:      #c5c8c6
+
+! emacs theme
+emacs.theme: spacegray
+
