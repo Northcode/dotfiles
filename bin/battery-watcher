@@ -1,0 +1,39 @@
+#!/bin/bash
+
+PIDFILE=/run/user/1000/battery-watcher.pid
+
+
+function stop {
+    if [[ -f $PIDFILE ]]; then
+	pkill -F $PIDFILE
+	rm $PIDFILE
+    fi
+}
+
+function start {
+    if [[ -f $PIDFILE ]]; then
+	echo "already running..."
+	exit
+    fi
+
+    while true; do
+	batper=$(acpi -b | perl -ne 'print $1 if /([0-9]{1,3})%/')
+	if [[ $batper -lt 30 ]]; then
+	    notify-send -u normal "Battery low: $batper%"
+	elif [[ $batper -lt 15 ]]; then
+	    notify-send -u critical "BATTERY CRITICAL: $batper%"
+	fi
+	sleep 60
+    done &
+
+    echo $$ > $PIDFILE
+}
+
+if [[ $1 = "restart" ]]; then
+    stop
+    start
+elif [[ $1 = "stop" ]]; then
+    stop
+else
+    start
+fi
