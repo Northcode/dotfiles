@@ -47,7 +47,9 @@ function print_battery {
 function update_output {
     while true; do
 	print_clock
-	print_battery
+	if [[ $(hostname) = "andreas-l0" ]]; then #TODO: make this more general
+	    print_battery
+	fi
 
 	sleep 1
     done

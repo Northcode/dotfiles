@@ -3,6 +3,7 @@
 ;;; My Emacs config
 ;;; Code:
 
+
 (require 'package)
 (setq package-enable-at-startup nil)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
@@ -47,7 +48,10 @@
 (use-package yasnippet
   :init (add-hook 'prog-mode-hook #'yas-minor-mode))
 
-(use-package company)
+(use-package company
+  :init
+  (add-hook 'prog-mode-hook 'company-mode))
+
 (use-package company-c-headers)
 (use-package company-jedi)
 (use-package company-web)
@@ -75,6 +79,9 @@
 (use-package helm-swoop)
 (use-package helm-ag)
 
+;; (setq ido-enable-flex-matching t)
+;; (define-key ido-completion-map (kbd "<SPC>") 'self-insert-command)
+
 (use-package ido-vertical-mode
   :init (ido-vertical-mode t))
 
@@ -89,7 +96,16 @@
 (use-package web-mode
   :mode ("\\.html\\'" "\\.php\\'"))
 (use-package scss-mode)
+
 (use-package cider)
+(use-package clj-refactor)
+
+(defun my-clojure-mode-hook ()
+  (clj-refactor-mode t)
+  (yas-minor-mode t)
+  (cljr-add-keybindings-with-prefix "C-c G"))
+
+(add-hook 'clojure-mode-hook #'my-clojure-mode-hook)
 
 ;; (use-package tango-plus-theme)
 ;; (use-package spacegray-theme)
@@ -193,6 +209,7 @@
  ("C-c d" . mingus)
  ("C-c m" . mu4e)
  ("C-c b" . ibuffer)
+ ("C-c w" . helm-systemd)
 
  ("C-<tab>" . hippie-expand)
 
@@ -201,6 +218,12 @@
  ("C-x C-f" . helm-find-files)
  ("C-x C-r" . helm-recentf)
  )
+
+(defun startup-script ()
+  (dired "~/projects")
+  (find-file "~/.emacs")
+  (find-file "~/org/journal.org")
+  (find-file "~/org/welcome.org"))
 
 ;; MU4E config
 (defvar user-mailconf nil)
@@ -318,7 +341,6 @@
 
 (add-hook 'c++-mode-hook 'fix-enum-class)
 
-(add-hook 'prog-mode-hook 'company-mode)
 
 (defun load-mailconf (conf)
   (setq
@@ -407,6 +429,20 @@
 	    (erc-tls a b c d e f g (concat f ":" passwd))))
       (erc-tls a b c d e f g h))))
 
+(defun erc-format-privmessage (nick msg privp msgp)
+  "Format a PRIVMSG in an insertable fashion."
+  (let* ((mark-s (if msgp (if privp "*" "[") "-"))
+         (mark-e (if msgp (if privp "*" "]") "-"))
+         (str    (format "%s %s" (s-pad-left 15 " " (concat mark-s nick mark-e)) msg))
+         (nick-face (if privp 'erc-nick-msg-face 'erc-nick-default-face))
+         (msg-face (if privp 'erc-direct-msg-face 'erc-default-face)))
+    ;; add text properties to text before the nick, the nick and after the nick
+    (erc-put-text-property 0 (length mark-s) 'face msg-face str)
+    (erc-put-text-property (length mark-s) (+ (length mark-s) (length nick))
+                           'face nick-face str)
+    (erc-put-text-property (+ (length mark-s) (length nick)) (length str)
+                           'face msg-face str)
+    str))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -430,6 +466,7 @@
  '(erc-notify-list (quote ("okknor")))
  '(erc-notify-mode t)
  '(erc-port 8657)
+ '(erc-prompt ">")
  '(erc-prompt-for-password nil)
  '(erc-server "northcode.no")
  '(erc-user-full-name "Andreas Larsen")
@@ -457,12 +494,13 @@
      ("#F309DF" . 85)
      ("#424748" . 100))))
  '(inhibit-startup-screen t)
- '(initial-buffer-choice "~/")
+ '(initial-buffer-choice "~/org/welcome.org")
  '(magit-diff-use-overlays nil)
  '(menu-bar-mode nil)
  '(mingus-mode-always-modeline t)
  '(mingus-use-mouse-p nil)
  '(org-agenda-files (quote ("~/Journal")))
+ '(org-babel-load-languages (quote ((emacs-lisp . t) (shell . t))))
  '(org-capture-templates
    (quote
     (("a" "Todo item" entry
@@ -472,9 +510,10 @@
  '(org-journal-file-format "%Y-%m-%d.org")
  '(org-journal-time-format "<%Y-%m-%d %R>")
  '(org-journal-time-prefix "** Journal Entry ")
+ '(org-time-stamp-custom-formats (quote ("<%M. %d %Y>" . "<%m/%d/%y %a %H:%M>")))
  '(package-selected-packages
    (quote
-    (znc ibuffer-git ibuffer-projectile rainbow-mode hexrgb helm-ag yasnippet xkcd web-mode use-package tango-plus-theme spacegray-theme scss-mode powerline-evil org-journal org-bullets mu4e-maildirs-extension mu4e-alert mingus markdown-mode mark-multiple key-chord ido-vertical-mode howdoi highlight-parentheses helm-swoop helm-projectile helm-mu helm-company haste foggy-night-theme flycheck expand-region evil-surround evil-paredit evil-org evil-mu4e evil-magit evil-commentary darkokai-theme company-web company-jedi company-c-headers cmake-ide cmake-font-lock cider calfw-gcal calfw)))
+    (bookmark+ rainbow-blocks parinfer gradle-mode fireplace which-key melpa clj-refactor csharp-mode helm-systemd znc ibuffer-git ibuffer-projectile rainbow-mode hexrgb helm-ag yasnippet xkcd web-mode use-package tango-plus-theme spacegray-theme scss-mode powerline-evil org-journal org-bullets mu4e-maildirs-extension mu4e-alert mingus markdown-mode mark-multiple key-chord ido-vertical-mode howdoi highlight-parentheses helm-swoop helm-projectile helm-mu helm-company haste foggy-night-theme flycheck expand-region evil-surround evil-paredit evil-org evil-mu4e evil-magit evil-commentary darkokai-theme company-web company-jedi company-c-headers cmake-ide cmake-font-lock cider calfw-gcal calfw)))
  '(pos-tip-background-color "#E6DB74")
  '(pos-tip-foreground-color "#242728")
  '(scroll-bar-mode nil)
@@ -508,21 +547,25 @@
  '(znc-servers
    (quote
     (("northcode.no" 8667 t
-      ((freenode "northcode"
-		 (quote nil))))))))
+      ((freenode "northcode" "")))))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:height 87 :family "Terminus"))))
+ '(default ((t (:inherit nil :stipple nil :background "#242424" :foreground "#f6f3e8" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 120 :width normal :foundry "xos4" :family "Terminus"))))
+ '(Info-quoted ((t (:family "Liberation Mono"))))
  '(helm-selection ((t (:inherit highlight :background "#eeeeec" :foreground "black"))))
  '(mu4e-unread-face ((t (:inherit font-lock-keyword-face :foreground "#11aaff" :weight bold))))
  '(org-level-1 ((t (:weight bold :height 2.0))))
  '(org-level-2 ((t (:height 1.7))))
  '(org-level-3 ((t (:height 1.2))))
  '(widget-field ((t (:box (:line-width 1 :color "#666666"))))))
+
+
+(startup-script)
+
 
 (provide 'emacs)
 ;;; .emacs ends here

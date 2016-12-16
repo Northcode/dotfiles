@@ -61,7 +61,7 @@ bspwm.gapless_monocle: true
 bspwm.focus_by_distance: true
 
 bspwm.normal_border_color:"#333333"
-bspwm.focused_border_color:"#eeeeee"
+bspwm.focused_border_color:"#FFFFFF"
 bspwm.presel_border_color:"#8888ff"
 
 ! panel config
@@ -71,7 +71,7 @@ panel.col.btn:#8888ff
 panel.col.background:#303030
 panel.col.foreground:#efefef
 panel.font: -*-terminus-medium-r-*-*-12-*-*-*-*-*-iso10646-*
-panel.geometry: 360x25+25+10
+panel.geometry: 660x25+1945+10
 
 ! Emacs theme select
 emacs.theme: wombat
