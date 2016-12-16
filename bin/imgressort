@@ -1,0 +1,9 @@
+#!/bin/bash
+
+for image in *.jpg *.png; do
+    echo $image;
+    res=$(identify -format %wx%h\\n "$image");
+    echo $res;
+    mkdir -p $res;
+    mv "$image" $res;
+done
