@@ -4,4 +4,5 @@
 # convert $tmpfile -blur 0x4 $tmpfile
 # i3lock -i $tmpfile
 # xset dpms force standby
-i3lock -i ~/bin/lock.png -t -d
+#i3lock -i ~/bin/lock.png -t -d
+xscreensaver-command -l
