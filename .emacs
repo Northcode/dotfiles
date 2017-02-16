@@ -11,7 +11,7 @@
 (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
 (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
 
-(add-to-list 'load-path "~/build/org-mode/lisp")
+;; (add-to-list 'load-path "~/build/org-mode/lisp")
 
 (package-initialize)
 
@@ -581,8 +581,7 @@
  '(org-time-stamp-custom-formats (quote ("<%M. %d %Y>" . "<%m/%d/%y %a %H:%M>")))
  '(package-selected-packages
    (quote
-    (counsel-projectile counsel writeroom-mode swiper ivy paper-theme dired+ auctex basic-theme autumn-light-theme goose-theme plantuml-mode eyuml ace-window ix pastebin flycheck-irony irony rtags haskell-mode org-trello bookmark+ rainbow-blocks parinfer gradle-mode fireplace which-key melpa clj-refactor csharp-mode helm-systemd znc ibuffer-git ibuffer-projectile rainbow-mode hexrgb helm-ag yasnippet xkcd web-mode use-package tango-plus-theme spacegray-theme scss-mode powerline-evil org-journal org-bullets mu4e-maildirs-extension mu4e-alert mingus markdown-mode mark-multiple key-chord ido-vertical-mode howdoi highlight-parentheses helm-swoop helm-projectile helm-mu helm-company haste foggy-night-theme flycheck expand-region evil-surround evil-paredit evil-org evil-mu4e evil-magit evil-commentary darkokai-theme company-web company-jedi company-c-headers cmake-ide cmake-font-lock cider calfw-gcal calfw)))
- '(plantuml-jar-path "/opt/plantuml/plantuml.jar")
+    (writeroom-mode restclient ag dired+ auctex ace-window ix flycheck-irony irony rtags haskell-mode org-trello bookmark+ gradle-mode fireplace which-key melpa clj-refactor csharp-mode helm-systemd znc ibuffer-git ibuffer-projectile rainbow-mode hexrgb helm-ag yasnippet xkcd web-mode use-package tango-plus-theme spacegray-theme scss-mode powerline-evil org-journal org-bullets mu4e-maildirs-extension mu4e-alert mingus markdown-mode mark-multiple key-chord ido-vertical-mode howdoi highlight-parentheses helm-swoop helm-projectile helm-mu helm-company haste foggy-night-theme flycheck expand-region evil-surround evil-paredit evil-org evil-mu4e evil-magit evil-commentary darkokai-theme company-web company-jedi company-c-headers cmake-ide cmake-font-lock cider calfw-gcal calfw)))
  '(pos-tip-background-color "#E6DB74")
  '(pos-tip-foreground-color "#242728")
  '(scroll-bar-mode nil)
@@ -627,6 +626,7 @@
  '(Info-quoted ((t (:family "Liberation Mono"))))
  '(helm-selection ((t (:inherit highlight :background "#eeeeec" :foreground "black"))))
  '(mu4e-unread-face ((t (:inherit font-lock-keyword-face :foreground "#11aaff" :weight bold))))
+ '(org-document-title ((t (:foreground "pale turquoise" :weight bold :height 3.0))))
  '(org-level-1 ((t (:weight bold :height 2.0))))
  '(org-level-2 ((t (:height 1.7))))
  '(org-level-3 ((t (:height 1.2))))
