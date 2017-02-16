@@ -29,6 +29,7 @@
 
 (use-package evil
   :init (evil-mode t))
+(setq evil-move-cursor-back nil)
 (use-package evil-surround
   :diminish t)
 (use-package evil-org)
@@ -65,14 +66,13 @@
   (progn
     (bind-keys
      :map helm-map
-     ("C-j". helm-next-line)
-     ("C-k". helm-previous-line)
-     ("C-l". helm-execute-persistent-action))
-    
-    (bind-keys
+     ("M-h". helm-find-files-up-one-level)
+     ("M-j". helm-next-line)
+     ("M-k". helm-previous-line)
+     ("M-l". helm-execute-persistent-action)
      :map helm-find-files-map
-     ("C-l". helm-execute-persistent-action)
-     ("C-b". helm-find-files-up-one-level))))
+     ("M-l". helm-execute-persistent-action)
+    ))
 
 (use-package helm-projectile)
 (use-package helm-company)
@@ -133,6 +133,9 @@
 (use-package mu4e-maildirs-extension)
 (use-package mu4e-alert)
 
+(use-package ace-window
+  :bind ("C-x C-o" . ace-window))
+
 (use-package znc)
 
 (message "welcome back, master!")
@@ -171,11 +174,11 @@
        (save-some-buffers t))
 (add-hook 'focus-out-hook 'save-all)
 ;; from http://ergoemacs.org/emacs/elisp_read_file_content.html thanks!
-(defun get-string-from-file (filePath) "Return filePath's file content."
+(defun get-string-from-file (filePath) "Return FILEPATH's file content."
        (with-temp-buffer
 	 (insert-file-contents filePath)
 	 (buffer-string)))
-(defun open-ical-calendar () "Open calendar stored in .calendar file"
+(defun open-ical-calendar () "Open calendar stored in .calendar file."
        (interactive)
        (cfw:open-ical-calendar (get-string-from-file "~/.calendar")))
 (defun revbuf () "Revert buffer without asking."
@@ -183,7 +186,7 @@
        (revert-buffer t t))
 
 (defun eshell-evil-hat ()
-  "Replace hat command in evil in eshell to jump to start of command instead of line"
+  "Replace hat command in evil in eshell to jump to start of command instead of line."
   (interactive)
   (when (derived-mode-p 'eshell-mode)
     (evil-first-non-blank)
@@ -198,8 +201,9 @@
  ("C-c e" . eshell)
  ("C-c E" . ansi-term)
  ("C-c a" . org-agenda)
- ("C-c h" . helm-mini)
+ ;; ("C-c h" . helm-mini)
  ("C-c x" . helm-M-x)
+
  ("C-c g" . magit-status)
  ("C-c j" . org-journal-new-entry)
  ("C-c i" . znc-all)
@@ -215,13 +219,22 @@
 
  ("C-<tab>" . hippie-expand)
 
+ ("C-c r f"   . rtags-find-symbol-at-point)
+ ("C-c r r"   . rtags-rename-symbol)
+
  ("C-x C-b" . lastbuf)
- ("C-x C-o" . other-window)
+ ;; ("C-x C-o" . ace-window)
  ("C-x C-f" . helm-find-files)
  ("C-x C-r" . helm-recentf)
+ ("<f5>"    . projectile-compile-project)
+ ("<f6>"    . projectile-run-project)
+ :map evil-normal-state-map
+ (" " . helm-mini)
  )
 
-(defun startup-script ()
+(define-key evil-normal-state-map " " 'helm-mini)
+
+(defun startup-script () "Things to do and open at startup."
   (dired "~/projects")
   (find-file "~/.emacs")
   (find-file "~/org/journal.org")
@@ -419,6 +432,7 @@
 (evil-set-initial-state 'mingus-playlist-mode 'emacs)
 
 (defun erc-tls-auth-source (a b c d e f g h)
+  "Load erc-tls authentication info from .authinfo database."
   (let ((secret (nth 0 (auth-source-search :max 1
 					   :host b
 					   :port d))))
@@ -451,15 +465,61 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(TeX-command-list
+   (quote
+    (("TeX" "%(PDF)%(tex) %(file-line-error) %(extraopts) %`%S%(PDFout)%(mode)%' %t" TeX-run-TeX nil
+      (plain-tex-mode texinfo-mode ams-tex-mode)
+      :help "Run plain TeX")
+     ("LaTeX" "%`%l%(mode)%' %t" TeX-run-TeX nil
+      (latex-mode doctex-mode)
+      :help "Run LaTeX")
+     ("Makeinfo" "makeinfo %(extraopts) %t" TeX-run-compile nil
+      (texinfo-mode)
+      :help "Run Makeinfo with Info output")
+     ("Makeinfo HTML" "makeinfo %(extraopts) --html %t" TeX-run-compile nil
+      (texinfo-mode)
+      :help "Run Makeinfo with HTML output")
+     ("AmSTeX" "amstex %(PDFout) %(extraopts) %`%S%(mode)%' %t" TeX-run-TeX nil
+      (ams-tex-mode)
+      :help "Run AMSTeX")
+     ("ConTeXt" "%(cntxcom) --once --texutil %(extraopts) %(execopts)%t" TeX-run-TeX nil
+      (context-mode)
+      :help "Run ConTeXt once")
+     ("ConTeXt Full" "%(cntxcom) %(extraopts) %(execopts)%t" TeX-run-TeX nil
+      (context-mode)
+      :help "Run ConTeXt until completion")
+     ("BibTeX" "bibtex %s" TeX-run-BibTeX nil t :help "Run BibTeX")
+     ("Biber" "biber %s" TeX-run-Biber nil t :help "Run Biber")
+     ("View" "%V" TeX-run-discard-or-function t t :help "Run Viewer")
+     ("Print" "%p" TeX-run-command t t :help "Print the file")
+     ("Queue" "%q" TeX-run-background nil t :help "View the printer queue" :visible TeX-queue-command)
+     ("File" "%(o?)dvips %d -o %f " TeX-run-dvips t t :help "Generate PostScript file")
+     ("Dvips" "%(o?)dvips %d -o %f " TeX-run-dvips nil t :help "Convert DVI file to PostScript")
+     ("Dvipdfmx" "dvipdfmx %d" TeX-run-dvipdfmx nil t :help "Convert DVI file to PDF with dvipdfmx")
+     ("Ps2pdf" "ps2pdf %f" TeX-run-ps2pdf nil t :help "Convert PostScript file to PDF")
+     ("Index" "makeindex %s" TeX-run-index nil t :help "Run makeindex to create index file")
+     ("Xindy" "texindy %s" TeX-run-command nil t :help "Run xindy to create index file")
+     ("Check" "lacheck %s" TeX-run-compile nil
+      (latex-mode)
+      :help "Check LaTeX file for correctness")
+     ("ChkTeX" "chktex -v6 %s" TeX-run-compile nil
+      (latex-mode)
+      :help "Check LaTeX file for common mistakes")
+     ("Spell" "(TeX-ispell-document \"\")" TeX-run-function nil t :help "Spell-check the document")
+     ("Clean" "TeX-clean" TeX-run-function nil t :help "Delete generated intermediate files")
+     ("Clean All" "(TeX-clean t)" TeX-run-function nil t :help "Delete generated intermediate and output files")
+     ("Other" "" TeX-run-command t t :help "Run an arbitrary command")
+     ("LaTeXnonint" "%`%l -interaction=nonstopmode %(mode)%' %t" TeX-run-command nil t))))
  '(ansi-color-faces-vector
    [default bold shadow italic underline bold bold-italic bold])
  '(ansi-color-names-vector
    ["#2e3436" "#a40000" "#4e9a06" "#c4a000" "#204a87" "#5c3566" "#729fcf" "#eeeeec"])
  '(compilation-message-face (quote default))
+ '(compilation-read-command nil)
  '(custom-enabled-themes (quote (wombat)))
  '(custom-safe-themes
    (quote
-    ("d8f76414f8f2dcb045a37eb155bfaa2e1d17b6573ed43fb1d18b936febc7bbc2" default)))
+    ("fe1682ca8f7a255cf295e76b0361438a21bb657d8846a05d9904872aa2fb86f2" "80ceeb45ccb797fe510980900eda334c777f05ee3181cb7e19cd6bb6fc7fda7c" "d606ac41cdd7054841941455c0151c54f8bff7e4e050255dbd4ae4d60ab640c1" "78559045fb299f3542c232166ad635c59cf0c6578d80a58b885deafe98a36c66" "55d31108a7dc4a268a1432cd60a7558824223684afecefa6fae327212c40f8d3" "38e66a2a20fa9a27af5ffc4f4dd54f69e3fef6b51be7b351e137b24958bfebd7" "d8f76414f8f2dcb045a37eb155bfaa2e1d17b6573ed43fb1d18b936febc7bbc2" default)))
  '(default-frame-alist (quote ((vertical-scroll-bars))))
  '(erc-modules
    (quote
@@ -501,6 +561,12 @@
  '(menu-bar-mode nil)
  '(mingus-mode-always-modeline t)
  '(mingus-use-mouse-p nil)
+ '(mu4e-bookmarks
+   (quote
+    (("flag:unread AND NOT flag:trashed AND NOT maildir:\"/northcode/Junk\"" "Unread messages" 117)
+     ("date:today..now AND NOT maildir:\"/northcode/Junk\"" "Today's messages" 116)
+     ("date:7d..now AND NOT maildir:\"/northcode/Junk\"" "Last 7 days" 119)
+     ("mime:image/*" "Messages with images" 112))))
  '(org-agenda-files (quote ("~/Journal")))
  '(org-babel-load-languages (quote ((emacs-lisp . t) (shell . t))))
  '(org-capture-templates
@@ -515,7 +581,8 @@
  '(org-time-stamp-custom-formats (quote ("<%M. %d %Y>" . "<%m/%d/%y %a %H:%M>")))
  '(package-selected-packages
    (quote
-    (bookmark+ rainbow-blocks parinfer gradle-mode fireplace which-key melpa clj-refactor csharp-mode helm-systemd znc ibuffer-git ibuffer-projectile rainbow-mode hexrgb helm-ag yasnippet xkcd web-mode use-package tango-plus-theme spacegray-theme scss-mode powerline-evil org-journal org-bullets mu4e-maildirs-extension mu4e-alert mingus markdown-mode mark-multiple key-chord ido-vertical-mode howdoi highlight-parentheses helm-swoop helm-projectile helm-mu helm-company haste foggy-night-theme flycheck expand-region evil-surround evil-paredit evil-org evil-mu4e evil-magit evil-commentary darkokai-theme company-web company-jedi company-c-headers cmake-ide cmake-font-lock cider calfw-gcal calfw)))
+    (counsel-projectile counsel writeroom-mode swiper ivy paper-theme dired+ auctex basic-theme autumn-light-theme goose-theme plantuml-mode eyuml ace-window ix pastebin flycheck-irony irony rtags haskell-mode org-trello bookmark+ rainbow-blocks parinfer gradle-mode fireplace which-key melpa clj-refactor csharp-mode helm-systemd znc ibuffer-git ibuffer-projectile rainbow-mode hexrgb helm-ag yasnippet xkcd web-mode use-package tango-plus-theme spacegray-theme scss-mode powerline-evil org-journal org-bullets mu4e-maildirs-extension mu4e-alert mingus markdown-mode mark-multiple key-chord ido-vertical-mode howdoi highlight-parentheses helm-swoop helm-projectile helm-mu helm-company haste foggy-night-theme flycheck expand-region evil-surround evil-paredit evil-org evil-mu4e evil-magit evil-commentary darkokai-theme company-web company-jedi company-c-headers cmake-ide cmake-font-lock cider calfw-gcal calfw)))
+ '(plantuml-jar-path "/opt/plantuml/plantuml.jar")
  '(pos-tip-background-color "#E6DB74")
  '(pos-tip-foreground-color "#242728")
  '(scroll-bar-mode nil)
@@ -556,7 +623,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "#242424" :foreground "#f6f3e8" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 120 :width normal :foundry "xos4" :family "Terminus"))))
+ '(default ((t (:inherit nil :stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight light :height 100 :width normal :family "Inconsolata"))))
  '(Info-quoted ((t (:family "Liberation Mono"))))
  '(helm-selection ((t (:inherit highlight :background "#eeeeec" :foreground "black"))))
  '(mu4e-unread-face ((t (:inherit font-lock-keyword-face :foreground "#11aaff" :weight bold))))
