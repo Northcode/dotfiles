@@ -72,7 +72,7 @@
      ("M-l". helm-execute-persistent-action)
      :map helm-find-files-map
      ("M-l". helm-execute-persistent-action)
-    ))
+    )))
 
 (use-package helm-projectile)
 (use-package helm-company)
