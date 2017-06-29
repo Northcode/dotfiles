@@ -574,6 +574,7 @@
      ("#424748" . 100))))
  '(inhibit-startup-screen t)
  '(initial-buffer-choice "~/org/welcome.org")
+ '(magit-commit-arguments (quote ("--gpg-sign=D97194E55873280A")))
  '(magit-diff-use-overlays nil)
  '(menu-bar-mode nil)
  '(mingus-mode-always-modeline t)
