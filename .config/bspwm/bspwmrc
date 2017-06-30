@@ -14,11 +14,11 @@ browdesks="www music"
 playdesks="steam wine"
 extrdesks="spc1 spc2"
 
-bspc monitor HDMI-0 -d $maindesks $playdesks
-bspc monitor DVI-I-1 -d $extrdesks
-bspc monitor DVI-D-0 -d $browdesks
-bspc monitor LVDS-1-1 -d $maindesks $browdesks
-bspc monitor LVDS1 -d $maindesks $browdesks
+# bspc monitor HDMI-0 -d $maindesks $playdesks
+# bspc monitor DVI-I-1 -d $extrdesks
+# bspc monitor DVI-D-0 -d $browdesks
+# bspc monitor LVDS-1-1 -d $maindesks $browdesks
+bspc monitor eDP1 -d 1 2 3 4 5 6
 
 # set PATH so it includes user's private bin if it exists
 if [ -d "$HOME/bin" ] ; then
@@ -27,6 +27,9 @@ fi
 
 #sudo xboxdrv --detach-kernel-driver --mimic-xpad &
 
+# bspc config focus_follows_pointer true
+bspc config click_to_focus true
+
 bspc rule -r "*"
 bspc rule -a Navigator desktop=www follow=off
 # bspc rule -a Emacs desktop=emacs
@@ -34,13 +37,21 @@ bspc rule -a MPlayer state=fullscreen
 bspc rule -a Screenkey manage=off
 bspc rule -a Telegram desktop=chat follow=off
 
+
 pkill compton
-panel stop
+#panel stop
 pkill dunst
+libinput-gestures-setup stop
 
-bgcolor=$(xrdb -query | grep hsetroot.solid | cut -d ':' -f 2 | tr -d '[[:space:]]')
+# bgcolor=$(xrdb -query | grep hsetroot.solid | cut -d ':' -f 2 | tr -d '[[:space:]]')
+# bgimage=$(xrdb -query | grep hsetroot.full | cut -d ':' -f 2 | tr -d '[[:space:]]')
+hsetrbg=$(xrdb -query | grep hsetroot | cut -d . -f 2- | tr -d '[[:space:]]' | tr ':' ' ')
 
-hsetroot -solid $bgcolor
+sleep 0.5
+
+hsetroot -$hsetrbg
+libinput-gestures-setup start
 compton -f -c &> /dev/null &
-panel &
+# panel &
+# polybar example
 dunst &

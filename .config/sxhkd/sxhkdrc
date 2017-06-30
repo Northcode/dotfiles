@@ -38,7 +38,7 @@ super + meta + d
       # Remove desktop
 
 super + space
-      rofi -show run
+      rofi -combi-modi window,run -show combi -modi combi
 
 super + meta + esc
       bspc quit
@@ -70,18 +70,6 @@ super + a ; c
 super + Return
       urxvt
 
-~button1
-	bspc pointer -g focus
-
-super + button{1-3}
-	bspc pointer -g {move,resize_side,resize_corner}
-
-super + !button{1-3}
-	bspc pointer -t %i %i
-
-super + @button{1-3}
-	bspc pointer -u
-
 super + b
       bspc desktop focused -f last
 
@@ -104,3 +92,20 @@ super + Escape
 # ISO_Left_Tab
 #       ~/savequit.sh
 
+XF86MonBrightnessUp
+	light -A 10
+
+XF86MonBrightnessDown
+	light -U 10
+	
+XF86AudioRaiseVolume
+	pactl set-sink-volume 0 +10%
+
+XF86AudioLowerVolume
+	pactl set-sink-volume 0 -10%
+
+XF86AudioMute
+	pactl set-sink-mute 0 toggle
+
+super + q
+      	~/bin/notify_info
