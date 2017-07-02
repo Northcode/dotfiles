@@ -1,0 +1,31 @@
+#!/bin/bash
+
+usage() {
+    echo "Usage: "
+    echo 'imgbsort <search folder> <dest folder>'
+}
+
+if [ $# -ne 2 ]
+ then
+     usage
+     exit
+fi
+
+if ! [ -x "$(command -v convert)" ]
+   then
+       echo "Imagemagick is required for the script to work"
+       exit
+fi
+
+# BRIGHTNESSES=$(find $1 -type f -exec convert {} -colorspace Gray -format "%[mean] {}\n" info: \;)
+BRIGHTNESSES=$(find $1 -type f -exec convert {} -colorspace HSL -format "%[fx:mean.L] {}\n" info: \;)
+
+MAX=$(echo "$BRIGHTNESSES" | sort -n | head -n 1 | cut -d " " -f 1)
+MIN=$(echo "$BRIGHTNESSES" | sort -n | tail -n 1 | cut -d " " -f 1)
+
+echo "Max brightness: $MAX, Min brightness: $MIN"
+
+for i in $(seq 0 0.2 0.8); do
+    mkdir -p $2/$i;
+    echo "$BRIGHTNESSES" | awk "\$1 > $i && \$1 < $i+0.2 { print }" | cut -d " " -f 2- | xargs -I _ cp "_" $2/$i/.; 
+done
