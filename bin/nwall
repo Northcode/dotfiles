@@ -1,0 +1,130 @@
+#!/bin/bash
+
+usage() {
+    echo "Usage:"
+    echo "nwall [-v] [subselector]"
+}
+
+
+
+
+#Setup vars
+CONFIG_FILE=~/.config/nwallrc
+VERBOSE=false
+WALL_DIR=~/.nwalls
+WALLSETTER="hsetroot -full"
+WALLDIRSUFFIX=""
+
+
+
+
+# Loop thrugh every option args
+while [[ $# -gt 0 ]]
+do
+    key="$1"
+    case $key in
+	-v)
+	    VERBOSE=true
+	    echo "Verbose mode on..."
+	    ;;
+	-c|--config)
+	    CONFIG_FILE="$2"
+	    $VERBOSE && echo "using custom config file $CONFIG_FILE"
+	    shift
+	    ;;
+	*)
+	    break
+	;;
+    esac
+    shift
+done
+
+# Check if there are positional args left
+if [ $# -gt 0 ]
+then
+    WALLDIRSUFFIX="/$1*"
+    SELECTOR=$WALL_DIR$WALLDIRSUFFIX
+    $VERBOSE && echo "using SELECTOR: $SELECTOR"
+    shift
+fi
+
+# If there are still arguments left now, we were called wrongly, print usage and exit
+if [ ! $# -eq 0 ]
+then
+    usage
+    exit
+fi
+
+
+
+
+# Check that our deps exist, if not tell the user to get them
+if [ -x "$(command -v hsetroot)" ]
+then
+    WALLSETTER="hsetroot -full"
+elif [ -x "$(command -v feh)" ]
+then
+    WALLSETTER="feh --bg-fill"
+else
+    echo "No wallpaper setter found, unable to set wallpaper."
+    echo "This script works with the following setters:"
+    echo "hsetroot, feh"
+    echo "It uses the first it finds in that order unless specified in ~./config/nwallrc"
+    exit
+fi
+$VERBOSE && echo "Wallpaper will be set with: $WALLSETTER "
+
+
+
+
+# if the config does not exist, create it
+if [ ! -r $CONFIG_FILE ]
+then
+    $VERBOSE && echo "Config file not found... creating default"
+    mkdir -p $(dirname $CONFIG_FILE)
+    success=false
+    cat > $CONFIG_FILE && success=true <<EOF
+WALL_DIR=~/.nwalls
+#WALLSETTER="hsetroot -full"
+EOF
+
+    # If we failed to write config file tell the user and exit
+    if ! $success; then
+	echo "Failed to write config file $CONFIG_FILE, exiting..."
+	exit
+    fi
+fi
+
+
+
+
+# actually load the config file
+$VERBOSE && echo "Loading config from $CONFIG_FILE..."
+source $CONFIG_FILE
+
+SELECTOR=$WALL_DIR$WALLDIRSUFFIX
+
+
+
+
+if [ ! -d $SELECTOR ]
+then
+    echo "Directory for wallpapers don't exist, trying base walldir (you can try another subselector)"
+    if [ ! -d $WALL_DIR ]
+    then
+	echo "Base walldir also does not exist, cannot continue..."
+	exit
+    else
+	SELECTOR=$WALL_DIR
+	$VERBOSE && echo "Base walldir exists, using that instead..."
+    fi
+fi
+
+
+
+
+$VERBOSE && echo "Loading wallpaper from $WALL_DIR..."
+
+# actually set the wallpaper
+$WALLSETTER "$(find $SELECTOR -type f | shuf | head -n 1)"
+

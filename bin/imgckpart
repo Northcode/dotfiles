@@ -1,0 +1,39 @@
+#!/bin/bash
+
+usage() {
+    echo "Usage: "
+    echo 'imgbsort <search folder> <dest folder> <imagemagick fx expression to sort images by. Ex: mean.lightness>'
+}
+
+if [ $# -ne 3 ]
+ then
+     usage
+     exit
+fi
+
+if ! [ -x "$(command -v bc)" ]
+then
+    echo "bc is required for the script to work"
+    exit 1
+fi
+
+if ! [ -x "$(command -v convert)" ]
+   then
+       echo "Imagemagick is required for the script to work"
+       exit 1
+fi
+
+# BRIGHTNESSES=$(find $1 -type f -exec convert {} -colorspace Gray -format "%[mean] {}\n" info: \;)
+BRIGHTNESSES=$(find $1 -type f -exec convert {} -colorspace HSL -format "%[fx:$3] {}\n" info: \;)
+
+MAX=$(echo "$BRIGHTNESSES" | sort -n | tail -n 1 | cut -d " " -f 1)
+MIN=$(echo "$BRIGHTNESSES" | sort -n | head -n 1 | cut -d " " -f 1)
+
+STEP=$(echo "scale=2; ($MAX - $MIN) / 5" | bc)
+
+echo "Max value: $MAX, Min value: $MIN"
+
+for i in $(seq $MIN $STEP $MAX); do
+    mkdir -p $2/$i;
+    echo "$BRIGHTNESSES" | awk "\$1 > $i && \$1 < $i+$STEP { print }" | cut -d " " -f 2- | xargs -I _ cp "_" $2/$i/.; 
+done
