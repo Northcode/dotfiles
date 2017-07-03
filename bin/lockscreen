@@ -1,3 +1,4 @@
+#!/bin/bash
 # tmpfile="/tmp/scrot.png"
 # scrot $tmpfile
 # #convert $tmpfile -scale 10% -scale 1000% $tmpfile
@@ -5,4 +6,6 @@
 # i3lock -i $tmpfile
 # xset dpms force standby
 #i3lock -i ~/bin/lock.png -t -d
-xscreensaver-command -l
+# xscreensaver-command -l
+
+light-locker-command -l
