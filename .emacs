@@ -11,6 +11,7 @@
 (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
 (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
 
+(add-to-list 'load-path "~/.emacs.d/elisp")
 ;; (add-to-list 'load-path "~/build/org-mode/lisp")
 
 (package-initialize)
@@ -142,6 +143,11 @@
 (use-package znc)
 
 (message "welcome back, master!")
+
+(defun set-alpha-hook (frame)
+  (set-frame-parameter frame 'alpha '(95 85)))
+
+(add-hook 'after-make-frame-functions 'set-alpha-hook)
 
 (require 'tls)
 (setq tls-program '("openssl s_client -connect %h:%p -ign_eof
@@ -374,6 +380,20 @@
   (add-to-list 'c-offsets-alist '(statement-cont . align-enum-class-closing-brace)))
 
 (add-hook 'c++-mode-hook 'fix-enum-class)
+
+(defun sudo-save ()
+  (interactive)
+  (if (not buffer-file-name)
+      (write-file (concat "/sudo:root@localhost:" (ido-read-file-name "File:")))
+    (write-file (concat "/sudo:root@localhost:" buffer-file-name))))
+
+(defun sudo-save-before-save-hook ()
+  (unless (file-writable-p (buffer-file-name))
+    (when (y-or-n-p "No write access, try with sudo?")
+      (sudo-save))))
+
+
+(add-hook 'before-save-hook 'sudo-save-before-save-hook)
 
 
 (defun load-mailconf (conf)
