@@ -6,7 +6,7 @@ URxvt*cursorUnderline: 1
 !URxvt*letterspace: -5
 URxvt*letterspace: 20
 !URxvt*fading: 10
-URxvt*fadeColor: #000000
+!URxvt*fadeColor: #000000
 URxvt*cursorBlink: false
 URxvt*depth: 32
 URxvt*internalBorder: 10
