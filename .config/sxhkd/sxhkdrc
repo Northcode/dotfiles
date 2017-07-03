@@ -40,7 +40,7 @@ super + meta + d
 super + space
       rofi -combi-modi window,run -show combi -modi combi
 
-super + meta + esc
+super + meta + Escape
       bspc quit
 
 super + {_,shift} + c
@@ -77,13 +77,16 @@ super + alt + Return
       ~/bin/lockscreen
 
 Print
-	scrot
+	scrot '/home/andreas/scrots/%Y-%m-%d-%H%M%S.png'
+
+alt + Print
+	scrot -u '/home/andreas/scrots/%Y-%m-%d-%H%M%S.png'
 
 shift + Print
-      	scrot -s
+      	scrot -s '/home/andreas/scrots/%Y-%m-%d-%H%M%S.png'
 
 control + Print
-	feh --bg-fill /data/Wallpapers/1920x1080/$(ls /data/Wallpapers/1920x1080/ | shuf | head -n 1) /data/Wallpapers/1920x1080/$(ls /data/Wallpapers/1920x1080/ | shuf | head -n 1) /data/Wallpapers/1920x1080/$(ls /data/Wallpapers/1920x1080/ | shuf | head -n 1)
+	hsetroot -full "$(find /home/andreas/Wallpapers -type f | shuf | head -n 1)" 1> ~/hsetroot-errors.log 2> ~/hsetroot-2.log
 
 # make sxhkd reload its configuration files:
 super + Escape
