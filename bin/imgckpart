@@ -2,10 +2,24 @@
 
 usage() {
     echo "Usage: "
-    echo 'imgbsort <search folder> <dest folder> <imagemagick fx expression to sort images by. Ex: mean.lightness>'
+    echo 'imgbsort [-l] <search folder> <dest folder> <num-partitions> <imagemagick fx expression to sort images by. Ex: mean.lightness>'
+    echo "Option -l makes it create symlinks instead of copying the files, use this if you are processing a large amount of files"
 }
 
-if [ $# -ne 3 ]
+while [ $# -gt 0 ]
+do
+    key=$1
+    case $key in
+	 -l|--links)
+	     USE_SYMLINKS=true
+	     ;;
+	 *)
+	     break;
+    esac
+    shift
+done
+
+if [ $# -ne 4 ]
  then
      usage
      exit
@@ -23,17 +37,31 @@ if ! [ -x "$(command -v convert)" ]
        exit 1
 fi
 
+FROM=$(realpath $1)
+TO=$(realpath $2)
+
+
 # BRIGHTNESSES=$(find $1 -type f -exec convert {} -colorspace Gray -format "%[mean] {}\n" info: \;)
-BRIGHTNESSES=$(find $1 -type f -exec convert {} -colorspace HSL -format "%[fx:$3] {}\n" info: \;)
+BRIGHTNESSES=$(find $FROM -type f -exec convert {} -colorspace HSL -format "%[fx:$4] {}\n" info: \;)
+
+# echo "$BRIGHTNESSES"
 
 MAX=$(echo "$BRIGHTNESSES" | sort -n | tail -n 1 | cut -d " " -f 1)
 MIN=$(echo "$BRIGHTNESSES" | sort -n | head -n 1 | cut -d " " -f 1)
 
-STEP=$(echo "scale=2; ($MAX - $MIN) / 5" | bc)
+STEP=$(echo "scale=2; ($MAX - $MIN) / $3" | bc)
 
 echo "Max value: $MAX, Min value: $MIN"
 
+if $USE_SYMLINKS
+then
+    COMMAND="ln -s"
+else
+    COMMAND=cp
+fi
+
+
 for i in $(seq $MIN $STEP $MAX); do
-    mkdir -p $2/$i;
-    echo "$BRIGHTNESSES" | awk "\$1 > $i && \$1 < $i+$STEP { print }" | cut -d " " -f 2- | xargs -I _ cp "_" $2/$i/.; 
+    mkdir -p $TO/$i;
+    echo "$BRIGHTNESSES" | awk "\$1 > $i && \$1 < $i+$STEP { print }" | cut -d " " -f 2- | xargs -I _ $COMMAND "_" $TO/$i/.; 
 done
