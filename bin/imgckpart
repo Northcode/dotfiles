@@ -2,7 +2,7 @@
 
 usage() {
     echo "Usage: "
-    echo 'imgbsort [-l] <search folder> <dest folder> <num-partitions> <imagemagick fx expression to sort images by. Ex: mean.lightness>'
+    echo 'imgckpart [-l] <search folder> <dest folder> <num-partitions> <imagemagick fx expression to sort images by. Ex: mean.lightness>'
     echo "Option -l makes it create symlinks instead of copying the files, use this if you are processing a large amount of files"
 }
 
