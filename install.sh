@@ -32,6 +32,10 @@ echo "linking xinitrc"
 rm ~/.mbsyncrc
 ln -sf $BASEDIR/.mbsyncrc ~/.mbsyncrc 
 
+echo "linking xprofile"
+rm ~/.xprofile
+ln -sf $BASEDIR/.xprofile ~/.xprofile
+
 echo "linking zshrc"
 rm ~/.zshrc
 ln -sfv "$BASEDIR/zshrc" ~/.zshrc
