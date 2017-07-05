@@ -194,6 +194,15 @@
        (interactive)
        (revert-buffer t t))
 
+(defun cpp-insert-lock-guard () "Insert a lock guard in a cpp header file"
+       (interactive)
+       (let ((guardname (upcase (s-replace "." "_" (buffer-name)))))
+	 (beginning-of-buffer)
+	 (insert (format "#ifndef %s\n#define %s\n" guardname guardname))
+	 (end-of-buffer)
+	 (insert "\n#endif\n")))
+
+
 (defun eshell-evil-hat ()
   "Replace hat command in evil in eshell to jump to start of command instead of line."
   (interactive)
