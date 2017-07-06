@@ -147,6 +147,10 @@
 (defun set-alpha-hook (frame)
   (set-frame-parameter frame 'alpha '(95 85)))
 
+(when (file-readable-p "/usr/share/clang/clang-format.el")
+  (load "/usr/share/clang/clang-format.el")
+  (define-key c++-mode-map (kbd "C-c f") 'clang-format-buffer))
+
 (add-hook 'after-make-frame-functions 'set-alpha-hook)
 
 (require 'tls)
@@ -194,13 +198,14 @@
        (interactive)
        (revert-buffer t t))
 
-(defun cpp-insert-lock-guard () "Insert a lock guard in a cpp header file"
+(defun cpp-insert-header-guard () "Insert a header guard in a cpp header file"
        (interactive)
        (let ((guardname (upcase (s-replace "." "_" (buffer-name)))))
+	 (save-excursion (progn
 	 (beginning-of-buffer)
 	 (insert (format "#ifndef %s\n#define %s\n" guardname guardname))
 	 (end-of-buffer)
-	 (insert "\n#endif\n")))
+	 (insert "\n#endif\n")))))
 
 
 (defun eshell-evil-hat ()
