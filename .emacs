@@ -122,8 +122,8 @@
 ;; calendar stuff
 (use-package calfw :init (progn
 			   (require 'calfw)
-			   (require 'calfw-ical))
-  )
+			   (require 'calfw-ical)))
+
 (use-package calfw-gcal)
 
 ;; misc stuff
@@ -149,7 +149,9 @@
 
 (when (file-readable-p "/usr/share/clang/clang-format.el")
   (load "/usr/share/clang/clang-format.el")
-  (define-key c++-mode-map (kbd "C-c f") 'clang-format-buffer))
+  (add-hook 'c++-mode-hook
+  	    (lambda () "Add clang-format keybinds"
+  (define-key c++-mode-map (kbd "C-c f") 'clang-format-buffer))))
 
 (add-hook 'after-make-frame-functions 'set-alpha-hook)
 
@@ -698,4 +700,3 @@
 
 (provide 'emacs)
 ;;; .emacs ends here
-
