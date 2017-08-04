@@ -1,0 +1,12 @@
+#!/bin/bash
+_W_CLASSNAME=$(bspc query -N -n focused | xargs bspc query -T -n | jq .client.className | tr -d '\"')
+if [ "$_W_CLASSNAME" == "Firefox" ]
+then
+    xdotool key alt+Right
+elif [ "$_W_CLASSNAME" == "TelegramDesktop" ]
+then
+     xdotool key alt+Down
+else
+    # notify-send "no gesture found for classname $_W_CLASSNAME"
+    nop
+fi
