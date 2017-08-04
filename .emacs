@@ -50,13 +50,28 @@
 (use-package yasnippet
   :init (add-hook 'prog-mode-hook #'yas-minor-mode))
 
-(use-package company
-  :init
-  (add-hook 'prog-mode-hook 'company-mode))
 
-(use-package company-c-headers)
-(use-package company-jedi)
-(use-package company-web)
+(use-package auto-complete
+  :init
+  (require 'auto-complete)
+  (require 'auto-complete-config)
+  (ac-config-default)
+  (add-hook 'prog-mode-hook 'auto-complete-mode))
+
+(use-package auto-complete-c-headers
+  :init
+  (require 'auto-complete-c-headers)
+  (let ((acc-hook (lambda () (add-to-list 'ac-sources 'ac-source-c-headers))))
+    (add-hook 'c++-mode-hook acc-hook)
+    (add-hook 'c-mode-hook acc-hook)))
+
+(defun ac-hook:semantic-mode ()
+  (add-to-list 'ac-sources 'ac-source-semantic))
+
+(add-hook 'c-mode-common-hook 'ac-hook:semantic-mode)
+
+(add-hook 'c-mode-common-hook 'semantic-mode)
+
 
 (use-package recentf
   :init (recentf-mode 1))
@@ -232,6 +247,7 @@
 
 (key-chord-define evil-insert-state-map "jk" 'evil-normal-state)
 (bind-keys
+ ("M-z" . universal-argument)
  ("C-c e" . eshell)
  ("C-c E" . ansi-term)
  ("C-c a" . org-agenda)
@@ -250,7 +266,7 @@
  ("C-c m" . mu4e)
  ("C-c b" . ibuffer)
  ("C-c w" . helm-systemd)
-
+ 
  ("C-<tab>" . hippie-expand)
 
  ("C-c r f"   . rtags-find-symbol-at-point)
@@ -575,7 +591,7 @@
  '(custom-enabled-themes (quote (kaolin)))
  '(custom-safe-themes
    (quote
-    ("a9a3997a39f1a0771b99329bb628a49d3584c7d270506d9d005becc4f5349b84" "6cca9f90d6078c1f4e2359746fd73adad025375b0c87bc949ceb4ad479a72ef6" "ecb9fe1d5b165a35499191a909b2b5710a52935614058b327a39bfbbb07c7dc8" "9cb6358979981949d1ae9da907a5d38fb6cde1776e8956a1db150925f2dad6c1" "fe1682ca8f7a255cf295e76b0361438a21bb657d8846a05d9904872aa2fb86f2" "80ceeb45ccb797fe510980900eda334c777f05ee3181cb7e19cd6bb6fc7fda7c" "d606ac41cdd7054841941455c0151c54f8bff7e4e050255dbd4ae4d60ab640c1" "78559045fb299f3542c232166ad635c59cf0c6578d80a58b885deafe98a36c66" "55d31108a7dc4a268a1432cd60a7558824223684afecefa6fae327212c40f8d3" "38e66a2a20fa9a27af5ffc4f4dd54f69e3fef6b51be7b351e137b24958bfebd7" "d8f76414f8f2dcb045a37eb155bfaa2e1d17b6573ed43fb1d18b936febc7bbc2" default)))
+    ("ad30746a316d5fb6fedfb585c0aff4f795730d874e3cff87fe33120377a7b8de" "a9a3997a39f1a0771b99329bb628a49d3584c7d270506d9d005becc4f5349b84" "6cca9f90d6078c1f4e2359746fd73adad025375b0c87bc949ceb4ad479a72ef6" "ecb9fe1d5b165a35499191a909b2b5710a52935614058b327a39bfbbb07c7dc8" "9cb6358979981949d1ae9da907a5d38fb6cde1776e8956a1db150925f2dad6c1" "fe1682ca8f7a255cf295e76b0361438a21bb657d8846a05d9904872aa2fb86f2" "80ceeb45ccb797fe510980900eda334c777f05ee3181cb7e19cd6bb6fc7fda7c" "d606ac41cdd7054841941455c0151c54f8bff7e4e050255dbd4ae4d60ab640c1" "78559045fb299f3542c232166ad635c59cf0c6578d80a58b885deafe98a36c66" "55d31108a7dc4a268a1432cd60a7558824223684afecefa6fae327212c40f8d3" "38e66a2a20fa9a27af5ffc4f4dd54f69e3fef6b51be7b351e137b24958bfebd7" "d8f76414f8f2dcb045a37eb155bfaa2e1d17b6573ed43fb1d18b936febc7bbc2" default)))
  '(default-frame-alist (quote ((vertical-scroll-bars))))
  '(erc-modules
    (quote
@@ -600,6 +616,7 @@
  '(forecast-country "Norway")
  '(forecast-latitude 67.285573)
  '(forecast-longitude 14.561691)
+ '(global-company-mode t)
  '(helm-mode t)
  '(highlight-changes-colors (quote ("#ff8eff" "#ab7eff")))
  '(highlight-tail-colors
@@ -639,11 +656,22 @@
  '(org-time-stamp-custom-formats (quote ("<%M. %d %Y>" . "<%m/%d/%y %a %H:%M>")))
  '(package-selected-packages
    (quote
-    (elfeed-org elfeed-goodies elfeed podcaster eshell-did-you-mean eshell-up kaolin-theme flycheck-haskell inf-clojure lorem-ipsum paradox magit-gitflow writeroom-mode restclient ag dired+ auctex ace-window ix flycheck-irony irony rtags haskell-mode org-trello bookmark+ gradle-mode fireplace which-key melpa clj-refactor csharp-mode helm-systemd znc ibuffer-git ibuffer-projectile rainbow-mode hexrgb helm-ag yasnippet xkcd web-mode use-package tango-plus-theme spacegray-theme scss-mode powerline-evil org-journal org-bullets mu4e-maildirs-extension mu4e-alert mingus markdown-mode mark-multiple key-chord ido-vertical-mode howdoi highlight-parentheses helm-swoop helm-projectile helm-mu helm-company haste foggy-night-theme flycheck expand-region evil-surround evil-paredit evil-org evil-mu4e evil-magit evil-commentary darkokai-theme company-web company-jedi company-c-headers cmake-ide cmake-font-lock cider calfw-gcal calfw)))
+    (outshine flycheck auto-complete-c-headers auto-complete elfeed-org elfeed-goodies elfeed podcaster eshell-did-you-mean eshell-up kaolin-theme flycheck-haskell inf-clojure lorem-ipsum paradox magit-gitflow writeroom-mode restclient ag dired+ auctex ace-window ix flycheck-irony irony rtags haskell-mode org-trello bookmark+ gradle-mode fireplace which-key melpa clj-refactor csharp-mode helm-systemd znc ibuffer-git ibuffer-projectile rainbow-mode hexrgb helm-ag yasnippet xkcd web-mode use-package tango-plus-theme spacegray-theme scss-mode powerline-evil org-journal org-bullets mu4e-maildirs-extension mu4e-alert mingus markdown-mode mark-multiple key-chord ido-vertical-mode howdoi highlight-parentheses helm-swoop helm-projectile helm-mu haste foggy-night-theme expand-region evil-surround evil-paredit evil-org evil-mu4e evil-magit evil-commentary darkokai-theme cmake-ide cmake-font-lock cider calfw-gcal calfw)))
  '(paradox-github-token t)
  '(podcaster-mp3-player "/usr/sbin/mpv")
  '(pos-tip-background-color "#E6DB74")
  '(pos-tip-foreground-color "#242728")
+ '(safe-local-variable-values
+   (quote
+    ((eval let
+	   ((root
+	     (projectile-project-root)))
+	   (setq-local flycheck-clang-include-path
+		       (list
+			(file-truename
+			 (concat root "src/alb"))
+			(file-truename
+			 (concat root "src/inc"))))))))
  '(scroll-bar-mode nil)
  '(tool-bar-mode nil)
  '(vc-annotate-background nil)
