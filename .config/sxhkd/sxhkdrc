@@ -19,6 +19,12 @@ super + d
 super + s ; {a,s,d,f}
       bspc node -t {tiled,floating,pseudo_tiled,fullscreen}
 
+super + t ; {h,s,p,l}
+      bspc node --flag {hidden, sticky, private, locked}
+
+super + r ; b
+      bspc node -B
+
 super + alt + s
       bspc desktop -l next
 
