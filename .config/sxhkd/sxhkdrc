@@ -65,7 +65,7 @@ super + a ; q
       telegram-desktop
 
 super + a ; f
-      firefox
+      firefox-nightly
 
 super + a ; s
       pavucontrol
