@@ -14,7 +14,7 @@ Account gmail
 MaildirStore gmail-local
 Path ~/.mail/gmail/
 Inbox ~/.mail/gmail/Inbox
-SubFolders verbatim
+# SubFolders verbatim
 
 # Channel gmail
 # Master :gmail-remote:
@@ -69,7 +69,7 @@ Account northcode
 MaildirStore northcode-local
 Path ~/.mail/northcode/
 Inbox ~/.mail/northcode/Inbox
-SubFolders verbatim
+# SubFolders verbatim
 
 Channel northcode
 Master :northcode-remote:
