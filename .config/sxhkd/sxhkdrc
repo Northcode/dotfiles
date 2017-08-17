@@ -46,7 +46,7 @@ super + meta + d
 super + space
       rofi -combi-modi window,run -show combi -modi combi
 
-super + meta + Escape
+super + alt + Escape
       bspc quit
 
 super + {_,shift} + c
