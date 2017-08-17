@@ -14,7 +14,7 @@ VERBOSE=false
 WALL_DIR=~/.nwalls
 WALLSETTER="hsetroot -full"
 WALLDIRSUFFIX=""
-
+NR_WALLS=1
 
 
 
@@ -30,6 +30,11 @@ do
 	-c|--config)
 	    CONFIG_FILE="$2"
 	    $VERBOSE && echo "using custom config file $CONFIG_FILE"
+	    shift
+	    ;;
+	-n|--nr-walls)
+	    NR_WALLS="$2"
+	    $VERBOSE && echo "loading $NR_WALLS number of wallpapers"
 	    shift
 	    ;;
 	*)
@@ -125,6 +130,13 @@ fi
 
 $VERBOSE && echo "Loading wallpaper from $WALL_DIR..."
 
+WALLPAPERS=""
+
+for i in $(seq 1 $NR_WALLS)
+do
+    WALLPAPERS="$WALLPAPERS $(find $SELECTOR -type f | shuf | head -n 1)"
+done
+
 # actually set the wallpaper
-$WALLSETTER "$(find $SELECTOR -type f | shuf | head -n 1)"
+$WALLSETTER $WALLPAPERS
 
