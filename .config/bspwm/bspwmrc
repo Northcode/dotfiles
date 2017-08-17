@@ -1,5 +1,8 @@
 #! /bin/sh
 
+export LANG=en_GB.UTF-0
+export LC_ALL=en_GB.UTF-0
+
 # load bspwm config from xrdb
 xrdb -query | grep bspwm | cut -c7- | while read -r c; do
 
@@ -14,11 +17,9 @@ browdesks="www music"
 playdesks="steam wine"
 extrdesks="spc1 spc2"
 
-# bspc monitor HDMI-0 -d $maindesks $playdesks
-# bspc monitor DVI-I-1 -d $extrdesks
-# bspc monitor DVI-D-0 -d $browdesks
-# bspc monitor LVDS-1-1 -d $maindesks $browdesks
 bspc monitor HDMI-0 -d 1 2 3 4 5 6
+bspc monitor DVI-I-0 -d 1 2 3 4 5 6
+bspc monitor DVI-D-0 -d 1 2 3 4 5 6
 bspc monitor eDP-1 -d 1 2 3 4 5 6
 
 # set PATH so it includes user's private bin if it exists
@@ -26,14 +27,10 @@ if [ -d "$HOME/bin" ] ; then
     export PATH="$HOME/bin:$PATH"
 fi
 
-#sudo xboxdrv --detach-kernel-driver --mimic-xpad &
-
-# bspc config focus_follows_pointer true
 bspc config click_to_focus true
 
 bspc rule -r "*"
 bspc rule -a Navigator desktop=www follow=off
-# bspc rule -a Emacs desktop=emacs
 bspc rule -a MPlayer state=fullscreen
 bspc rule -a Screenkey manage=off
 bspc rule -a Telegram desktop=chat follow=off
@@ -42,22 +39,14 @@ bspc rule -a "Ardour-5.9.0" follow=on state=floating
 
 bspc config focus_follows_pointer true
 
-
 pkill compton
-#panel stop
 pkill dunst
 libinput-gestures-setup stop
 
-# bgcolor=$(xrdb -query | grep hsetroot.solid | cut -d ':' -f 2 | tr -d '[[:space:]]')
-# bgimage=$(xrdb -query | grep hsetroot.full | cut -d ':' -f 2 | tr -d '[[:space:]]')
-hsetrbg=$(xrdb -query | grep hsetroot | cut -d . -f 2- | tr -d '[[:space:]]' | tr ':' ' ')
-
 sleep 0.5
 
-hsetroot -$hsetrbg
+~/bin/nwall
 libinput-gestures-setup start
 compton -f -c &> /dev/null &
-# panel &
-# polybar example
 dunst &
-xscreensaver &
+# xscreensaver &
