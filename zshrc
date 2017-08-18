@@ -36,9 +36,16 @@ else
     alias prezget='git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"'
 
     if [ -z $STY ]; then
-	screen -x
+	# screen -x
     else
 	PS1=screen$PS1
+    fi
+
+    if [ -x "$(command -v fortune)" ] && [ -x "$(command -v cowsay)" ] && [ -x "$(command -v lolcat)" ]
+    then
+	fortune | cowsay -s | lolcat
+    else
+	echo "you should really get fortune, cowsay and lolcat"
     fi
 
 
