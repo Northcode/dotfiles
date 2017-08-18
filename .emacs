@@ -723,7 +723,7 @@
  '(widget-field ((t (:box (:line-width 1 :color "#666666"))))))
 
 
-(startup-script)
+;; (startup-script)
 
 
 (provide 'emacs)
