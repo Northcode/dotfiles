@@ -1,7 +1,7 @@
 ! special
 *.foreground:   #f6f3e8
 *.background: 	#242424
-URxvt.background:rgba:0000/0000/0000/9999
+URxvt.background:rgba:0000/0000/0000/bbbb
 ! Urxvt.background:rgba:0000/0000/0000/9999
 *.cursorColor:  #656565
 
