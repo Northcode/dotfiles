@@ -1,5 +1,10 @@
 clock=$(date +"%H:%M")
 date=$(date +"%d.%m")
-batt=$(acpi -b | cut -d : -f 2 | cut -d , -f -2 | tr -d " ")
+if [ -x "$(command -v acpi)" ]
+then
+    batt=$(acpi -b | cut -d : -f 2 | cut -d , -f -2 | tr -d " ")
+else
+    batt=""
+fi
 
 notify-send -u normal "$clock | $date | $batt"
