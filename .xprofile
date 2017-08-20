@@ -1,5 +1,5 @@
 export XDG_RUNTIME_DIR="/run/user/$UID"
-export DBUS_SESSION_BUS_ADDRESS="unix:path=$(XDG_RUNTIME_DIR)/bus"
+export DBUS_SESSION_BUS_ADDRESS="unix:path=$XDG_RUNTIME_DIR/bus"
 xrdb ~/.config/X/resources
 
 touchpad_id=$(xinput list --short | grep -i touchpad | cut -f 2 | cut -d = -f 2)
