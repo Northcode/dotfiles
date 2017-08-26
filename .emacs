@@ -162,14 +162,16 @@
 
 (add-hook 'after-make-frame-functions 'set-alpha-hook)
 
-(require 'tls)
-(setq tls-program '("openssl s_client -connect %h:%p -ign_eof
-                                       -CAfile /etc/ca-certificates/extracted/tls-ca-bundle.pem
-                                       -cert /home/andreas/user.pem"
-		    "gnutls-cli --priority secure256 
-                                 --x509cafile /home/ootput/.private/certs/CAs.pem 
-                                 --x509certfile /home/ootput/.private/certs/nick.pem -p %p %h" 
-		    "gnutls-cli --priority secure256 -p %p %h"))
+(if (not (memq system-type '(windows-nt ms-dos)))
+    (progn
+      (require 'tls)
+      (setq tls-program '("openssl s_client -connect %h:%p -ign_eof
+				       -CAfile /etc/ca-certificates/extracted/tls-ca-bundle.pem
+				       -cert /home/andreas/user.pem"
+			  "gnutls-cli --priority secure256 
+				 --x509cafile /home/ootput/.private/certs/CAs.pem 
+				 --x509certfile /home/ootput/.private/certs/nick.pem -p %p %h" 
+			  "gnutls-cli --priority secure256 -p %p %h"))))
 
 
 (setq search-whitespace-regexp ".*?"
