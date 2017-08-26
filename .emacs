@@ -134,25 +134,17 @@
 (use-package org-bullets)
 (use-package org-journal)
 
-;; calendar stuff
-(use-package calfw :init (progn
-			   (require 'calfw)
-			   (require 'calfw-ical)))
-
-(use-package calfw-gcal)
-
 ;; misc stuff
 (use-package haste)
-(use-package evil-mu4e)
-(use-package helm-mu)
 (use-package mingus)
 (use-package highlight-parentheses)
 (use-package xkcd)
 
-(use-package mu4e-maildirs-extension)
-(use-package mu4e-alert)
 
 (use-package ace-window
+  :config
+  (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)
+	aw-scope 'frame)
   :bind ("C-x C-o" . ace-window))
 
 (use-package znc)
@@ -263,7 +255,6 @@
 
  ("C-c c" . open-ical-calendar)
  ("C-c d" . mingus)
- ("C-c m" . mu4e)
  ("C-c b" . ibuffer)
  ("C-c w" . helm-systemd)
  
@@ -479,6 +470,14 @@
   (require 'evil-mu4e)
   (require 'mu4e-maildirs-extension)
 
+  (use-package evil-mu4e)
+  (use-package mu4e-maildirs-extension)
+  (use-package mu4e-alert)
+  (use-package helm-mu)
+
+  (bind-keys
+   ("C-c m" . mu4e))
+
   (load-mailconf user-mailconf)
 
   (mu4e-maildirs-extension)
@@ -493,6 +492,7 @@
 
 (if (file-exists-p "/usr/share/emacs/site-lisp/mu4e")
     (progn
+
       (message "loading mu4e config")
       (load-mu4e-conf)))
 
@@ -586,6 +586,8 @@
      ("LaTeXnonint" "%`%l -interaction=nonstopmode %(mode)%' %t" TeX-run-command nil t))))
  '(ansi-color-names-vector
    ["#2e3436" "#a40000" "#4e9a06" "#c4a000" "#204a87" "#5c3566" "#729fcf" "#eeeeec"])
+ '(browse-url-browser-function (quote browse-url-generic))
+ '(browse-url-generic-program "firefox-nightly")
  '(compilation-message-face (quote default))
  '(compilation-read-command nil)
  '(custom-enabled-themes (quote (kaolin)))
@@ -656,7 +658,7 @@
  '(org-time-stamp-custom-formats (quote ("<%M. %d %Y>" . "<%m/%d/%y %a %H:%M>")))
  '(package-selected-packages
    (quote
-    (ac-c-headers flycheck-kotlin kotlin-mode outshine flycheck auto-complete-c-headers auto-complete elfeed-org elfeed-goodies elfeed podcaster eshell-did-you-mean eshell-up kaolin-theme flycheck-haskell inf-clojure lorem-ipsum paradox magit-gitflow writeroom-mode restclient ag dired+ auctex ace-window ix flycheck-irony irony rtags haskell-mode org-trello bookmark+ gradle-mode fireplace which-key melpa clj-refactor csharp-mode helm-systemd znc ibuffer-git ibuffer-projectile rainbow-mode hexrgb helm-ag yasnippet xkcd web-mode use-package tango-plus-theme spacegray-theme scss-mode powerline-evil org-journal org-bullets mu4e-maildirs-extension mu4e-alert mingus markdown-mode mark-multiple key-chord ido-vertical-mode howdoi highlight-parentheses helm-swoop helm-projectile helm-mu haste foggy-night-theme expand-region evil-surround evil-paredit evil-org evil-mu4e evil-magit evil-commentary darkokai-theme cmake-ide cmake-font-lock cider calfw-gcal calfw)))
+    (omnisharp chronos ac-c-headers flycheck-kotlin kotlin-mode outshine flycheck auto-complete-c-headers auto-complete elfeed-org elfeed-goodies elfeed podcaster eshell-did-you-mean eshell-up kaolin-theme flycheck-haskell inf-clojure lorem-ipsum paradox magit-gitflow writeroom-mode restclient ag dired+ auctex ace-window ix flycheck-irony irony rtags haskell-mode org-trello bookmark+ gradle-mode fireplace which-key melpa clj-refactor csharp-mode helm-systemd znc ibuffer-git ibuffer-projectile rainbow-mode hexrgb helm-ag yasnippet xkcd web-mode use-package tango-plus-theme spacegray-theme scss-mode powerline-evil org-journal org-bullets mu4e-maildirs-extension mu4e-alert mingus markdown-mode mark-multiple key-chord ido-vertical-mode howdoi highlight-parentheses helm-swoop helm-projectile helm-mu haste foggy-night-theme expand-region evil-surround evil-paredit evil-org evil-mu4e evil-magit evil-commentary darkokai-theme cmake-ide cmake-font-lock cider calfw-gcal calfw)))
  '(paradox-github-token t)
  '(podcaster-mp3-player "/usr/sbin/mpv")
  '(pos-tip-background-color "#E6DB74")
@@ -723,7 +725,7 @@
  '(widget-field ((t (:box (:line-width 1 :color "#666666"))))))
 
 
-;; (startup-script)
+(startup-script)
 
 
 (provide 'emacs)
