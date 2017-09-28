@@ -130,13 +130,6 @@ fi
 
 $VERBOSE && echo "Loading wallpaper from $WALL_DIR..."
 
-WALLPAPERS=""
-
-for i in $(seq 1 $NR_WALLS)
-do
-    WALLPAPERS="$WALLPAPERS $(find $SELECTOR -type f | shuf | head -n 1)"
-done
-
 # actually set the wallpaper
-$WALLSETTER $WALLPAPERS
+$WALLSETTER "$(find $SELECTOR -type f | shuf | head -n 1)"
 
