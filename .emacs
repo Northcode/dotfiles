@@ -1,4 +1,4 @@
-;;; .emacs -- Emacs config
+;; .emacs -- Emacs config
 ;;; Commentary:
 ;;; My Emacs config
 ;;; Code:
@@ -133,12 +133,19 @@
 (use-package org)
 (use-package org-bullets)
 (use-package org-journal)
+(use-package org-doing
+  :config
+  (setq org-doing-file "~/org/doing.org"))
 
 ;; misc stuff
 (use-package haste)
 (use-package mingus)
 (use-package highlight-parentheses)
 (use-package xkcd)
+
+(use-package nov
+  :config
+  (push '("\\.epub\\'" . nov-mode) auto-mode-alist))
 
 
 (use-package ace-window
@@ -149,10 +156,19 @@
 
 (use-package znc)
 
+(use-package hledger-mode
+  :config
+  (setq hledger-jfile (expand-file-name "~/org/main.hledger"))
+  :mode ("\\.journal\\'" "\\.hledger\\'")
+  :bind
+  (("C-c l" . hledger-run-command)
+   ("C-c k" . hledger-jentry)))
+
+
 (message "welcome back, master!")
 
 (defun set-alpha-hook (frame)
-  (set-frame-parameter frame 'alpha '(95 85)))
+  (set-frame-parameter frame 'alpha '(100 85)))
 
 (when (file-readable-p "/usr/share/clang/clang-format.el")
   (load "/usr/share/clang/clang-format.el")
@@ -255,10 +271,11 @@
  ("C-c s" . helm-swoop)
  ("C-c S" . helm-ag)
 
- ("C-c c" . open-ical-calendar)
+ ("C-c c" . org-capture)
  ("C-c d" . mingus)
  ("C-c b" . ibuffer)
  ("C-c w" . helm-systemd)
+ ("C-c o d" . org-doing)
  
  ("C-<tab>" . hippie-expand)
 
@@ -590,12 +607,13 @@
    ["#2e3436" "#a40000" "#4e9a06" "#c4a000" "#204a87" "#5c3566" "#729fcf" "#eeeeec"])
  '(browse-url-browser-function (quote browse-url-generic))
  '(browse-url-generic-program "firefox-nightly")
+ '(chronos-shell-notify-program "notify-send")
  '(compilation-message-face (quote default))
  '(compilation-read-command nil)
- '(custom-enabled-themes (quote (kaolin)))
+ '(custom-enabled-themes (quote (spacegray)))
  '(custom-safe-themes
    (quote
-    ("3b31ebd74082c6a3043dfd8112069163978330e21cfc9e6ff2c9798dfd6d6505" "430f010f861b17aa2d5f5c74a6a7ed43f250ee9b405bf98e49cbebbbb20a9dd7" "ad30746a316d5fb6fedfb585c0aff4f795730d874e3cff87fe33120377a7b8de" "a9a3997a39f1a0771b99329bb628a49d3584c7d270506d9d005becc4f5349b84" "6cca9f90d6078c1f4e2359746fd73adad025375b0c87bc949ceb4ad479a72ef6" "ecb9fe1d5b165a35499191a909b2b5710a52935614058b327a39bfbbb07c7dc8" "9cb6358979981949d1ae9da907a5d38fb6cde1776e8956a1db150925f2dad6c1" "fe1682ca8f7a255cf295e76b0361438a21bb657d8846a05d9904872aa2fb86f2" "80ceeb45ccb797fe510980900eda334c777f05ee3181cb7e19cd6bb6fc7fda7c" "d606ac41cdd7054841941455c0151c54f8bff7e4e050255dbd4ae4d60ab640c1" "78559045fb299f3542c232166ad635c59cf0c6578d80a58b885deafe98a36c66" "55d31108a7dc4a268a1432cd60a7558824223684afecefa6fae327212c40f8d3" "38e66a2a20fa9a27af5ffc4f4dd54f69e3fef6b51be7b351e137b24958bfebd7" "d8f76414f8f2dcb045a37eb155bfaa2e1d17b6573ed43fb1d18b936febc7bbc2" default)))
+    ("37bdda288337f95acabe21ae0e60ac5b6850dd2d57bc9ecf4c11d6c83999b4fa" "a4c9e536d86666d4494ef7f43c84807162d9bd29b0dfd39bdf2c3d845dcc7b2e" "5cd0afd0ca01648e1fff95a7a7f8abec925bd654915153fb39ee8e72a8b56a1f" "3b31ebd74082c6a3043dfd8112069163978330e21cfc9e6ff2c9798dfd6d6505" "430f010f861b17aa2d5f5c74a6a7ed43f250ee9b405bf98e49cbebbbb20a9dd7" "ad30746a316d5fb6fedfb585c0aff4f795730d874e3cff87fe33120377a7b8de" "a9a3997a39f1a0771b99329bb628a49d3584c7d270506d9d005becc4f5349b84" "6cca9f90d6078c1f4e2359746fd73adad025375b0c87bc949ceb4ad479a72ef6" "ecb9fe1d5b165a35499191a909b2b5710a52935614058b327a39bfbbb07c7dc8" "9cb6358979981949d1ae9da907a5d38fb6cde1776e8956a1db150925f2dad6c1" "fe1682ca8f7a255cf295e76b0361438a21bb657d8846a05d9904872aa2fb86f2" "80ceeb45ccb797fe510980900eda334c777f05ee3181cb7e19cd6bb6fc7fda7c" "d606ac41cdd7054841941455c0151c54f8bff7e4e050255dbd4ae4d60ab640c1" "78559045fb299f3542c232166ad635c59cf0c6578d80a58b885deafe98a36c66" "55d31108a7dc4a268a1432cd60a7558824223684afecefa6fae327212c40f8d3" "38e66a2a20fa9a27af5ffc4f4dd54f69e3fef6b51be7b351e137b24958bfebd7" "d8f76414f8f2dcb045a37eb155bfaa2e1d17b6573ed43fb1d18b936febc7bbc2" default)))
  '(default-frame-alist (quote ((vertical-scroll-bars))))
  '(erc-modules
    (quote
@@ -608,6 +626,8 @@
  '(erc-prompt-for-password nil)
  '(erc-server "northcode.no")
  '(erc-user-full-name "Andreas Larsen")
+ '(eshell-cp-interactive-query t)
+ '(eshell-default-target-is-dot t)
  '(evil-commentary-mode t)
  '(evil-emacs-state-modes
    (quote
@@ -633,6 +653,9 @@
      ("#A75B00" . 70)
      ("#F309DF" . 85)
      ("#424748" . 100))))
+ '(hledger-currency-string "kr")
+ '(hledger-jfile "/home/andreas/2017.journal")
+ '(hledger-reporting-day 30)
  '(inhibit-startup-screen t)
  '(initial-buffer-choice "~/org/welcome.org")
  '(magit-commit-arguments (quote ("--gpg-sign=D97194E55873280A")))
@@ -646,12 +669,18 @@
      ("date:today..now AND NOT maildir:\"/northcode/Junk\"" "Today's messages" 116)
      ("date:7d..now AND NOT maildir:\"/northcode/Junk\"" "Last 7 days" 119)
      ("mime:image/*" "Messages with images" 112))))
- '(org-agenda-files (quote ("~/Journal" "~/projects/school/")))
+ '(nrepl-message-colors
+   (quote
+    ("#336c6c" "#205070" "#0f2050" "#806080" "#401440" "#6c1f1c" "#6b400c" "#23733c")))
+ '(org-agenda-files (quote ("~/org" "~/projects/school/")))
  '(org-babel-load-languages (quote ((emacs-lisp . t) (shell . t))))
  '(org-capture-templates
    (quote
-    (("a" "Todo item" entry
-      (file "~/Journal/todo.org")
+    (("n" "Note item" entry
+      (file "~/org/notes.org")
+      "* ")
+     ("a" "Todo item" entry
+      (file "~/org/todo.org")
       "* TODO "))))
  '(org-journal-dir "~/Journal/")
  '(org-journal-file-format "%Y-%m-%d.org")
@@ -660,8 +689,9 @@
  '(org-time-stamp-custom-formats (quote ("<%M. %d %Y>" . "<%m/%d/%y %a %H:%M>")))
  '(package-selected-packages
    (quote
-    (omnisharp chronos ac-c-headers flycheck-kotlin kotlin-mode outshine flycheck auto-complete-c-headers auto-complete elfeed-org elfeed-goodies elfeed podcaster eshell-did-you-mean eshell-up kaolin-theme flycheck-haskell inf-clojure lorem-ipsum paradox magit-gitflow writeroom-mode restclient ag dired+ auctex ace-window ix flycheck-irony irony rtags haskell-mode org-trello bookmark+ gradle-mode fireplace which-key melpa clj-refactor csharp-mode helm-systemd znc ibuffer-git ibuffer-projectile rainbow-mode hexrgb helm-ag yasnippet xkcd web-mode use-package tango-plus-theme spacegray-theme scss-mode powerline-evil org-journal org-bullets mu4e-maildirs-extension mu4e-alert mingus markdown-mode mark-multiple key-chord ido-vertical-mode howdoi highlight-parentheses helm-swoop helm-projectile helm-mu haste foggy-night-theme expand-region evil-surround evil-paredit evil-org evil-mu4e evil-magit evil-commentary darkokai-theme cmake-ide cmake-font-lock cider calfw-gcal calfw)))
+    (org-doing dired-du hledger-mode markdown-mode+ nov tree-mode atom-one-dark-theme anti-zenburn-theme omnisharp chronos ac-c-headers flycheck-kotlin kotlin-mode outshine flycheck auto-complete-c-headers auto-complete elfeed-org elfeed-goodies elfeed podcaster eshell-did-you-mean eshell-up kaolin-theme flycheck-haskell inf-clojure lorem-ipsum paradox magit-gitflow writeroom-mode restclient ag dired+ auctex ace-window ix flycheck-irony irony rtags haskell-mode org-trello bookmark+ gradle-mode fireplace which-key melpa clj-refactor csharp-mode helm-systemd znc ibuffer-git ibuffer-projectile rainbow-mode hexrgb helm-ag yasnippet xkcd web-mode use-package tango-plus-theme spacegray-theme scss-mode powerline-evil org-journal org-bullets mu4e-maildirs-extension mu4e-alert mingus markdown-mode mark-multiple key-chord ido-vertical-mode howdoi highlight-parentheses helm-swoop helm-projectile helm-mu haste foggy-night-theme expand-region evil-surround evil-paredit evil-org evil-mu4e evil-magit evil-commentary darkokai-theme cmake-ide cmake-font-lock cider calfw-gcal calfw)))
  '(paradox-github-token t)
+ '(pdf-view-midnight-colors (quote ("#232333" . "#c7c7c7")))
  '(podcaster-mp3-player "/usr/sbin/mpv")
  '(pos-tip-background-color "#E6DB74")
  '(pos-tip-foreground-color "#242728")
@@ -716,7 +746,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "#1b1b1b" :foreground "#c8c8d0" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 108 :width normal :family "Inconsolata"))))
+ '(default ((t (:inherit nil :stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 108 :width normal :foundry "PfEd" :family "Inconsolata"))))
  '(Info-quoted ((t (:family "Liberation Mono"))))
  '(helm-selection ((t (:inherit highlight :background "#eeeeec" :foreground "black"))))
  '(mu4e-unread-face ((t (:inherit font-lock-keyword-face :foreground "#11aaff" :weight bold))))

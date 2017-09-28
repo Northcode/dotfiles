@@ -11,6 +11,9 @@ export EMAIL="northcode.no@gmail.com"
 export NAME="Andreas Larsen"
 export SMTPSERVER="smtp.gmail.com"
 
+export XDG_RUNTIME_DIR="/run/user/$UID"
+export DBUS_SESSION_BUS_ADDRESS="unix:path=$XDG_RUNTIME_DIR/bus"
+
 if test $(hostname) == "andreas-l0"
 then
 	xrandr --setprovideroutputsource modesetting NVIDIA-0
