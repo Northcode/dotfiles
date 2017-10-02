@@ -1,0 +1,5 @@
+#!/bin/bash
+git init --bare $1
+setfacl -R -m g:git-repos:rwX $1
+find $1 -type d | xargs setfacl -R -m d:g:git-repos:rwX
+echo "initialized bare repo $1 for group git-repos"
