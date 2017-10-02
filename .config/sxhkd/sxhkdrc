@@ -71,7 +71,7 @@ super + a ; s
       pavucontrol
 
 super + a ; c
-      urxvt
+      emacsclient -s /tmp/emacs1000/server -c -e '(eshell)'
 
 super + Return
       urxvt
