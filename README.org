@@ -3,4 +3,37 @@
 
    Most other config files are in .config. 
 ** Installing
-   To install run the install.sh script, this will REMOVE ALL YOUR PREVIOUS CONFIGS, so BACK them UP first. 
+   To install run the install.sh script,
+   this will REMOVE ALL YOUR PREVIOUS CONFIGS,
+   so BACK them UP first. 
+   
+   
+* Files
+
+** Emacs
+   The .emacs file contains all configs for emacs.
+   It uses use-package and should pull all packages its missing,
+   you may want to remove or backup your ~/.emacs.d directory before running emacs.
+   
+   The setup is using mostly an evil-mode, helm and projectile setup.
+   Doesn't have a lot of language specific configs, 
+   there are some things specific to c++ and clojure.
+   Outside of that is is rather language agnostic,
+   tho it doesn't install any special modes for languages outside of what emacs provides by default.
+   
+   I use emacs for both Mail, Irc and Todo-lists theres setup commands for Erc/Znc, Mu4e and Org mode
+   
+** Zsh
+   Zsh is using a pretty basic setup.
+   It uses the zprezto framework and the arch zsh-syntax-highlighting package.
+   
+** WM/X
+   All the configs for desktop and wm specific stuff are in the .config directory.
+   I use bspwm with sxhkd and dunst for notifications.
+   There are also some configs for polybar but I no longer use it.
+   
+** Scripts
+   The bin folder contains a lot of scripts, many of them might not be /that/ useful anymore.
+   Most of them have to do with convenieces for doing stuff with the desktop, 
+   starting resources or sorting files/images and stuff.
+   

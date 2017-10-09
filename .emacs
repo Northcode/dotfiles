@@ -654,7 +654,6 @@
      ("#F309DF" . 85)
      ("#424748" . 100))))
  '(hledger-currency-string "kr")
- '(hledger-jfile "/home/andreas/2017.journal")
  '(hledger-reporting-day 30)
  '(inhibit-startup-screen t)
  '(initial-buffer-choice "~/org/welcome.org")
