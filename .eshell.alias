@@ -1,3 +1,4 @@
-alias sff find-file "${pwd}/$1"(:s,^,/sudo::,:s,::/ssh:,:,)
-alias ff find-file $1
+alias ssh cd /ssh:$1:
 alias d dired $1
+alias ff find-file $1
+alias sff find-file "${pwd}/$1"(:s,^,/sudo::,:s,::/ssh:,:,)
