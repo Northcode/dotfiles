@@ -88,7 +88,7 @@
      ("M-l". helm-execute-persistent-action)
      :map helm-find-files-map
      ("M-l". helm-execute-persistent-action)
-    )))
+     )))
 
 (use-package helm-projectile)
 (use-package helm-company)
@@ -118,6 +118,9 @@
 
 (use-package cider)
 (use-package clj-refactor)
+(use-package parinfer
+  :config
+  (setq parinfer-extensions '(defaults pretty-parens evil smart-tabs)))
 
 (defun my-clojure-mode-hook ()
   (clj-refactor-mode t)
@@ -168,8 +171,29 @@
   :config
   (setq eshell-aliases-file (expand-file-name "~/dotfiles/.eshell.alias")))
 
+(require 's)
 
-(message "welcome back, master!")
+(setq-default mode-line-format
+	      '("    "
+		(:eval (case evil-state
+			 ('normal "N")
+			 ('insert "I")
+			 ('visual "V")
+			 ('emacs  "E")))
+		"    "
+		(:propertize (:eval (if buffer-read-only " RO: "))
+			     face font-lock-warning-face)
+		(:propertize "%b"
+			     face font-lock-keyword-face)
+		" "
+		(:eval (if (buffer-modified-p) "(!!)"))
+		" %04l : %n "
+		(:propertize "%m"
+			     face font-lock-constant-face)
+		" %e "
+		(:eval (format-time-string "%H:%M" (current-time)))
+		(:eval (if nyan-mode (list (nyan-create)) " %-"))))
+
 
 (defun set-alpha-hook (frame)
   (set-frame-parameter frame 'alpha '(100 85)))
@@ -177,10 +201,10 @@
 (when (file-readable-p "/usr/share/clang/clang-format.el")
   (load "/usr/share/clang/clang-format.el")
   (add-hook 'c++-mode-hook
-  	    (lambda () "Add clang-format keybinds"
-  (define-key c++-mode-map (kbd "C-c f") 'clang-format-buffer))))
+	    (lambda () "Add clang-format keybinds"
+	      (define-key c++-mode-map (kbd "C-c f") 'clang-format-buffer))))
 
-(add-hook 'after-make-frame-functions 'set-alpha-hook)
+;; (add-hook 'after-make-frame-functions 'set-alpha-hook)
 
 (if (not (memq system-type '(windows-nt ms-dos)))
     (progn
@@ -233,10 +257,10 @@
        (interactive)
        (let ((guardname (upcase (s-replace "." "_" (buffer-name)))))
 	 (save-excursion (progn
-	 (beginning-of-buffer)
-	 (insert (format "#ifndef %s\n#define %s\n" guardname guardname))
-	 (end-of-buffer)
-	 (insert "\n#endif\n")))))
+			   (beginning-of-buffer)
+			   (insert (format "#ifndef %s\n#define %s\n" guardname guardname))
+			   (end-of-buffer)
+			   (insert "\n#endif\n")))))
 
 
 (defun eshell-evil-hat ()
@@ -253,9 +277,9 @@
 (defun ediff-copy-both-to-C ()
   (interactive)
   (ediff-copy-diff ediff-current-difference nil 'C nil
-                   (concat
-                    (ediff-get-region-contents ediff-current-difference 'A ediff-control-buffer)
-                    (ediff-get-region-contents ediff-current-difference 'B ediff-control-buffer))))
+		   (concat
+		    (ediff-get-region-contents ediff-current-difference 'A ediff-control-buffer)
+		    (ediff-get-region-contents ediff-current-difference 'B ediff-control-buffer))))
 (defun add-d-to-ediff-mode-map () (define-key ediff-mode-map "d" 'ediff-copy-both-to-C))
 (add-hook 'ediff-keymap-setup-hook 'add-d-to-ediff-mode-map)
 
@@ -302,10 +326,10 @@
 (define-key evil-normal-state-map " " 'helm-mini)
 
 (defun startup-script () "Things to do and open at startup."
-  (dired "~/projects")
-  (find-file "~/.emacs")
-  (find-file "~/org/journal.org")
-  (find-file "~/org/welcome.org"))
+       (dired "~/projects")
+       (find-file "~/.emacs")
+       (find-file "~/org/journal.org")
+       (find-file "~/org/welcome.org"))
 
 ;; MU4E config
 (defvar user-mailconf nil)
@@ -340,8 +364,8 @@
 		 ))
 
 (setq podcaster-feeds-urls
- '("http://www.hellointernet.fm/podcast?format=rss"))
-			    
+      '("http://www.hellointernet.fm/podcast?format=rss"))
+
 
 ;; ------------------- MOST STUFF BELOW THIS LINE IS FUNCTIONS AND CUSTOM GENERATED STUFF --------------------
 
@@ -535,8 +559,8 @@
       (if secret
 	  (let ((pass (plist-get secret :secret)))
 	    (let ((passwd (if (functionp pass) (funcall pass) pass)))
-	    (message "Got password from authinfo!")
-	    (erc-tls :server server :port port :nick nick :password (concat nick ":" passwd))))
+	      (message "Got password from authinfo!")
+	      (erc-tls :server server :port port :nick nick :password (concat nick ":" passwd))))
 	(progn
 	  (message "Getting password from authinfo failed")
 	  (apply 'erc-tls args))))))
@@ -545,16 +569,16 @@
 (defun erc-format-privmessage (nick msg privp msgp)
   "Format a PRIVMSG in an insertable fashion."
   (let* ((mark-s (if msgp (if privp "*" "[") "-"))
-         (mark-e (if msgp (if privp "*" "]") "-"))
-         (str    (format "%s %s" (s-pad-left 15 " " (concat mark-s nick mark-e)) msg))
-         (nick-face (if privp 'erc-nick-msg-face 'erc-nick-default-face))
-         (msg-face (if privp 'erc-direct-msg-face 'erc-default-face)))
+	 (mark-e (if msgp (if privp "*" "]") "-"))
+	 (str    (format "%s %s" (s-pad-left 15 " " (concat mark-s nick mark-e)) msg))
+	 (nick-face (if privp 'erc-nick-msg-face 'erc-nick-default-face))
+	 (msg-face (if privp 'erc-direct-msg-face 'erc-default-face)))
     ;; add text properties to text before the nick, the nick and after the nick
     (erc-put-text-property 0 (length mark-s) 'face msg-face str)
     (erc-put-text-property (length mark-s) (+ (length mark-s) (length nick))
-                           'face nick-face str)
+			   'face nick-face str)
     (erc-put-text-property (+ (length mark-s) (length nick)) (length str)
-                           'face msg-face str)
+			   'face msg-face str)
     str))
 
 (custom-set-variables
@@ -692,7 +716,7 @@
  '(org-time-stamp-custom-formats (quote ("<%M. %d %Y>" . "<%m/%d/%y %a %H:%M>")))
  '(package-selected-packages
    (quote
-    (system-packages org-doing dired-du hledger-mode markdown-mode+ nov tree-mode atom-one-dark-theme anti-zenburn-theme omnisharp chronos ac-c-headers flycheck-kotlin kotlin-mode outshine flycheck auto-complete-c-headers auto-complete elfeed-org elfeed-goodies elfeed podcaster eshell-did-you-mean eshell-up kaolin-theme flycheck-haskell inf-clojure lorem-ipsum paradox magit-gitflow writeroom-mode restclient ag dired+ auctex ace-window ix flycheck-irony irony rtags haskell-mode org-trello bookmark+ gradle-mode fireplace which-key melpa clj-refactor csharp-mode helm-systemd znc ibuffer-git ibuffer-projectile rainbow-mode hexrgb helm-ag yasnippet xkcd web-mode use-package tango-plus-theme spacegray-theme scss-mode powerline-evil org-journal org-bullets mu4e-maildirs-extension mu4e-alert mingus markdown-mode mark-multiple key-chord ido-vertical-mode howdoi highlight-parentheses helm-swoop helm-projectile helm-mu haste foggy-night-theme expand-region evil-surround evil-paredit evil-org evil-mu4e evil-magit evil-commentary darkokai-theme cmake-ide cmake-font-lock cider calfw-gcal calfw)))
+    (parinfer system-packages org-doing dired-du hledger-mode markdown-mode+ nov tree-mode atom-one-dark-theme anti-zenburn-theme omnisharp chronos ac-c-headers flycheck-kotlin kotlin-mode outshine flycheck auto-complete-c-headers auto-complete elfeed-org elfeed-goodies elfeed podcaster eshell-did-you-mean eshell-up kaolin-theme flycheck-haskell inf-clojure lorem-ipsum paradox magit-gitflow writeroom-mode restclient ag dired+ auctex ace-window ix flycheck-irony irony rtags haskell-mode org-trello bookmark+ gradle-mode fireplace which-key melpa clj-refactor csharp-mode helm-systemd znc ibuffer-git ibuffer-projectile rainbow-mode hexrgb helm-ag yasnippet xkcd web-mode use-package tango-plus-theme spacegray-theme scss-mode powerline-evil org-journal org-bullets mu4e-maildirs-extension mu4e-alert mingus markdown-mode mark-multiple key-chord ido-vertical-mode howdoi highlight-parentheses helm-swoop helm-projectile helm-mu haste foggy-night-theme expand-region evil-surround evil-paredit evil-org evil-mu4e evil-magit evil-commentary darkokai-theme cmake-ide cmake-font-lock cider calfw-gcal calfw)))
  '(paradox-github-token t)
  '(pdf-view-midnight-colors (quote ("#232333" . "#c7c7c7")))
  '(podcaster-mp3-player "/usr/sbin/mpv")
@@ -749,7 +773,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 108 :width normal :foundry "PfEd" :family "Inconsolata"))))
+ '(default ((t (:inherit nil :stipple nil :background "#232830" :foreground "#ffffff" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 108 :width normal :family "hack"))))
  '(Info-quoted ((t (:family "Liberation Mono"))))
  '(helm-selection ((t (:inherit highlight :background "#eeeeec" :foreground "black"))))
  '(mu4e-unread-face ((t (:inherit font-lock-keyword-face :foreground "#11aaff" :weight bold))))
