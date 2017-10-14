@@ -185,6 +185,10 @@
 			     face font-lock-warning-face)
 		(:propertize "%b"
 			     face font-lock-keyword-face)
+		(:propertize
+		 (:eval (when (magit-get-current-branch)
+			  (concat " [" (magit-get-current-branch) "]")))
+		 face font-lock-string-face)
 		" "
 		(:eval (if (buffer-modified-p) "(!!)"))
 		" %04l : %n "
@@ -192,7 +196,7 @@
 			     face font-lock-constant-face)
 		" %e "
 		(:eval (format-time-string "%H:%M" (current-time)))
-		(:eval (if nyan-mode (list (nyan-create)) " %-"))))
+		" %-"))
 
 
 (defun set-alpha-hook (frame)
