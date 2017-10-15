@@ -180,18 +180,20 @@
 			 ('insert "I")
 			 ('visual "V")
 			 ('emacs  "E")))
+		" %04l %n "
 		"    "
 		(:propertize (:eval (if buffer-read-only " RO: "))
 			     face font-lock-warning-face)
 		(:propertize "%b"
 			     face font-lock-keyword-face)
+		" "
+		(:eval (if (buffer-modified-p) "(!!)"))
+		" "
 		(:propertize
 		 (:eval (when (magit-get-current-branch)
 			  (concat " [" (magit-get-current-branch) "]")))
 		 face font-lock-string-face)
-		" "
-		(:eval (if (buffer-modified-p) "(!!)"))
-		" %04l : %n "
+		" :: "
 		(:propertize "%m"
 			     face font-lock-constant-face)
 		" %e "
@@ -293,6 +295,12 @@
  ("C-c e" . eshell)
  ("C-c E" . ansi-term)
  ("C-c a" . org-agenda)
+
+ ("M-h" . evil-window-left)
+ ("M-j" . evil-window-down)
+ ("M-k" . evil-window-up)
+ ("M-l" . evil-window-right)
+
  ;; ("C-c h" . helm-mini)
  ("C-c x" . helm-M-x)
 
@@ -720,7 +728,7 @@
  '(org-time-stamp-custom-formats (quote ("<%M. %d %Y>" . "<%m/%d/%y %a %H:%M>")))
  '(package-selected-packages
    (quote
-    (parinfer system-packages org-doing dired-du hledger-mode markdown-mode+ nov tree-mode atom-one-dark-theme anti-zenburn-theme omnisharp chronos ac-c-headers flycheck-kotlin kotlin-mode outshine flycheck auto-complete-c-headers auto-complete elfeed-org elfeed-goodies elfeed podcaster eshell-did-you-mean eshell-up kaolin-theme flycheck-haskell inf-clojure lorem-ipsum paradox magit-gitflow writeroom-mode restclient ag dired+ auctex ace-window ix flycheck-irony irony rtags haskell-mode org-trello bookmark+ gradle-mode fireplace which-key melpa clj-refactor csharp-mode helm-systemd znc ibuffer-git ibuffer-projectile rainbow-mode hexrgb helm-ag yasnippet xkcd web-mode use-package tango-plus-theme spacegray-theme scss-mode powerline-evil org-journal org-bullets mu4e-maildirs-extension mu4e-alert mingus markdown-mode mark-multiple key-chord ido-vertical-mode howdoi highlight-parentheses helm-swoop helm-projectile helm-mu haste foggy-night-theme expand-region evil-surround evil-paredit evil-org evil-mu4e evil-magit evil-commentary darkokai-theme cmake-ide cmake-font-lock cider calfw-gcal calfw)))
+    (mic-paren parinfer system-packages org-doing dired-du hledger-mode markdown-mode+ nov tree-mode atom-one-dark-theme anti-zenburn-theme omnisharp chronos ac-c-headers flycheck-kotlin kotlin-mode outshine flycheck auto-complete-c-headers auto-complete elfeed-org elfeed-goodies elfeed podcaster eshell-did-you-mean eshell-up kaolin-theme flycheck-haskell inf-clojure lorem-ipsum paradox magit-gitflow writeroom-mode restclient ag dired+ auctex ace-window ix flycheck-irony irony rtags haskell-mode org-trello bookmark+ gradle-mode fireplace which-key melpa clj-refactor csharp-mode helm-systemd znc ibuffer-git ibuffer-projectile rainbow-mode hexrgb helm-ag yasnippet xkcd web-mode use-package tango-plus-theme spacegray-theme scss-mode powerline-evil org-journal org-bullets mu4e-maildirs-extension mu4e-alert mingus markdown-mode mark-multiple key-chord ido-vertical-mode howdoi highlight-parentheses helm-swoop helm-projectile helm-mu haste foggy-night-theme expand-region evil-surround evil-paredit evil-org evil-mu4e evil-magit evil-commentary darkokai-theme cmake-ide cmake-font-lock cider calfw-gcal calfw)))
  '(paradox-github-token t)
  '(pdf-view-midnight-colors (quote ("#232333" . "#c7c7c7")))
  '(podcaster-mp3-player "/usr/sbin/mpv")
