@@ -171,8 +171,6 @@
   :config
   (setq eshell-aliases-file (expand-file-name "~/dotfiles/.eshell.alias")))
 
-(require 's)
-
 (setq-default mode-line-format
 	      '("    "
 		(:eval (case evil-state
