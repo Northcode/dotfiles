@@ -52,14 +52,14 @@
 
 
 (use-package auto-complete
-  :init
+  :config
   (require 'auto-complete)
   (require 'auto-complete-config)
   (ac-config-default)
   (add-hook 'prog-mode-hook 'auto-complete-mode))
 
-(use-package ac-c-headers
-  :init
+(use-packge ac-c-headers
+  :config
   (require 'ac-c-headers)
   (let ((acc-hook (lambda () (add-to-list 'ac-sources 'ac-source-c-headers))))
     (add-hook 'c++-mode-hook acc-hook)
@@ -91,7 +91,6 @@
      )))
 
 (use-package helm-projectile)
-(use-package helm-company)
 (use-package helm-swoop)
 (use-package helm-ag)
 
