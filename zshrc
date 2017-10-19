@@ -35,6 +35,20 @@ else
 
     alias prezget='git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"'
 
+    lunar() {
+	source /opt/ros/lunar/setup.zsh
+	export PYTHONPATH=/opt/ros/lunar/lib/python2.7/site-packages:$PYTHONPATH
+	export PKG_CONFIG_PATH="/opt/ros/lunar/lib/pkgconfig/:$PKG_CONFIG_PATH"
+
+	alias catkin_make="catkin_make -DPYTHON_EXECUTABLE=/usr/bin/python2 -DPYTHON_INCLUDE_DIR=/usr/include/python2.7 -DPYTHON_LIBRARY=/usr/lib/libpython2.7.so"
+    }
+
+    precmd() {
+	# tell emacs about where we are
+	echo -e "\033AnSiTu" "$LOGNAME"
+        echo -e "\033AnSiTc" "$(pwd)"
+    }
+
     if [ -z $STY ]; then
 	# screen -x
     else
