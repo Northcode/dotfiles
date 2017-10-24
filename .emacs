@@ -9,7 +9,7 @@
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 ;; (add-to-list 'package-archives '("melpa" . "https://stable.melpa.org/packages/"))
 (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
-(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+(add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/"))
 
 (add-to-list 'load-path "~/.emacs.d/elisp")
 ;; (add-to-list 'load-path "~/build/org-mode/lisp")

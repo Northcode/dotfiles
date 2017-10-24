@@ -45,8 +45,10 @@ else
 
     precmd() {
 	# tell emacs about where we are
-	echo -e "\033AnSiTu" "$LOGNAME"
-        echo -e "\033AnSiTc" "$(pwd)"
+	if [ "$TERM" = "eterm-color" ]; then
+	    echo -e "\033AnSiTu" "$LOGNAME"
+	    echo -e "\033AnSiTc" "$(pwd)"
+	fi
     }
 
     if [ -z $STY ]; then
