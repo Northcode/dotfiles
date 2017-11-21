@@ -1,0 +1,15 @@
+#!/bin/bash
+WINEPREFIX_DIR=/home/$USER/.wineprefixes
+if [ ! -d "$WINEPREFIX_DIR/$1" ]; then
+    mkdir -p "$WINEPREFIX_DIR/$1"
+fi
+
+export WINEPREFIX="$WINEPREFIX_DIR/$1"
+if [ ! -f "$WINEPREFIX/.arch" ]; then
+    echo "win32" > "$WINEPREFIX/.arch"
+fi
+
+export WINEARCH=$(cat "$WINEPREFIX/.arch")
+export WINEDRIVE=$WINEPREFIX/drive_c
+
+alias winedrv='cd $WINEDRIVE'
