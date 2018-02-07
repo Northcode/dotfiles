@@ -80,3 +80,28 @@ Create Both
 Remove Both
 Sync All
 SyncState *
+
+IMAPAccount uit
+Host mail.uit.no
+User ala107
+PassCmd "gpg -d --no-tty -q ~/.authinfo.gpg | grep 'login ala107@uit.no' | cut -d ' ' -f 8"
+SSLType IMAPS
+CertificateFile /etc/ssl/certs/ca-certificates.crt
+
+IMAPStore uit-remote
+Account uit
+
+MaildirStore uit-local
+Path ~/.mail/uit/
+Inbox ~/.mail/uit/Inbox
+# SubFolders verbatim
+
+Channel uit
+Master :uit-remote:
+Slave :uit-local:
+MaxMessages 0
+Patterns * 
+Create Both
+Remove Both
+Sync All
+SyncState *

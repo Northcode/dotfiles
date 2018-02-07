@@ -13,3 +13,10 @@ export WINEARCH=$(cat "$WINEPREFIX/.arch")
 export WINEDRIVE=$WINEPREFIX/drive_c
 
 alias winedrv='cd $WINEDRIVE'
+alias deactivate='exit'
+
+if [ -f "$WINEPREFIX/.aliases" ]; then
+    $SHELL -i -c "alias winedrv='cd $WINEDRIVE'; source $WINEPREFIX/.aliases"
+else
+    $SHELL -i -c "alias winedrv='cd $WINEDRIVE'"
+fi

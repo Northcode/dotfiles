@@ -171,6 +171,11 @@
   :config
   (setq eshell-aliases-file (expand-file-name "~/dotfiles/.eshell.alias")))
 
+
+(use-package dashboard
+  :config
+  (dashboard-setup-startup-hook))
+
 (setq-default mode-line-format
 	      '("    "
 		(:eval (case evil-state
@@ -370,6 +375,17 @@
 			 :match-func (lambda (msg)
 				       (when msg
 					 (mu4e-message-contact-field-matches msg :to "andreas@northcode.no"))))
+		  (:name "uit"
+			 :email "ala107@uit.no"
+			 :smtp "smtpserver.uit.no"
+			 :inbox "Inbox"
+			 :sent "Sent"
+			 :archive "Archive"
+			 :draft "Drafts"
+			 :trash "Deleted Items"
+			 :match-func (lambda (msg)
+				       (when msg
+					 (mu4e-message-contact-field-matches msg :to "ala107@post.uit.no"))))
 		  )
 		 ))
 
@@ -378,6 +394,23 @@
 
 
 ;; ------------------- MOST STUFF BELOW THIS LINE IS FUNCTIONS AND CUSTOM GENERATED STUFF --------------------
+
+(defun calc-eval-region (beg end)
+  "Calculate the region and display the result in the echo area.
+With prefix ARG non-nil, insert the result at the end of region."
+  (interactive "r")
+  (let* ((expr (buffer-substring-no-properties beg end))
+         (result (calc-eval expr)))
+    (message "%s = %s" expr result)
+    (save-excursion
+      (delete-region beg end)
+      (goto-char beg)
+      (insert result))))
+
+(evil-define-key 'visual global-map "gdc" 'calc-eval-region)
+
+
+
 
 (define-generic-mode
     'authinfo-mode
@@ -475,13 +508,14 @@
 
 (add-hook 'before-save-hook 'sudo-save-before-save-hook)
 
+;; (setq mu4e-html2text-command "w3m -dump -T text/html")
 
 (defun load-mailconf (conf)
   (setq
    mu4e-maildir (plist-get conf :maildir)
    user-full-name (plist-get conf :name)
    mu4e-compose-signature (plist-get conf :signature)
-   mu4e-get-mail-command "mbsync gmail northcode"
+   mu4e-get-mail-command "mbsync gmail northcode uit"
    mu4e-context-policy 'pick-first
    mu4e-contexts nil
    mu4e-sent-messages-behavior 'delete
@@ -694,7 +728,6 @@
  '(hledger-currency-string "kr")
  '(hledger-reporting-day 30)
  '(inhibit-startup-screen t)
- '(initial-buffer-choice "~/org/welcome.org")
  '(magit-commit-arguments (quote ("--gpg-sign=D97194E55873280A")))
  '(magit-diff-use-overlays nil)
  '(menu-bar-mode nil)
@@ -726,7 +759,7 @@
  '(org-time-stamp-custom-formats (quote ("<%M. %d %Y>" . "<%m/%d/%y %a %H:%M>")))
  '(package-selected-packages
    (quote
-    (sicp transmission mic-paren parinfer system-packages org-doing dired-du hledger-mode markdown-mode+ nov tree-mode atom-one-dark-theme anti-zenburn-theme omnisharp chronos ac-c-headers flycheck-kotlin kotlin-mode outshine flycheck auto-complete-c-headers auto-complete elfeed-org elfeed-goodies elfeed podcaster eshell-did-you-mean eshell-up kaolin-theme flycheck-haskell inf-clojure lorem-ipsum paradox magit-gitflow writeroom-mode restclient ag dired+ auctex ace-window ix flycheck-irony irony rtags haskell-mode org-trello bookmark+ gradle-mode fireplace which-key melpa clj-refactor csharp-mode helm-systemd znc ibuffer-git ibuffer-projectile rainbow-mode hexrgb helm-ag yasnippet xkcd web-mode use-package tango-plus-theme spacegray-theme scss-mode powerline-evil org-journal org-bullets mu4e-maildirs-extension mu4e-alert mingus markdown-mode mark-multiple key-chord ido-vertical-mode howdoi highlight-parentheses helm-swoop helm-projectile helm-mu haste foggy-night-theme expand-region evil-surround evil-paredit evil-org evil-mu4e evil-magit evil-commentary darkokai-theme cmake-ide cmake-font-lock cider calfw-gcal calfw)))
+    (latex-preview-pane dired-open meghanada evil-collection dashboard swagger-to-org rust-playground lsp-rust flycheck-rust rust-mode sicp transmission mic-paren parinfer system-packages org-doing dired-du hledger-mode markdown-mode+ nov tree-mode atom-one-dark-theme anti-zenburn-theme omnisharp chronos ac-c-headers flycheck-kotlin kotlin-mode outshine flycheck auto-complete-c-headers auto-complete elfeed-org elfeed-goodies elfeed podcaster eshell-did-you-mean eshell-up kaolin-theme flycheck-haskell inf-clojure lorem-ipsum paradox magit-gitflow writeroom-mode restclient ag dired+ auctex ace-window ix flycheck-irony irony rtags haskell-mode org-trello bookmark+ gradle-mode fireplace which-key melpa clj-refactor csharp-mode helm-systemd znc ibuffer-git ibuffer-projectile rainbow-mode hexrgb helm-ag yasnippet xkcd web-mode use-package tango-plus-theme spacegray-theme scss-mode powerline-evil org-journal org-bullets mu4e-maildirs-extension mu4e-alert mingus markdown-mode mark-multiple key-chord ido-vertical-mode howdoi highlight-parentheses helm-swoop helm-projectile helm-mu haste foggy-night-theme expand-region evil-surround evil-paredit evil-org evil-mu4e evil-magit evil-commentary darkokai-theme cmake-ide cmake-font-lock cider calfw-gcal calfw)))
  '(paradox-github-token t)
  '(pdf-view-midnight-colors (quote ("#232333" . "#c7c7c7")))
  '(podcaster-mp3-player "/usr/sbin/mpv")
@@ -787,6 +820,7 @@
  '(Info-quoted ((t (:family "Liberation Mono"))))
  '(helm-selection ((t (:inherit highlight :background "#eeeeec" :foreground "black"))))
  '(mu4e-unread-face ((t (:inherit font-lock-keyword-face :foreground "#11aaff" :weight bold))))
+ '(mu4e-view-body-face ((t (:inherit default))))
  '(org-document-title ((t (:foreground "pale turquoise" :weight bold :height 3.0))))
  '(org-level-1 ((t (:weight bold :height 2.0))))
  '(org-level-2 ((t (:height 1.7))))
@@ -794,7 +828,7 @@
  '(widget-field ((t (:box (:line-width 1 :color "#666666"))))))
 
 
-(startup-script)
+;; (startup-script)
 
 
 (provide 'emacs)
