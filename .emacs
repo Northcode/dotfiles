@@ -45,6 +45,16 @@
 
 (use-package helm-projectile :straight t)
 
+;;;; Org mode
+(use-package org
+  :straight t
+  :bind
+  (("C-c a" . org-agenda)
+   ("C-c c" . org-capture)))
+
+;; (use-package org-bullets :straight t)
+
+
 ;;;; Set some defaults
 (setq search-whitespace-regexp ".*?"
       backup-by-copying t
@@ -283,22 +293,11 @@ With prefix ARG non-nil, insert the result at the end of region."
   :straight t)
 
 ;;; Programming languages
-
 ;;;; Clojure
 
 (use-package clojure-mode :straight t)
 (use-package inf-clojure :straight t)
 (use-package cider :straight t)
-
-;;; Organization
-;;;; Org mode
-(use-package org
-  :straight t
-  :bind
-  (("C-c a" . org-agenda)
-   ("C-c c" . org-capture)))
-
-(use-package org-bullets :straight t)
 
 ;;;; Ledger
 (use-package hledger-mode :straight t)
@@ -472,10 +471,15 @@ With prefix ARG non-nil, insert the result at the end of region."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(org-capture-templates
+   (quote
+    (("t" "Todo" entry
+      (file "~/Nextcloud/no/todo.org")
+      "* TODO ")))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:family "Inconsolata")))))
+
