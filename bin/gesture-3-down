@@ -1,6 +1,6 @@
 #!/bin/bash
 _W_CLASSNAME=$(bspc query -N -n focused | xargs bspc query -T -n | jq .client.className | tr -d '\"')
-if [ "$_W_CLASSNAME" == "Firefox" ]
+if [ "$_W_CLASSNAME" == "Nightly" ]
 then
     xdotool key alt+Right
 elif [ "$_W_CLASSNAME" == "TelegramDesktop" ]
