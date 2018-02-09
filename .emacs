@@ -18,15 +18,44 @@
 (use-package diminish :straight t)
 
 ;;; Base config
+;;;; Mode line
+(setq-default mode-line-format
+	      '("    "
+		(:eval (case evil-state
+			 ('normal "N")
+			 ('insert "I")
+			 ('visual "V")
+			 ('emacs  "E")))
+		" %04l %n "
+		"    "
+		(:propertize (:eval (if buffer-read-only " RO: "))
+			     face font-lock-warning-face)
+		(:propertize "%b"
+			     face font-lock-keyword-face)
+		" "
+		(:eval (if (buffer-modified-p) "(!!)"))
+		" "
+		(:propertize
+		 (:eval (when (magit-get-current-branch)
+			  (concat " [" (magit-get-current-branch) "]")))
+		 face font-lock-string-face)
+		" :: "
+		(:propertize "%m"
+			     face font-lock-constant-face)
+		" %e "
+		(:eval (format-time-string "%H:%M" (current-time)))
+		" %-"))
 ;;;; Evil
 (use-package evil :straight t
   :init (evil-mode t)
   :config (setq evil-move-cursor-back nil))
 (use-package evil-surround :straight t)
-(use-package evil-magit :straight t)
 (use-package evil-magit
   :straight t
   :init (evil-magit-init))
+(use-package evil-commentary
+  :straight t
+  :init (evil-commentary-mode t))
 
 ;;;; Helm
 (use-package helm
@@ -48,11 +77,12 @@
 ;;;; Org mode
 (use-package org
   :straight t
+  :config
+  (setq org-agenda-files
+	'("~/cal.org" "~/org/todo.org"))
   :bind
   (("C-c a" . org-agenda)
    ("C-c c" . org-capture)))
-
-;; (use-package org-bullets :straight t)
 
 
 ;;;; Set some defaults
@@ -302,8 +332,42 @@ With prefix ARG non-nil, insert the result at the end of region."
 ;;;; Ledger
 (use-package hledger-mode :straight t)
 
-;;; UI/UX
+;;; Organization tools
+;;;; Org mode
+(use-package org-bullets :straight t)
 
+(use-package org-caldav 
+  :straight t
+  :config
+  (setq org-caldav-url "https://cloud.northcode.no/remote.php/dav/calendars/andreas"
+	org-caldav-calendar-id "personal"
+	org-caldav-inbox "~/cal.org"
+	org-caldav-files '("~/cal.org")))
+
+;;;; Drawing stuff
+
+(defun open-draw-temp-file ()
+  (let ((filename (concat (make-temp-file "img") ".png")))
+    (call-process-shell-command (concat "mypaint " filename) nil nil)
+    (if (file-exists-p filename)
+	filename
+      nil)))
+
+(defun insert-new-note-image ()
+  (interactive)
+  (if-let ((filename (open-draw-temp-file)))
+      (progn
+	(let ((to-file (concat (file-name-directory buffer-file-name) (file-name-nondirectory buffer-file-name) "-" (file-name-nondirectory filename))))
+	  (copy-file filename to-file)
+	  (save-excursion
+	    (insert (concat "[[" to-file "]]")))))
+    (message "failed to get image")))
+
+(bind-keys
+ :map org-mode-map
+ ("C-c i i" . insert-new-note-image))
+
+;;; UI/UX
 ;;;; Window management
 (use-package ace-window
   :straight t
@@ -311,34 +375,6 @@ With prefix ARG non-nil, insert the result at the end of region."
   (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
   aw-scope 'frame
   :bind ("C-x C-o" . ace-window))
-
-;;;; Mode line
-(setq-default mode-line-format
-	      '("    "
-		(:eval (case evil-state
-			 ('normal "N")
-			 ('insert "I")
-			 ('visual "V")
-			 ('emacs  "E")))
-		" %04l %n "
-		"    "
-		(:propertize (:eval (if buffer-read-only " RO: "))
-			     face font-lock-warning-face)
-		(:propertize "%b"
-			     face font-lock-keyword-face)
-		" "
-		(:eval (if (buffer-modified-p) "(!!)"))
-		" "
-		(:propertize
-		 (:eval (when (magit-get-current-branch)
-			  (concat " [" (magit-get-current-branch) "]")))
-		 face font-lock-string-face)
-		" :: "
-		(:propertize "%m"
-			     face font-lock-constant-face)
-		" %e "
-		(:eval (format-time-string "%H:%M" (current-time)))
-		" %-"))
 
 ;;;; Disable default fluff
 (progn ;; disable gui fluff
@@ -372,6 +408,18 @@ With prefix ARG non-nil, insert the result at the end of region."
   (evil-define-key 'normal dired-mode-map "gr" 'revbuf))
 ;;;; Ediff
 (add-hook 'ediff-keymap-setup-hook 'add-d-to-ediff-mode-map)
+;;;; REST Client
+
+(use-package restclient
+  :straight t)
+
+;;;; Epkg
+
+(use-package epkg
+  :straight t)
+
+
+
 ;;; General Emacs behaviour
 
 ;;;; Hooks to stuff
@@ -474,8 +522,11 @@ With prefix ARG non-nil, insert the result at the end of region."
  '(org-capture-templates
    (quote
     (("t" "Todo" entry
-      (file "~/Nextcloud/no/todo.org")
-      "* TODO ")))))
+      (file "~/org/todo.org")
+      "* TODO ")
+     ("c" "Clock in something" entry
+      (file "~/org/clock.org")
+      "* clock-entry: " :clock-in t)))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
