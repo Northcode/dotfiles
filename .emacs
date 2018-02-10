@@ -79,7 +79,8 @@
   :straight t
   :config
   (setq org-agenda-files
-	'("~/cal.org" "~/org/todo.org"))
+	'("~/cal.org" "~/org/todo.org")
+	org-clock-idle-time 15)
   :bind
   (("C-c a" . org-agenda)
    ("C-c c" . org-capture)))
@@ -304,6 +305,9 @@ With prefix ARG non-nil, insert the result at the end of region."
   :straight t
   :config
   (evil-define-key 'normal outline-minor-mode-map (kbd "C-i") 'outline-cycle)
+  (evil-define-key 'normal outline-minor-mode-map (kbd "<S-iso-leftab>") 'outshine-cycle-buffer
+    (kbd "S-<tab>") 'outshine-cycle-buffer 
+    (kbd "<backtab>") 'outshine-cycle-buffer)
   (add-hook 'outline-minor-mode-hook (lambda () (evil-normalize-keymaps))))
 
 
@@ -421,7 +425,6 @@ With prefix ARG non-nil, insert the result at the end of region."
 
 
 ;;; General Emacs behaviour
-
 ;;;; Hooks to stuff
 (add-hook 'focus-out-hook 'save-all)
 (add-hook 'before-save-hook 'sudo-save-before-save-hook)
