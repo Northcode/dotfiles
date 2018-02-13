@@ -79,7 +79,7 @@
   :straight t
   :config
   (setq org-agenda-files
-	'("~/cal.org" "~/org/todo.org")
+	'("~/cal.org" "~/org/todo.org" "~/org/bachelor/diary.org")
 	org-clock-idle-time 15)
   :bind
   (("C-c a" . org-agenda)
@@ -326,6 +326,23 @@ With prefix ARG non-nil, insert the result at the end of region."
 (use-package parinfer
   :straight t)
 
+;;;; LaTeX
+
+(use-package auctex
+  :straight t
+  :config
+  (setq TeX-auto-save t
+	TeX-parse-self t
+	LaTeX-indent-level 4)
+  (add-hook 'LaTeX-mode-hook 'visual-line-mode)
+  (add-hook  'LaTeX-mode-hook 'flyspell-mode)
+  (add-hook  'LaTeX-mode-hook 'LaTeX-math-mode))
+
+(use-package latex-preview-pane
+  :straight t
+  :init
+  (latex-preview-pane-enable))
+
 ;;; Programming languages
 ;;;; Clojure
 
@@ -347,6 +364,15 @@ With prefix ARG non-nil, insert the result at the end of region."
 	org-caldav-calendar-id "personal"
 	org-caldav-inbox "~/cal.org"
 	org-caldav-files '("~/cal.org")))
+
+(use-package evil-org
+  :straight t
+  :after org
+  :config
+  (add-hook 'org-mode-hook 'evil-org-mode)
+  (add-hook 'evil-org-mode-hook
+	    (lambda ()
+	      (evil-org-set-key-theme '(navigation insert textobjects additional calendar)))))
 
 ;;;; Drawing stuff
 
@@ -529,7 +555,10 @@ With prefix ARG non-nil, insert the result at the end of region."
       "* TODO ")
      ("c" "Clock in something" entry
       (file "~/org/clock.org")
-      "* clock-entry: " :clock-in t)))))
+      "* clock-entry: " :clock-in t)
+     ("a" "Bachelor project diary clock todo" entry
+      (file+headline "~/org/bachelor/diary.org" "Clocked")
+      "** TODO ")))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
