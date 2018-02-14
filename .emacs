@@ -350,9 +350,6 @@ With prefix ARG non-nil, insert the result at the end of region."
 (use-package inf-clojure :straight t)
 (use-package cider :straight t)
 
-;;;; Ledger
-(use-package hledger-mode :straight t)
-
 ;;; Organization tools
 ;;;; Org mode
 (use-package org-bullets :straight t)
@@ -396,6 +393,12 @@ With prefix ARG non-nil, insert the result at the end of region."
 (bind-keys
  :map org-mode-map
  ("C-c i i" . insert-new-note-image))
+
+;;;; Ledger
+(use-package hledger-mode 
+  :straight t
+  :init
+  (add-to-list 'auto-mode-alist '("\\.journal\\'" . hledger-mode)))
 
 ;;; UI/UX
 ;;;; Window management
@@ -565,4 +568,5 @@ With prefix ARG non-nil, insert the result at the end of region."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((((type x)) (:family "Inconsolata")) (((type tty)) (:background "none" :foreground "#fff")))))
+
 
