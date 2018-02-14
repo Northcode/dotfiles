@@ -112,7 +112,7 @@
 (put 'narrow-to-region 'disabled nil)
 
 ;;; Util functions
-
+;;;; Interactive wrappers around emacs functions I use often
 (defun lastbuf () "Switch to last buffer instantly."
        (interactive)
        (switch-to-buffer (other-buffer (current-buffer))))
@@ -125,12 +125,14 @@
        (interactive)
        (revert-buffer t t))
 
+;;;; Elisp scripting utilities
 ;; from http://ergoemacs.org/emacs/elisp_read_file_content.html thanks!
 (defun get-string-from-file (filePath) "Return FILEPATH's file content."
        (with-temp-buffer
 	 (insert-file-contents filePath)
 	 (buffer-string)))
 
+;;;; Ediff stuff
 (defun ediff-copy-both-to-C ()
   (interactive)
   (ediff-copy-diff ediff-current-difference nil 'C nil
@@ -139,6 +141,7 @@
 		    (ediff-get-region-contents ediff-current-difference 'B ediff-control-buffer))))
 (defun add-d-to-ediff-mode-map () (define-key ediff-mode-map "d" 'ediff-copy-both-to-C))
 
+;;;; Custom editing functions
 (defun calc-eval-region (beg end)
   "Calculate the region and display the result in the echo area.
 With prefix ARG non-nil, insert the result at the end of region."
@@ -151,6 +154,7 @@ With prefix ARG non-nil, insert the result at the end of region."
       (goto-char beg)
       (insert result))))
 
+;;;; Sudo stuff
 (defun sudo-save ()
   (interactive)
   (if (not buffer-file-name)
@@ -418,11 +422,8 @@ With prefix ARG non-nil, insert the result at the end of region."
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 ;;;; Theme
-
 (use-package spacegray-theme
   :straight t)
-
-
 
 ;;; Management Tools
 ;;;; Eshell and term
@@ -481,7 +482,6 @@ With prefix ARG non-nil, insert the result at the end of region."
 ;;;; Override default settings
 ;;; Communication tools
 ;;;; Mu4e
-
 (defvar user-mailconf nil)
 (setq user-mailconf
       '(:maildir "~/.mail/"
@@ -546,11 +546,13 @@ With prefix ARG non-nil, insert the result at the end of region."
 	  (snoonet "northcode/snoonet" ""))))))
 
 ;;; Customize-stuff
+;;;; Vars
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(evil-want-C-u-scroll t)
  '(org-capture-templates
    (quote
     (("t" "Todo" entry
@@ -562,11 +564,12 @@ With prefix ARG non-nil, insert the result at the end of region."
      ("a" "Bachelor project diary clock todo" entry
       (file+headline "~/org/bachelor/diary.org" "Clocked")
       "** TODO ")))))
+;;;; Faces
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((((type x)) (:family "Inconsolata")) (((type tty)) (:background "none" :foreground "#fff")))))
+ '(default ((t (:family "Inconsolata")))))
 
 
