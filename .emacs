@@ -404,6 +404,16 @@ With prefix ARG non-nil, insert the result at the end of region."
   :init
   (add-to-list 'auto-mode-alist '("\\.journal\\'" . hledger-mode)))
 
+;;;; Rust
+
+(use-package rust-mode
+  :straight t)
+
+(use-package flycheck-rust
+  :straight t)
+
+(use-package cargo :straight t)
+
 ;;; UI/UX
 ;;;; Window management
 (use-package ace-window
