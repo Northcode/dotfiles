@@ -1,0 +1,3 @@
+#!/bin/bash
+
+xsetwacom --set 12 Area -15200 0 30400 9500
