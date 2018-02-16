@@ -303,7 +303,6 @@ With prefix ARG non-nil, insert the result at the end of region."
   (let ((acc-hook (lambda () (add-to-list 'ac-sources 'ac-source-c-headers))))
     (add-hook 'c++-mode-hook acc-hook)
     (add-hook 'c-mode-hook acc-hook)))
-
 ;;;; Outlining
 (use-package outline
   :straight t
@@ -438,6 +437,8 @@ With prefix ARG non-nil, insert the result at the end of region."
 ;;; Management Tools
 ;;;; Eshell and term
 (use-package eshell
+  :config
+  (setq eshell-aliases-file "~/.eshell.alias")
   :bind
   (("C-c e" . eshell)))
 
@@ -581,5 +582,7 @@ With prefix ARG non-nil, insert the result at the end of region."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:family "Inconsolata")))))
+
+
 
 
