@@ -354,6 +354,16 @@ With prefix ARG non-nil, insert the result at the end of region."
 (use-package inf-clojure :straight t)
 (use-package cider :straight t)
 
+;;;; Rust
+
+(use-package rust-mode
+  :straight t)
+
+(use-package flycheck-rust
+  :straight t)
+
+(use-package cargo :straight t)
+
 ;;; Organization tools
 ;;;; Org mode
 (use-package org-bullets :straight t)
@@ -403,16 +413,6 @@ With prefix ARG non-nil, insert the result at the end of region."
   :straight t
   :init
   (add-to-list 'auto-mode-alist '("\\.journal\\'" . hledger-mode)))
-
-;;;; Rust
-
-(use-package rust-mode
-  :straight t)
-
-(use-package flycheck-rust
-  :straight t)
-
-(use-package cargo :straight t)
 
 ;;; UI/UX
 ;;;; Window management
