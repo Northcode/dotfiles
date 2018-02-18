@@ -84,7 +84,16 @@
 	org-clock-idle-time 15)
   :bind
   (("C-c a" . org-agenda)
-   ("C-c c" . org-capture)))
+   ("C-c c" . org-capture)
+   ("C-c l" . org-store-link)))
+
+(use-package org-trello
+  :straight t
+  :bind
+  (:map org-trello-mode-map
+	("C-c o s" . org-trello-sync-buffer))
+  :config
+  (add-to-list 'org-agenda-files "~/org/bachelor/scrum.org"))
 
 
 ;;;; Set some defaults
