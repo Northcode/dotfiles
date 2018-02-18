@@ -481,12 +481,25 @@ With prefix ARG non-nil, insert the result at the end of region."
 (add-hook 'before-save-hook 'sudo-save-before-save-hook)
 
 ;;;; Keybinds
+
+(defun quick-find-file ()
+  (interactive)
+  (find-file (case last-command-event
+	       (?c user-init-file)
+	       (?n "~/org/notes.org")
+	       (?t "~/org/todo.org")
+	       (t (error "Key %c not bound to a file yet." last-command-event)))))
+
 (bind-keys
  ("M-z" . universal-argument)
- ("C-x C-b" . lastbuf))
-
+ ("C-x C-b" . lastbuf)
+ :map evil-normal-state-map
+ ("SPC c" . quick-find-file)
+ ("SPC n" . quick-find-file)
+ ("SPC t" . quick-find-file)
+ ("SPC f" . quick-find-file)
+)
 (evil-define-key 'visual global-map "gdc" 'calc-eval-region)
-
 ;;;; Major mode for authinfo files
 (define-generic-mode
     'authinfo-mode
