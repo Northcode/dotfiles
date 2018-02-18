@@ -3,6 +3,7 @@
 PACKAGES="emacs X zsh scripts systemd email music"
 TARGET=$HOME
 TRAIL=""
+UNINSTALL=""
 
 usage() {
     echo "Usage:"
@@ -29,6 +30,9 @@ do
 	-n|--dry-run)
 	    TRAIL="-n"
 	    ;;
+	-D|--uninstall|--delete)
+	    UNINSTALL="-D"
+	    ;;
 	-h|--help|-?)
 	    usage
 	    exit
@@ -49,7 +53,7 @@ fi
 
 if [ ! -x "$(command stow)" ]; then
     echo "Installing packages: $PACKAGES ..."
-    stow $TRAIL -t $TARGET -v $PACKAGES
+    stow $TRAIL -t $TARGET -v $UNINSTALL $PACKAGES
 else
     echo "GNU Stow not installed, please install stow for easy management, or symlink the files in the subdirectories manually"
 fi
