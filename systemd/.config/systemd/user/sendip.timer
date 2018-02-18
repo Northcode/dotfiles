@@ -1,0 +1,10 @@
+[Unit]
+Description=Send ip to server every day
+
+[Timer]
+OnCalendar=daily
+Persistent=true
+Unit=sendip.service
+
+[Install]
+WantedBy=timers.target

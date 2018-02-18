@@ -1,0 +1,6 @@
+[Unit]
+Description=Send ip to server
+
+[Service]
+Type=simple
+ExecStart=/home/andreas/bin/sendip.sh
