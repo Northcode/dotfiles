@@ -1,48 +1,55 @@
 #!/bin/bash
 
-BASEDIR=$(readlink -f $(dirname $0))
+PACKAGES="emacs X scripts systemd email music"
+TARGET=$HOME
+TRAIL=""
 
-echo "linking config folders to $BASEDIR"
+usage() {
+    echo "Usage:"
+    echo "install.sh [-n] [-t|--target target] [-D] [packages]"
+    echo "Options:"
+    echo "-n : dry-run, no action. Run as normally, but do not modify file system"
+    echo '-t : set target, defaults to $HOME, but can be set if you want to install somewhere else'
+    echo "-D : uninstall instead of installing"
+    echo ""
+    echo "Specify packages to install as final arguments, or nothing to install default packages"
+    echo "Default packages are: $PACKAGES"
+    echo ""
+}
 
-for i in $(ls -a .config)
+# Loop thrugh every option args
+while [[ $# -gt 0 ]]
 do
-    if test $i != "." && test $i != ".."
-    then
-	rm -r ~/.config/$i
-	ln -sf $BASEDIR/.config/$i ~/.config/$i
-    fi
+    key="$1"
+    case $key in
+	-t|--target)
+	    TARGET="$2"
+	    shift
+	    ;;
+	-n|--dry-run)
+	    TRAIL="-n"
+	    ;;
+	-h|--help|-?)
+	    usage
+	    exit
+	    ;;
+	*)
+	    break
+	;;
+    esac
+    shift
 done
 
-echo "linking emacs config"
-rm ~/.emacs
-ln -sf $BASEDIR/.emacs ~/.emacs
+# Check if there are positional args left
+if [ $# -gt 0 ]
+then
+    PACKAGES=$@
+    shift
+fi
 
-echo "Removing legacy ncmpcpp config"
-rm -r ~/.ncmpcpp/
-
-echo "Linking user bin folder"
-rm ~/bin
-ln -sf $BASEDIR/bin ~/bin
-
-echo "linking xinitrc"
-rm ~/.xinitrc
-ln -sf ~/.config/X/xinitrc ~/.xinitrc 
-
-echo "linking xinitrc"
-rm ~/.mbsyncrc
-ln -sf $BASEDIR/.mbsyncrc ~/.mbsyncrc 
-
-echo "linking xprofile"
-rm ~/.xprofile
-ln -sf $BASEDIR/.xprofile ~/.xprofile
-
-echo "linking zshrc"
-rm ~/.zshrc
-ln -sfv "$BASEDIR/zshrc" ~/.zshrc
-
-rm ~/.zpreztorc 
-ln -sf $BASEDIR/zpreztorc ~/.zpreztorc
-
-echo "linking screenrc"
-rm ~/.screenrc
-ln -sf $BASEDIR/.screenrc ~/.screenrc
+if [ ! -x "$(command stow)" ]; then
+    echo "Installing packages: $PACKAGES ..."
+    stow $TRAIL -t $TARGET -v $PACKAGES
+else
+    echo "GNU Stow not installed, please install stow for easy management, or symlink the files in the subdirectories manually"
+fi
