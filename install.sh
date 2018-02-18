@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PACKAGES="emacs X scripts systemd email music"
+PACKAGES="emacs X zsh scripts systemd email music"
 TARGET=$HOME
 TRAIL=""
 
