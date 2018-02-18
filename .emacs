@@ -510,9 +510,6 @@ With prefix ARG non-nil, insert the result at the end of region."
   nil
   "Mode for authinfo files"
   )
-
-
-
 ;;;; Override default settings
 ;;; Communication tools
 ;;;; Mu4e
@@ -557,20 +554,16 @@ With prefix ARG non-nil, insert the result at the end of region."
 					 (mu4e-message-contact-field-matches msg :to "ala107@post.uit.no"))))
 		  )
 		 ))
-
 ;; load mu4e if its installed
 (if (file-exists-p "/usr/share/emacs/site-lisp/mu4e")
     (progn
-
       (message "loading mu4e config")
       (load-mu4e-conf)))
-
 ;;;; ZNC
-(use-package znc 
+(use-package znc
   :straight t
   :bind
   (("C-c i" . znc-all)))
-
 (setq znc-erc-connector 'erc
       znc-erc-ssl-connector 'erc-tls-auth-source
       znc-servers
@@ -578,7 +571,6 @@ With prefix ARG non-nil, insert the result at the end of region."
        (("northcode.no" 8667 t
 	 ((freenode "northcode/freenode" "")
 	  (snoonet "northcode/snoonet" ""))))))
-
 ;;; Customize-stuff
 ;;;; Vars
 (custom-set-variables
@@ -597,15 +589,18 @@ With prefix ARG non-nil, insert the result at the end of region."
       "* clock-entry: " :clock-in t)
      ("a" "Bachelor project diary clock todo" entry
       (file+headline "~/org/bachelor/diary.org" "Clocked")
-      "** TODO ")))))
+      "** TODO ")
+     ("n" "Add Note about something" entry
+      (file "~/org/notes.org")
+      ""))))
+ '(org-trello-current-prefix-keybinding "C-c o" nil (org-trello)))
 ;;;; Faces
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:family "Inconsolata")))))
-
-
-
-
+ '(default ((t (:family "Inconsolata"))))
+ '(org-level-1 ((t (:inherit outline-1 :height 2.0))))
+ '(org-level-2 ((t (:inherit outline-2 :height 1.8))))
+ '(org-level-3 ((t (:inherit outline-2 :height 1.3)))))
