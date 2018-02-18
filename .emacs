@@ -1,3 +1,4 @@
+;; -*- eval: (outline-minor-mode) -*-
 ;; .emacs -- Emacs config with straight.el
 
 ;;; Bootstrapping
