@@ -1,39 +1,65 @@
 * My linux config files
-   The .emacs file does all .emacs configuration, as well as download packages needed. 
-
-   Most other config files are in .config. 
+  My config files are setup to use gnu stow, and includes an
+  install.sh script to automatically install them all if you have stow
+  installed, as well as uninstalling if you don't want to use them
+  anymore.
+  
 ** Installing
-   To install run the install.sh script,
-   this will REMOVE ALL YOUR PREVIOUS CONFIGS,
-   so BACK them UP first. 
+   To install run the install.sh script, you can specify which packages you want to install.
+   For more information, run =./install.sh -h= for help.
+
    
-   
-* Files
+* Config Packages
 
 ** Emacs
-   The .emacs file contains all configs for emacs.
-   It uses use-package and should pull all packages its missing,
-   you may want to remove or backup your ~/.emacs.d directory before running emacs.
+   The emacs package contains only the .emacs file and eshell aliases.
+   The .emacs file which will pull and install all the emacs packages it needs using straight.el
+   when emacs is first run.
    
-   The setup is using mostly an evil-mode, helm and projectile setup.
-   Doesn't have a lot of language specific configs, 
-   there are some things specific to c++ and clojure.
-   Outside of that is is rather language agnostic,
-   tho it doesn't install any special modes for languages outside of what emacs provides by default.
+   =~/.emacs.d/= is not stored in the dotfiles, so you will have to delete or move that directory.
+
+   The Emacs config uses [[https://github.com/raxod502/straight.el][straight.el]] to manage packages.
+   Notable things about the setup is:
+   - It uses evil-mode
+   - The configuration uses a kind of reverse-literate-devops setup,
+     where as most people I've seen do this use an org file with src
+     blocks, this uses =outline-minor-mode= and comments to separate
+     stuff
+   - It uses helm, I'm more of a fan of helm than ido, haven't tried ivy (might look into that later)
+   - I use mu4e for mail and znc for irc
    
-   I use emacs for both Mail, Irc and Todo-lists theres setup commands for Erc/Znc, Mu4e and Org mode
+   Because I recently rewrote the entire config and cleaned up a lot
+   of unused stuff, there aren't a lot of language specific
+   configs. Currently theres only packages for clojure and rust
+   installed.
    
 ** Zsh
-   Zsh is using a pretty basic setup.
-   It uses the zprezto framework and the arch zsh-syntax-highlighting package.
+   The zsh package contains zshrc and zpreztorc.
+   My zsh setup uses prezto, but its not installed by default so you may have to pull that yourself.
+   It also uses zsh-syntax-highlighting, install that via your distros package manager.
    
 ** WM/X
-   All the configs for desktop and wm specific stuff are in the .config directory.
-   I use bspwm with sxhkd and dunst for notifications.
-   There are also some configs for polybar but I no longer use it.
-   
+   The X package contains configs for my desktop.
+   It runs bspwm and sxhkd, uses rofi as a program launcher and dunst for notifications.
+
 ** Scripts
-   The bin folder contains a lot of scripts, many of them might not be /that/ useful anymore.
-   Most of them have to do with convenieces for doing stuff with the desktop, 
-   starting resources or sorting files/images and stuff.
+   The Scripts package contains a few scripts I've made for different
+   stuff I usually do, many of them might not be /that/ useful
+   anymore.  Most of them have to do with convenieces for doing stuff
+   with the desktop, starting resources or sorting files/images and
+   stuff.  
+
+   There is a random-wallpaper selector called nwall
+   included. It has a bunch of configuration options and supports feh
+   and hsetroot to set the wallpaper, although you can set your own
+   command to use as well.
    
+** Music
+   This contains setup for mpd/ncmpcpp, its mostly default but with a few changes.
+
+** Email
+   This package contains setup for mbsync, it uses =~/.authinfo.gpg= for passwords.
+   
+** Systemd
+   This has a lot of self made systemd services for different stuff.
+   Not really much interesting here, apart from the emacs service or the mbsync one maybe.
