@@ -1,0 +1,9 @@
+#!/bin/bash
+_W_CLASSNAME=$(bspc query -N -n focused | xargs bspc query -T -n | jq .client.className | tr -d '\"')
+if [ "$_W_CLASSNAME" == "Nightly" ]
+then
+    xdotool key ctrl+Tab
+else
+    # notify-send "no gesture found for classname $_W_CLASSNAME"
+    nop
+fi

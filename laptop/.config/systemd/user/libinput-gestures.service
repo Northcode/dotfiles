@@ -1,0 +1,13 @@
+[Unit]
+Description=Gestures with libinput
+After=graphical.target
+
+[Service]
+Type=simple
+Environment=DISPLAY=:0
+ExecStart=/usr/sbin/libinput-gestures
+Restart=always
+User=%u
+
+[Install]
+WantedBy=graphical.target
