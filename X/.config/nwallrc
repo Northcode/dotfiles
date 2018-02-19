@@ -1,0 +1,2 @@
+WALL_DIR=~/Pictures/Wallpapers
+WALLSETTER="feh --bg-fill"
