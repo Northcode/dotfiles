@@ -80,7 +80,7 @@
   :straight t
   :config
   (setq org-agenda-files
-	'("~/cal.org" "~/org/todo.org" "~/org/bachelor/diary.org")
+	'("~/Documents/org/todo.org" "~/Documents/org/bachelor/diary.org")
 	org-clock-idle-time 15)
   :bind
   (("C-c a" . org-agenda)
@@ -582,16 +582,16 @@ With prefix ARG non-nil, insert the result at the end of region."
  '(org-capture-templates
    (quote
     (("t" "Todo" entry
-      (file "~/org/todo.org")
+      (file "~/Documents/org/todo.org")
       "* TODO ")
      ("c" "Clock in something" entry
-      (file "~/org/clock.org")
+      (file "~/Documents/org/clock.org")
       "* clock-entry: " :clock-in t)
      ("a" "Bachelor project diary clock todo" entry
-      (file+headline "~/org/bachelor/diary.org" "Clocked")
+      (file+headline "~/Documents/org/bachelor/diary.org" "Clocked")
       "** TODO ")
      ("n" "Add Note about something" entry
-      (file "~/org/notes.org")
+      (file "~/Documents/org/notes.org")
       ""))))
  '(org-trello-current-prefix-keybinding "C-c o" nil (org-trello)))
 ;;;; Faces
