@@ -1,3 +1,5 @@
 #!/bin/bash
 
-xsetwacom --set 12 Area -15200 0 30400 9500
+PEN=$(xsetwacom --list devices | grep Pen | sed -rn 's/.*id: ([[:digit:]]+).*/\1/p')
+
+xsetwacom --set $PEN Area -15200 0 30400 9500

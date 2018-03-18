@@ -31,24 +31,28 @@ Master ":gmail-remote:INBOX"
 Slave :gmail-local:Inbox
 Create Both
 SyncState *
+# SubFolders verbatim
 
 Channel gmail-allmail
 Master ":gmail-remote:[Gmail]/All Mail"
-Slave ":gmail-local:[Gmail]/All Mail"
+Slave ":gmail-local:Gmail/All Mail"
 Create Both
 SyncState *
+# SubFolders verbatim
 
 Channel gmail-sent
 Master ":gmail-remote:[Gmail]/Sent Mail"
-Slave ":gmail-local:[Gmail]/Sent Mail"
+Slave ":gmail-local:Gmail/Sent Mail"
 Create Both
 SyncState *
+# SubFolders verbatim
 
 Channel gmail-bin
 Master ":gmail-remote:[Gmail]/Bin"
-Slave ":gmail-local:[Gmail]/Bin"
+Slave ":gmail-local:Gmail/Bin"
 Create Both
 SyncState *
+# SubFolders verbatim
 
 Group gmail
 Channel gmail-bin

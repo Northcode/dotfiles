@@ -2,7 +2,9 @@
 ;; .emacs -- Emacs config with straight.el
 
 ;;; Bootstrapping
+
 ;;;; bootstrap straight.el
+
 (let ((bootstrap-file (concat user-emacs-directory "straight/repos/straight.el/bootstrap.el"))
       (bootstrap-version 3))
   (unless (file-exists-p bootstrap-file)
@@ -15,11 +17,15 @@
   (load bootstrap-file nil 'nomessage))
 
 ;;;; fetch use-package
+
 (straight-use-package 'use-package)
 (use-package diminish :straight t)
 
+
 ;;; Base config
+
 ;;;; Mode line
+
 (setq-default mode-line-format
 	      '("    "
 		(:eval (case evil-state
@@ -47,18 +53,23 @@
 		(:eval (format-time-string "%H:%M" (current-time)))
 		" %-"))
 ;;;; Evil
+
 (use-package evil :straight t
   :init (evil-mode t)
   :config (setq evil-move-cursor-back nil))
+
 (use-package evil-surround :straight t)
+
 (use-package evil-magit
   :straight t
   :init (evil-magit-init))
+
 (use-package evil-commentary
   :straight t
   :init (evil-commentary-mode t))
 
 ;;;; Helm
+
 (use-package helm
   :straight t
   :init (helm-mode t)
@@ -76,6 +87,7 @@
 (use-package helm-projectile :straight t)
 
 ;;;; Org mode
+
 (use-package org
   :straight t
   :config
@@ -97,6 +109,7 @@
 
 
 ;;;; Set some defaults
+
 (setq search-whitespace-regexp ".*?"
       backup-by-copying t
       backup-directory-alist
@@ -122,7 +135,9 @@
 (put 'narrow-to-region 'disabled nil)
 
 ;;; Util functions
+
 ;;;; Interactive wrappers around emacs functions I use often
+
 (defun lastbuf () "Switch to last buffer instantly."
        (interactive)
        (switch-to-buffer (other-buffer (current-buffer))))
@@ -135,7 +150,10 @@
        (interactive)
        (revert-buffer t t))
 
+(evil-define-key 'normal global-map (kbd "g r") 'revbuf)
+
 ;;;; Elisp scripting utilities
+
 ;; from http://ergoemacs.org/emacs/elisp_read_file_content.html thanks!
 (defun get-string-from-file (filePath) "Return FILEPATH's file content."
        (with-temp-buffer
@@ -143,15 +161,19 @@
 	 (buffer-string)))
 
 ;;;; Ediff stuff
+
 (defun ediff-copy-both-to-C ()
   (interactive)
   (ediff-copy-diff ediff-current-difference nil 'C nil
 		   (concat
 		    (ediff-get-region-contents ediff-current-difference 'A ediff-control-buffer)
 		    (ediff-get-region-contents ediff-current-difference 'B ediff-control-buffer))))
-(defun add-d-to-ediff-mode-map () (define-key ediff-mode-map "d" 'ediff-copy-both-to-C))
+
+(defun add-d-to-ediff-mode-map () 
+  (define-key ediff-mode-map "d" 'ediff-copy-both-to-C))
 
 ;;;; Custom editing functions
+
 (defun calc-eval-region (beg end)
   "Calculate the region and display the result in the echo area.
 With prefix ARG non-nil, insert the result at the end of region."
@@ -165,6 +187,7 @@ With prefix ARG non-nil, insert the result at the end of region."
       (insert result))))
 
 ;;;; Sudo stuff
+
 (defun sudo-save ()
   (interactive)
   (if (not buffer-file-name)
@@ -218,9 +241,7 @@ With prefix ARG non-nil, insert the result at the end of region."
 					 (smtpmail-smtp-service  . 587)
 					 (starttls-use-gnutls    . t)
 					 )
-				 ))
-    )
-  )
+				 ))))
 
 (defun load-mu4e-conf ()
   (add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e")
@@ -244,10 +265,10 @@ With prefix ARG non-nil, insert the result at the end of region."
   (add-hook 'after-init-hook #'mu4e-alert-enable-mode-line-display)
 
   (mu4e-alert-enable-notifications)
-  (mu4e-alert-enable-mode-line-display)
-  )
+  (mu4e-alert-enable-mode-line-display))
 
 ;;;; Erc tls auth source and formatting
+
 (defun erc-tls-auth-source (&rest args)
   "Load erc-tls authentication info from .authinfo database."
   (print args)
@@ -279,10 +300,24 @@ With prefix ARG non-nil, insert the result at the end of region."
     (erc-put-text-property (+ (length mark-s) (length nick)) (length str)
 			   'face msg-face str)
     str))
+
 ;;; Project management
+
 (use-package projectile
   :straight t
-  :init (projectile-global-mode t))
+  :init
+  (projectile-global-mode t)
+  (defun save-and-run () (interactive) (save-all) (projectile-run-project nil))
+  (defun save-and-compile () (interactive) (save-all) (projectile-compile-project nil))
+  (defun toggle-compilation-read-command () (interactive)
+	 (if compilation-read-command
+	     (setq compilation-read-command nil)
+	   (setq compilation-read-command t)))
+  :bind
+  (:map projectile-mode-map
+	("<f5>" . save-and-run)
+	("<f6>" . save-and-compile)
+	("<f7>" . toggle-compilation-read-command)))
 
 (use-package magit
   :straight t
@@ -290,30 +325,39 @@ With prefix ARG non-nil, insert the result at the end of region."
   (("C-c g" . magit-status)))
 
 ;;; Editing tools
+
 ;;;; Mangar's stuff
+
 (use-package expand-region
     :straight t
     :bind (("M-2" . er/expand-region)))
+
 (use-package mark-multiple
     :straight t
     :bind (("M-3" . mark-next-like-this)))
 
 ;;;; Auto complete
-(use-package auto-complete
+;; (use-package auto-complete
+;;   :straight t
+;;   :config
+;;   (require 'auto-complete)
+;;   (require 'auto-complete-config)
+;;   (ac-config-default)
+;;   (add-hook 'prog-mode-hook 'auto-complete-mode))
+;; (use-package ac-c-headers
+;;   :straight t
+;;   :config
+;;   (require 'ac-c-headers)
+;;   (let ((acc-hook (lambda () (add-to-list 'ac-sources 'ac-source-c-headers))))
+;;     (add-hook 'c++-mode-hook acc-hook)
+;;     (add-hook 'c-mode-hook acc-hook)))
+
+(use-package company
   :straight t
-  :config
-  (require 'auto-complete)
-  (require 'auto-complete-config)
-  (ac-config-default)
-  (add-hook 'prog-mode-hook 'auto-complete-mode))
-(use-package ac-c-headers
-  :straight t
-  :config
-  (require 'ac-c-headers)
-  (let ((acc-hook (lambda () (add-to-list 'ac-sources 'ac-source-c-headers))))
-    (add-hook 'c++-mode-hook acc-hook)
-    (add-hook 'c-mode-hook acc-hook)))
+  (add-hook 'prog-mode-hook 'company-mode))
+
 ;;;; Outlining
+
 (use-package outline
   :straight t
   :config
@@ -356,12 +400,20 @@ With prefix ARG non-nil, insert the result at the end of region."
   :init
   (latex-preview-pane-enable))
 
+;;;; Searching
+
+(use-package ag
+  :straight t)
+
 ;;; Programming languages
+
 ;;;; Clojure
 
 (use-package clojure-mode :straight t)
 (use-package inf-clojure :straight t)
-(use-package cider :straight t)
+(use-package cider :straight t
+  :init (add-to-list 'evil-emacs-state-modes 'cider-stacktrace-mode))
+
 
 ;;;; Rust
 
@@ -372,6 +424,34 @@ With prefix ARG non-nil, insert the result at the end of region."
   :straight t)
 
 (use-package cargo :straight t)
+
+;;;; Web
+(use-package web-mode
+  :straight t)
+
+(use-package zencoding-mode
+  :straight t
+  :bind
+  (:map zencoding-mode-keymap
+	("C-c C-c" . zencoding-expand-line)))
+;;;; C#
+(use-package csharp-mode
+  :straight t)
+
+(use-package omnisharp
+  :straight t
+  :init
+  (add-hook 'csharp-mode-hook 'omnisharp-mode)
+  (add-to-list 'company-backends 'company-omnisharp)
+  :bind
+  (:map csharp-mode-map
+	("C-c r" . omnisharp-run-code-action-refactoring)
+	("<f8>" . omnisharp-start-omnisharp-server)))
+
+;;;; Java
+
+(use-package meghanada
+  :straight t)
 
 ;;; Organization tools
 ;;;; Org mode
@@ -441,7 +521,11 @@ With prefix ARG non-nil, insert the result at the end of region."
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 ;;;; Theme
-(use-package spacegray-theme
+
+;; (use-package spacegray-theme
+;;   :straight t)
+
+(use-package nord-theme
   :straight t)
 
 ;;; Management Tools
@@ -578,7 +662,18 @@ With prefix ARG non-nil, insert the result at the end of region."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ansi-color-faces-vector
+   [default bold shadow italic underline bold bold-italic bold])
+ '(ansi-color-names-vector
+   ["#212526" "#ff4b4b" "#b4fa70" "#fce94f" "#729fcf" "#e090d7" "#8cc4ff" "#eeeeec"])
+ '(custom-safe-themes
+   (quote
+    ("8e0c6a96a17a5b45979c31265821053aff9beea9fb5ac5e41130e0c27a89214e" "5b20570781c33819c0b4bcb009305dbe5a9ed12fcedca10e29f1703b5b9d3f96" "c7f838704d7caa88bc337464867c22af0a502e32154558b0f6c9c3c6e8650122" default)))
  '(evil-want-C-u-scroll t)
+ '(fci-rule-color "#343d46")
+ '(org-agenda-files
+   (quote
+    ("~/Documents/org/todo.org" "~/Documents/org/bachelor/diary.org")))
  '(org-capture-templates
    (quote
     (("t" "Todo" entry
@@ -593,14 +688,33 @@ With prefix ARG non-nil, insert the result at the end of region."
      ("n" "Add Note about something" entry
       (file "~/Documents/org/notes.org")
       ""))))
- '(org-trello-current-prefix-keybinding "C-c o" nil (org-trello)))
+ '(org-trello-current-prefix-keybinding "C-c o" nil (org-trello))
+ '(vc-annotate-background nil)
+ '(vc-annotate-color-map
+   (quote
+    ((20 . "#bf616a")
+     (40 . "#DCA432")
+     (60 . "#ebcb8b")
+     (80 . "#B4EB89")
+     (100 . "#89EBCA")
+     (120 . "#89AAEB")
+     (140 . "#C189EB")
+     (160 . "#bf616a")
+     (180 . "#DCA432")
+     (200 . "#ebcb8b")
+     (220 . "#B4EB89")
+     (240 . "#89EBCA")
+     (260 . "#89AAEB")
+     (280 . "#C189EB")
+     (300 . "#bf616a")
+     (320 . "#DCA432")
+     (340 . "#ebcb8b")
+     (360 . "#B4EB89"))))
+ '(vc-annotate-very-old-color nil))
 ;;;; Faces
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:family "Inconsolata"))))
- '(org-level-1 ((t (:inherit outline-1 :height 2.0))))
- '(org-level-2 ((t (:inherit outline-2 :height 1.8))))
- '(org-level-3 ((t (:inherit outline-2 :height 1.3)))))
+ '(font-lock-comment-face ((t (:foreground "medium sea green")))))
