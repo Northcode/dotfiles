@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # /etc/X11/xinit/xinitrc
 #
@@ -7,28 +7,8 @@
 # invoke global X session script
 #. /etc/X11/Xsession
 
-export EMAIL="northcode.no@gmail.com"
-export NAME="Andreas Larsen"
-export SMTPSERVER="smtp.gmail.com"
+source ~/.xsetup
 
-export XDG_RUNTIME_DIR="/run/user/$UID"
-export DBUS_SESSION_BUS_ADDRESS="unix:path=$XDG_RUNTIME_DIR/bus"
-xrdb ~/.config/X/resources
-
-if [ -d "~/Android/Sdk/" ]
-then
-    export ANDROID_HOME="~/Android/Sdk/"
-fi
-
-touchpad_id=$(xinput list --short | grep -i touchpad | cut -f 2 | cut -d = -f 2)
-xinput set-prop $touchpad_id "libinput Tapping Enabled" 1
-xinput set-prop $touchpad_id "libinput Natural Scrolling Enabled" 1
-
-setxkbmap no
-setxkbmap -option caps:escape
-xset r rate 200 70
-#xmodmap ~/.config/X/modmap
-# light-locker &ght -S 
 xscreensaver &
 sxhkd &
-bspwm
+dbus-launch -- bspwm
