@@ -14,51 +14,52 @@ Account gmail
 MaildirStore gmail-local
 Path ~/.mail/gmail/
 Inbox ~/.mail/gmail/Inbox
-# SubFolders verbatim
+SubFolders verbatim
 
-# Channel gmail
-# Master :gmail-remote:
-# Slave :gmail-local:
-# MaxMessages 0
+Channel gmail
+Master :gmail-remote:
+Slave :gmail-local:
+MaxMessages 0
 # Patterns * ![Gmail]* "[Gmail]/All Mail" "[Gmail]/Sent Mail" "[Gmail]/Bin"
+Patterns *
+Create Both
+Remove Both
+Sync All
+SyncState *
+
+# Channel gmail-inbox
+# Master ":gmail-remote:INBOX"
+# Slave :gmail-local:Inbox
 # Create Both
-# Remove Both
-# Sync All
 # SyncState *
+# # SubFolders verbatim
 
-Channel gmail-inbox
-Master ":gmail-remote:INBOX"
-Slave :gmail-local:Inbox
-Create Both
-SyncState *
-# SubFolders verbatim
+# Channel gmail-allmail
+# Master ":gmail-remote:[Gmail]/All Mail"
+# Slave ":gmail-local:Gmail/All Mail"
+# Create Both
+# SyncState *
+# # SubFolders verbatim
 
-Channel gmail-allmail
-Master ":gmail-remote:[Gmail]/All Mail"
-Slave ":gmail-local:Gmail/All Mail"
-Create Both
-SyncState *
-# SubFolders verbatim
+# Channel gmail-sent
+# Master ":gmail-remote:[Gmail]/Sent Mail"
+# Slave ":gmail-local:Gmail/Sent Mail"
+# Create Both
+# SyncState *
+# # SubFolders verbatim
 
-Channel gmail-sent
-Master ":gmail-remote:[Gmail]/Sent Mail"
-Slave ":gmail-local:Gmail/Sent Mail"
-Create Both
-SyncState *
-# SubFolders verbatim
+# Channel gmail-bin
+# Master ":gmail-remote:[Gmail]/Bin"
+# Slave ":gmail-local:Gmail/Bin"
+# Create Both
+# SyncState *
+# # SubFolders verbatim
 
-Channel gmail-bin
-Master ":gmail-remote:[Gmail]/Bin"
-Slave ":gmail-local:Gmail/Bin"
-Create Both
-SyncState *
-# SubFolders verbatim
-
-Group gmail
-Channel gmail-bin
-Channel gmail-inbox
-Channel gmail-allmail
-Channel gmail-sent
+# Group gmail
+# Channel gmail-bin
+# Channel gmail-inbox
+# Channel gmail-allmail
+# Channel gmail-sent
 
 IMAPAccount northcode
 Host northcode.no
