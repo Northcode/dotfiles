@@ -21,7 +21,6 @@
 (straight-use-package 'use-package)
 (use-package diminish :straight t)
 
-
 ;;; Base config
 
 ;;;; Mode line
@@ -354,7 +353,10 @@ With prefix ARG non-nil, insert the result at the end of region."
 
 (use-package company
   :straight t
+  :init
   (add-hook 'prog-mode-hook 'company-mode))
+
+
 
 ;;;; Outlining
 
@@ -385,15 +387,15 @@ With prefix ARG non-nil, insert the result at the end of region."
 
 ;;;; LaTeX
 
-(use-package auctex
-  :straight t
-  :config
-  (setq TeX-auto-save t
-	TeX-parse-self t
-	LaTeX-indent-level 4)
-  (add-hook 'LaTeX-mode-hook 'visual-line-mode)
-  (add-hook  'LaTeX-mode-hook 'flyspell-mode)
-  (add-hook  'LaTeX-mode-hook 'LaTeX-math-mode))
+;; (use-package auctex
+;;   :straight t
+;;   :config
+;;   (setq TeX-auto-save t
+;; 	TeX-parse-self t
+;; 	LaTeX-indent-level 4)
+;;   (add-hook 'LaTeX-mode-hook 'visual-line-mode)
+;;   (add-hook  'LaTeX-mode-hook 'flyspell-mode)
+;;   (add-hook  'LaTeX-mode-hook 'LaTeX-math-mode))
 
 (use-package latex-preview-pane
   :straight t
@@ -668,7 +670,7 @@ With prefix ARG non-nil, insert the result at the end of region."
    ["#212526" "#ff4b4b" "#b4fa70" "#fce94f" "#729fcf" "#e090d7" "#8cc4ff" "#eeeeec"])
  '(custom-safe-themes
    (quote
-    ("8e0c6a96a17a5b45979c31265821053aff9beea9fb5ac5e41130e0c27a89214e" "5b20570781c33819c0b4bcb009305dbe5a9ed12fcedca10e29f1703b5b9d3f96" "c7f838704d7caa88bc337464867c22af0a502e32154558b0f6c9c3c6e8650122" default)))
+    ("8e0c6a96a17a5b45979c31265821053aff9beea9fb5ac5e41130e0c27a89214e" default)))
  '(evil-want-C-u-scroll t)
  '(fci-rule-color "#343d46")
  '(org-agenda-files
