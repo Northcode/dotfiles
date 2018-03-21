@@ -530,6 +530,13 @@ With prefix ARG non-nil, insert the result at the end of region."
 (use-package nord-theme
   :straight t)
 
+;; Load nord theme once a frame is created, not before as it makes it break, then remove the hook as it is no longer needed until next emacs startup
+(defun nord-theme-hook (frame)
+  (with-selected-frame frame (load-theme 'nord t))
+  (remove-hook 'after-make-frame-functions 'nord-theme-hook))
+
+(add-hook 'after-make-frame-functions 'nord-theme-hook)
+
 ;;; Management Tools
 ;;;; Eshell and term
 (use-package eshell
@@ -719,4 +726,4 @@ With prefix ARG non-nil, insert the result at the end of region."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(font-lock-comment-face ((t (:foreground "medium sea green")))))
+ '(font-lock-comment-face ((t (:foreground "#8fbcbb")))))
