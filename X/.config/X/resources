@@ -17,6 +17,8 @@ URxvt.tabbed.tabbar-fg: 0
 URxvt.tabbed.tabbar-bg: 8
 URxvt.iso14755: False
 
+st.alpha: 240
+
 Xft.antialias: 1
 Xft.autohint: 1
 Xft.dpi: 100
