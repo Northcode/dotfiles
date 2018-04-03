@@ -9,6 +9,7 @@
 
 source ~/.xsetup
 
-xscreensaver &
+# xscreensaver &
+dunst &
 sxhkd &
 dbus-launch -- bspwm
