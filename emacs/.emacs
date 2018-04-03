@@ -51,6 +51,8 @@
 		" %e "
 		(:eval (format-time-string "%H:%M" (current-time)))
 		" %-"))
+
+
 ;;;; Evil
 
 (use-package evil :straight t
@@ -726,4 +728,5 @@ With prefix ARG non-nil, insert the result at the end of region."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(font-lock-comment-face ((t (:foreground "#8fbcbb")))))
+ '(font-lock-comment-face ((t (:foreground "#8fbcbb"))))
+ '(font-lock-doc-face ((t (:foreground "#8fbcbb")))))
