@@ -24,7 +24,7 @@ else
 	source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
     fi
 
-    export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/home/andreas/bin"
+    # export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/home/andreas/bin"
     export EDITOR='emacsclient -s /tmp/emacs1000/server -c -a ""'
     export VISUAL='emacsclient -s /tmp/emacs1000/server -c -a ""'
     export LANG=en_GB.UTF-8
