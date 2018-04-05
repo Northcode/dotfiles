@@ -1,3 +1,6 @@
 [submodule "zsh/.zprezto"]
 	path = zsh/.zprezto
 	url = https://github.com/sorin-ionescu/prezto.git
+[submodule "emacs/.emacs.d/northcode-theme.el"]
+	path = emacs/.emacs.d/northcode-theme.el
+	url = git@github.com:Northcode/northcode-theme.el.git
