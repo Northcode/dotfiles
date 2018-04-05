@@ -21,6 +21,8 @@
 (straight-use-package 'use-package)
 (use-package diminish :straight t)
 
+(add-to-list 'custom-theme-load-path (file-truename "~/.emacs.d/northcode-theme.el/"))
+
 ;;; Base config
 
 ;;;; Mode line
