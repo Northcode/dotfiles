@@ -529,15 +529,17 @@ With prefix ARG non-nil, insert the result at the end of region."
 ;; (use-package spacegray-theme
 ;;   :straight t)
 
-(use-package nord-theme
-  :straight t)
+;; (use-package nord-theme
+;;   :straight t)
 
 ;; Load nord theme once a frame is created, not before as it makes it break, then remove the hook as it is no longer needed until next emacs startup
-(defun nord-theme-hook (frame)
-  (with-selected-frame frame (load-theme 'nord t))
-  (remove-hook 'after-make-frame-functions 'nord-theme-hook))
+;; (defun nord-theme-hook (frame)
+;;   (with-selected-frame frame (load-theme 'nord t))
+;;   (remove-hook 'after-make-frame-functions 'nord-theme-hook))
 
-(add-hook 'after-make-frame-functions 'nord-theme-hook)
+;; (add-hook 'after-make-frame-functions 'nord-theme-hook)
+
+(load-theme 'northcode t)
 
 ;;; Management Tools
 ;;;; Eshell and term
@@ -581,8 +583,8 @@ With prefix ARG non-nil, insert the result at the end of region."
   (interactive)
   (find-file (case last-command-event
 	       (?c user-init-file)
-	       (?n "~/org/notes.org")
-	       (?t "~/org/todo.org")
+	       (?n "~/Documents/org/notes.org")
+	       (?t "~/Documents/org/todo.org")
 	       (t (error "Key %c not bound to a file yet." last-command-event)))))
 
 (bind-keys
@@ -679,7 +681,7 @@ With prefix ARG non-nil, insert the result at the end of region."
    ["#212526" "#ff4b4b" "#b4fa70" "#fce94f" "#729fcf" "#e090d7" "#8cc4ff" "#eeeeec"])
  '(custom-safe-themes
    (quote
-    ("8e0c6a96a17a5b45979c31265821053aff9beea9fb5ac5e41130e0c27a89214e" default)))
+    ("f2209573c119616e65886982f68198297462410486064f533943d7bd725e213b" "60d675485a5582693ab8419e6525481cbc5b19e7a403430a4aa9e1d31d87d832" "3fa7d0fc26c8483c6fdffc9fa5eda229b2f08ab7944728ccdc6743083693750e" "a4d11382b57e6c08c26db2793670642b1fbb828e642cf41ae58685b4e37aeca9" "f8cf128fa0ef7e61b5546d12bb8ea1584c80ac313db38867b6e774d1d38c73db" "8e0c6a96a17a5b45979c31265821053aff9beea9fb5ac5e41130e0c27a89214e" default)))
  '(evil-want-C-u-scroll t)
  '(fci-rule-color "#343d46")
  '(org-agenda-files
@@ -723,10 +725,10 @@ With prefix ARG non-nil, insert the result at the end of region."
      (360 . "#B4EB89"))))
  '(vc-annotate-very-old-color nil))
 ;;;; Faces
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(font-lock-comment-face ((t (:foreground "#8fbcbb"))))
- '(font-lock-doc-face ((t (:foreground "#8fbcbb")))))
+)
