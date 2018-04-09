@@ -734,3 +734,38 @@ With prefix ARG non-nil, insert the result at the end of region."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:family "Inconsolata")))))
+
+
+;;; Media stuff
+
+;;;; EMMS
+
+(use-package emms
+  :straight t
+  :config
+  (require 'emms-setup)
+  (require 'emms-player-mpd)
+  (emms-all)
+  (setq emms-seek-seconds 5
+	emms-player-list '(emms-player-mpd)
+	emms-info-functions '(emms-info-mpd)
+	emms-player-mpd-server-name "localhost"
+	emms-player-mpd-server-port "6600")
+  (defun emms-maybe-connect-mpd ()
+    "Connect EMMS to mpd and set the cache"
+    (interactive)
+    (when (not emms-player-mpd-process)
+      (emms-player-mpd-connect)
+      (emms-cache-set-from-mpd-all))
+    (emms))
+  :bind
+  (("C-c d" . emms-maybe-connect-mpd)
+   :map emms-playlist-mode-map
+   ("j" . next-line)
+   ("k" . previous-line)
+   ("l" . emms-smart-browse)
+   :map emms-browser-mode-map
+   ("h" . emms)
+   ("j" . next-line)
+   ("k" . previous-line)))
+
