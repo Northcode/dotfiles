@@ -9,6 +9,8 @@ then
     export ANDROID_HOME="~/Android/Sdk/"
 fi
 
+export PATH="~/bin:$PATH"
+
 touchpad_id=$(xinput list --short | grep -i touchpad | cut -f 2 | cut -d = -f 2)
 xinput set-prop $touchpad_id "libinput Tapping Enabled" 1
 xinput set-prop $touchpad_id "libinput Natural Scrolling Enabled" 1
