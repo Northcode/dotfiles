@@ -708,7 +708,10 @@ With prefix ARG non-nil, insert the result at the end of region."
       "** TODO ")
      ("n" "Add Note about something" entry
       (file "~/Documents/org/notes.org")
-      ""))))
+      "")
+     ("j" "Journal Entry" entry
+      (file+olp+datetree "~/Documents/org/journal.org.gpg")
+      "* %?" :empty-lines 1))))
  '(org-trello-current-prefix-keybinding "C-c o" nil (org-trello))
  '(vc-annotate-background nil)
  '(vc-annotate-color-map
