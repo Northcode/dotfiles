@@ -87,8 +87,8 @@ Sync All
 SyncState *
 
 IMAPAccount uit
-Host mail.uit.no
-User ala107
+Host outlook.office365.com
+User ala107@uit.no
 PassCmd "gpg -d --no-tty -q ~/.authinfo.gpg | grep 'login ala107@uit.no' | cut -d ' ' -f 8"
 SSLType IMAPS
 CertificateFile /etc/ssl/certs/ca-certificates.crt
