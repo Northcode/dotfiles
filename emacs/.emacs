@@ -122,6 +122,7 @@
       kept-old-versions 2
       version-control t
       evil-want-C-u-scroll t
+      save-interprogram-paste-before-kill t
       )
 
 (if (not (memq system-type '(windows-nt ms-dos)))
@@ -409,6 +410,11 @@ With prefix ARG non-nil, insert the result at the end of region."
 ;;;; Searching
 
 (use-package ag
+  :straight t)
+
+;;;; IX
+
+(use-package ix
   :straight t)
 
 ;;; Programming languages
@@ -757,15 +763,13 @@ With prefix ARG non-nil, insert the result at the end of region."
     (when (not emms-player-mpd-process)
       (emms-player-mpd-connect)
       (emms-cache-set-from-mpd-all))
-    (emms))
+    (emms-browser))
   :bind
   (("C-c d" . emms-maybe-connect-mpd)
    :map emms-playlist-mode-map
    ("j" . next-line)
    ("k" . previous-line)
-   ("l" . emms-smart-browse)
    :map emms-browser-mode-map
-   ("h" . emms)
    ("j" . next-line)
    ("k" . previous-line)))
 
