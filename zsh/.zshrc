@@ -25,6 +25,7 @@ else
     fi
 
     # export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/home/andreas/bin"
+    export PATH=~/bin:$PATH
     export EDITOR='emacsclient -s /tmp/emacs1000/server -c -a ""'
     export VISUAL='emacsclient -s /tmp/emacs1000/server -c -a ""'
     export LANG=en_GB.UTF-8
@@ -69,5 +70,6 @@ else
 	echo "you should really get fortune, cowsay and lolcat"
     fi
 
+    set -o vi
 
 fi
