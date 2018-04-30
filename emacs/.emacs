@@ -102,13 +102,13 @@
    ("C-c c" . org-capture)
    ("C-c l" . org-store-link)))
 
-(use-package org-trello
-  :straight t
-  :bind
-  (:map org-trello-mode-map
-	("C-c o s" . org-trello-sync-buffer))
-  :config
-  (add-to-list 'org-agenda-files "~/org/bachelor/scrum.org"))
+;; (use-package org-trello
+;;   :straight t
+;;   :bind
+;;   (:map org-trello-mode-map
+;; 	("C-c o s" . org-trello-sync-buffer))
+;;   :config
+;;   (add-to-list 'org-agenda-files "~/org/bachelor/scrum.org"))
 
 
 ;;;; Set some defaults
@@ -464,6 +464,12 @@ With prefix ARG non-nil, insert the result at the end of region."
 
 (use-package meghanada
   :straight t)
+
+(defun my-java-mode-hook ()
+  (meghanada-mode t)
+  (flycheck-mode t))
+
+(add-hook 'java-mode-hook 'my-java-mode-hook)
 
 ;;; Organization tools
 ;;;; Org mode
