@@ -1,0 +1,6 @@
+[Unit]
+Description=Borg Backup Service
+
+[Service]
+Type=simple
+ExecStart=/home/andreas/bin/borg-backup.sh

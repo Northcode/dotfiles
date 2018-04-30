@@ -1,0 +1,10 @@
+[Unit]
+Description=Borg Backup Timer
+
+[Timer]
+WakeSystem=false
+OnCalendar=*-*-* 0/1:00:00
+RandomizedDelaySec=10min
+
+[Install]
+WantedBy=timers.target
