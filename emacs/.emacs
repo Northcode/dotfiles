@@ -93,6 +93,7 @@
   :straight t
   :bind
   (:map popup-menu-keymap
+	("<escape>" . keyboard-quit)
 	("M-j" . popup-next)
 	("M-k" . popup-previous)))
 
@@ -119,6 +120,18 @@
 
 
 ;;;; Set some defaults
+
+;; Prevents issue where you have to press backspace twice when
+;; trying to remove the first character that fails a search
+(define-key isearch-mode-map [remap isearch-delete-char] 'isearch-del-char)
+
+(defadvice isearch-search (after isearch-no-fail activate)
+  (unless isearch-success
+    (ad-disable-advice 'isearch-search 'after 'isearch-no-fail)
+    (ad-activate 'isearch-search)
+    (isearch-repeat (if isearch-forward 'forward))
+    (ad-enable-advice 'isearch-search 'after 'isearch-no-fail)
+    (ad-activate 'isearch-search)))
 
 (setq search-whitespace-regexp ".*?"
       backup-by-copying t
@@ -347,7 +360,7 @@ With prefix ARG non-nil, insert the result at the end of region."
 
 (defun projectile-get-first-file-matching (re)
   "Return the first file in a projectile project matching RE"
-  (first (directory-files-recursively (projectile-project-root) re)))
+  (first (-filter (lambda (str) (string-match-p ".*[^#]glossary\\.tex" str)) (directory-files-recursively (projectile-project-root) ".*"))))
 
 (use-package magit
   :straight t
