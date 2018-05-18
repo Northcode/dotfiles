@@ -347,7 +347,7 @@ With prefix ARG non-nil, insert the result at the end of region."
 
 (defun projectile-get-first-file-matching (re)
   "Return the first file in a projectile project matching RE"
-  (first (-filter (lambda (s) (string-match-p re s)) (projectile-get-repo-files))))
+  (first (directory-files-recursively (projectile-project-root) re)))
 
 (use-package magit
   :straight t
