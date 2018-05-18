@@ -50,7 +50,7 @@ hsetroot.full: /home/andreas/Wallpapers/04-ColdShoulder.png
 
 
 ! bspwm config
-bspwm.border_width: 1
+bspwm.border_width: 4
 bspwm.window_gap: 10
 
 bspwm.top_padding:	20
@@ -63,9 +63,9 @@ bspwm.borderless_monocle: true
 bspwm.gapless_monocle: false
 bspwm.focus_by_distance: true
 
-bspwm.normal_border_color:"#333333"
-bspwm.focused_border_color:"#FFFFFF"
-bspwm.presel_border_color:"#8888ff"
+bspwm.normal_border_color:"#1c1c1c"
+bspwm.focused_border_color:"#6E8EE5"
+bspwm.presel_border_color:"#C27127"
 
 ! panel config
 panel.col.active:#902222
