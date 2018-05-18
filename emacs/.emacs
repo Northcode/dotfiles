@@ -164,6 +164,14 @@
 	 (insert-file-contents filePath)
 	 (buffer-string)))
 
+(defun get-lines-matching-from-file (f re)
+  (-filter (lambda (s) (string-match-p re s))
+	   (split-string (get-string-from-file f)
+			 "\n")))
+
+(defun regexp-replace-list (re rep seq)
+  (mapcar (lambda (str) (replace-regexp-in-string re rep str nil)) seq))
+
 ;;;; Ediff stuff
 
 (defun ediff-copy-both-to-C ()
@@ -268,6 +276,12 @@ With prefix ARG non-nil, insert the result at the end of region."
   (add-hook 'after-init-hook #'mu4e-alert-enable-notifications)
   (add-hook 'after-init-hook #'mu4e-alert-enable-mode-line-display)
 
+  (setq mu4e-bookmarks
+	'(("flag:unread AND NOT flag:trashed AND NOT maildir:/northcode/Junk" "Unread messages" 117)
+	  ("date:today..now" "Today's messages" 116)
+	  ("date:7d..now" "Last 7 days" 119)
+	  ("mime:image/*" "Messages with images" 112)))
+
   (mu4e-alert-enable-notifications)
   (mu4e-alert-enable-mode-line-display))
 
@@ -322,6 +336,11 @@ With prefix ARG non-nil, insert the result at the end of region."
 	("<f5>" . save-and-run)
 	("<f6>" . save-and-compile)
 	("<f7>" . toggle-compilation-read-command)))
+
+
+(defun projectile-get-first-file-matching (re)
+  "Return the first file in a projectile project matching RE"
+  (first (-filter (lambda (s) (string-match-p re s)) (projectile-get-repo-files))))
 
 (use-package magit
   :straight t
@@ -402,10 +421,32 @@ With prefix ARG non-nil, insert the result at the end of region."
 ;;   (add-hook  'LaTeX-mode-hook 'flyspell-mode)
 ;;   (add-hook  'LaTeX-mode-hook 'LaTeX-math-mode))
 
-(use-package latex-preview-pane
-  :straight t
-  :init
-  (latex-preview-pane-enable))
+;; (use-package latex-preview-pane
+;;   :straight t
+;;   :init
+;;   (latex-preview-pane-enable))
+
+;;;;; Functions for latex stuff
+
+(defun latex-get-bibitems-from-file (f)
+  "Get a list of all the bibitems in a file"
+  (let ((re "\\\\bibitem{\\([a-zA-Z0-9_()]+\\)}")
+	(rep "\\1"))
+    (regexp-replace-list re rep (get-lines-matching-from-file f re))))
+
+(defun latex-get-glossary-list-from-file (f)
+  "Gets glossaries or acronyms from file F"
+  (let ((re "\\\\\\(?:newglossaryentry\\|newacronym\\[see={\\[Glossary:]{[a-zA-Z0-9-_()]+}}]\\){\\([a-zA-Z0-9-_()]+\\)}.*")
+	(rep "\\1"))
+    (regexp-replace-list re rep (get-lines-matching-from-file f re))))
+
+(defun latex-project-get-gls-file ()
+  "Find a bib*.tex file in a latex project, must be used inside a projectile project, returns nil if no file is found"
+  (projectile-get-first-file-matching ".*glossary.*"))
+
+(defun latex-project-get-bib-file ()
+  "Find a bib*.tex file in a latex project, must be used inside a projectile project, returns nil if no file is found"
+  (projectile-get-first-file-matching ".*bib.*\\.tex"))
 
 ;;;; Searching
 
@@ -538,6 +579,13 @@ With prefix ARG non-nil, insert the result at the end of region."
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 
+;;;; Dired sidebar
+
+(use-package dired-sidebar
+  :straight t
+  :bind
+  ("<f9>" . dired-sidebar-toggle-sidebar))
+
 ;;;; Theme
 
 ;; (use-package spacegray-theme
@@ -604,12 +652,25 @@ With prefix ARG non-nil, insert the result at the end of region."
 (bind-keys
  ("M-z" . universal-argument)
  ("C-x C-b" . lastbuf)
+
+ ("M-h" . evil-window-left)
+ ("M-j" . evil-window-down)
+ ("M-k" . evil-window-up)
+ ("M-l" . evil-window-right)
+ 
  :map evil-normal-state-map
  ("SPC c" . quick-find-file)
  ("SPC n" . quick-find-file)
  ("SPC t" . quick-find-file)
  ("SPC f" . quick-find-file)
+
+ ("M-h" . evil-window-left)
+ ("M-j" . evil-window-down)
+ ("M-k" . evil-window-up)
+ ("M-l" . evil-window-right)
+ 
 )
+
 (evil-define-key 'visual global-map "gdc" 'calc-eval-region)
 ;;;; Major mode for authinfo files
 (define-generic-mode
