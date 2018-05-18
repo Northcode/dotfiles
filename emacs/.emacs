@@ -89,6 +89,13 @@
 
 (use-package helm-projectile :straight t)
 
+(use-package popup
+  :straight t
+  :bind
+  (:map popup-menu-keymap
+	("M-j" . popup-next)
+	("M-k" . popup-previous)))
+
 ;;;; Org mode
 
 (use-package org
@@ -457,6 +464,28 @@ With prefix ARG non-nil, insert the result at the end of region."
 
 (use-package ix
   :straight t)
+
+;;;; Yas
+
+(use-package yasnippet
+  :straight t)
+
+(defun yas-popup-isearch-prompt (prompt choices &optional display-fn)
+  (when (featurep 'popup)
+    (popup-menu*
+     (mapcar
+      (lambda (choice)
+        (popup-make-item
+         (or (and display-fn (funcall display-fn choice))
+             choice)
+         :value choice))
+      choices)
+     :prompt prompt
+     ;; start isearch mode immediately
+     :isearch t
+     )))
+
+(setq yas-prompt-functions '(yas-popup-isearch-prompt yas-dropdown-prompt yas-completing-prompt yas-maybe-ido-prompt yas-no-prompt))
 
 ;;; Programming languages
 
