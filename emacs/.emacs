@@ -360,7 +360,7 @@ With prefix ARG non-nil, insert the result at the end of region."
 
 (defun projectile-get-first-file-matching (re)
   "Return the first file in a projectile project matching RE"
-  (first (-filter (lambda (str) (string-match-p ".*[^#]glossary\\.tex" str)) (directory-files-recursively (projectile-project-root) ".*"))))
+  (first (-filter (lambda (str) (string-match-p re str)) (directory-files-recursively (projectile-project-root) ".*"))))
 
 (use-package magit
   :straight t
@@ -462,7 +462,7 @@ With prefix ARG non-nil, insert the result at the end of region."
 
 (defun latex-project-get-gls-file ()
   "Find a bib*.tex file in a latex project, must be used inside a projectile project, returns nil if no file is found"
-  (projectile-get-first-file-matching ".*glossary.*"))
+  (projectile-get-first-file-matching ".*[^#]glossary\\.tex"))
 
 (defun latex-project-get-bib-file ()
   "Find a bib*.tex file in a latex project, must be used inside a projectile project, returns nil if no file is found"
