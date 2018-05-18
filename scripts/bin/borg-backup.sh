@@ -4,22 +4,22 @@ source ~/.borg-conf
 
 borg create -v --stats --compression lz4 \
      $REPOSITORY::'{hostname}-{now:%Y-%m-%d@%H:%M}' "$HOME/" \
-     --exclude '$HOME/.cache/' \
-     --exclude '$HOME/.ccache/' \
-     --exclude '$HOME/.local/share/' \
-     --exclude '$HOME/Downloads/' \
-     --exclude '$HOME/lost+found' \
-     --exclude '$HOME/.wineprefixes/' \
-     --exclude '$HOME/.steam/' \
-     --exclude '$HOME/Android/' \
-     --exclude '$HOME/.gradle/' \
-     --exclude '$HOME/.android/' \
-     --exclude '$HOME/.AndroidStudio3.1/' \
-     --exclude '$HOME/.AndroidStudio3.0/' \
-     --exclude '$HOME/.AndroidStudioPreview3.2/' \
-     --exclude '$HOME/.virtualenvs/' \
-     --exclude '$HOME/.tor-browser/' \
-     --exclude '$HOME/.cargo/'
+     --exclude "$HOME/.cache/" \
+     --exclude "$HOME/.ccache/" \
+     --exclude "$HOME/.local/share/" \
+     --exclude "$HOME/Downloads/" \
+     --exclude "$HOME/lost+found" \
+     --exclude "$HOME/.wineprefixes/" \
+     --exclude "$HOME/.steam/" \
+     --exclude "$HOME/Android/" \
+     --exclude "$HOME/.gradle/" \
+     --exclude "$HOME/.android/" \
+     --exclude "$HOME/.AndroidStudio3.1/" \
+     --exclude "$HOME/.AndroidStudio3.0/" \
+     --exclude "$HOME/.AndroidStudioPreview3.2/" \
+     --exclude "$HOME/.virtualenvs/" \
+     --exclude "$HOME/.tor-browser/" \
+     --exclude "$HOME/.cargo/"
 
 2>&1
 
