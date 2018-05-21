@@ -176,6 +176,21 @@
 
 (evil-define-key 'normal global-map (kbd "g r") 'revbuf)
 
+(defun isearch-by-selection ()
+  (interactive)
+  (let ((selection (buffer-substring-no-properties (point) (mark))))
+    (deactivate-mark)
+    (isearch-mode t)
+    (isearch-yank-string selection)))
+
+(defun custom-isearch ()
+  (interactive)
+  (if mark-active
+      (isearch-by-selection)
+    (isearch-mode t)))
+
+(global-set-key (kbd "C-s") 'custom-isearch)
+
 ;;;; Elisp scripting utilities
 
 ;; from http://ergoemacs.org/emacs/elisp_read_file_content.html thanks!
