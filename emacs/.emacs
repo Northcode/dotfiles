@@ -465,7 +465,7 @@ With prefix ARG non-nil, insert the result at the end of region."
 
 (defun latex-get-bibitems-from-file (f)
   "Get a list of all the bibitems in a file"
-  (let ((re "\\\\bibitem{\\([a-zA-Z0-9_()]+\\)}")
+  (let ((re "\\\\bibitem{\\([a-zA-Z0-9_()\-]+\\)}")
 	(rep "\\1"))
     (regexp-replace-list re rep (get-lines-matching-from-file f re))))
 
