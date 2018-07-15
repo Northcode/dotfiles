@@ -517,6 +517,14 @@ With prefix ARG non-nil, insert the result at the end of region."
 
 ;;; Programming languages
 
+;;;; General
+
+(use-package lsp-mode
+  :straight t)
+
+(use-package lsp-ui
+  :straight t)
+
 ;;;; Clojure
 
 (use-package clojure-mode :straight t)
@@ -531,10 +539,23 @@ With prefix ARG non-nil, insert the result at the end of region."
   :straight t)
 
 (use-package flycheck-rust
-  :straight t)
+  :straight t
+  :init
+  (add-hook 'rust-mode-hook 'flycheck-mode))
 
 (use-package cargo :straight t)
 
+(use-package lsp-rust
+  :straight t
+  :after lsp-mode
+  :init
+  (require 'lsp-rust)
+  (add-hook 'rust-mode-hook #'lsp-rust-enable)
+  :bind
+  (:map rust-mode-map
+	("C-c C-c" . lsp-execute-code-action)))
+
+   
 ;;;; Web
 (use-package web-mode
   :straight t)
@@ -544,6 +565,7 @@ With prefix ARG non-nil, insert the result at the end of region."
   :bind
   (:map zencoding-mode-keymap
 	("C-c C-c" . zencoding-expand-line)))
+
 ;;;; C#
 (use-package csharp-mode
   :straight t)
@@ -709,6 +731,7 @@ With prefix ARG non-nil, insert the result at the end of region."
 (bind-keys
  ("M-z" . universal-argument)
  ("C-x C-b" . lastbuf)
+ ("C-x b" . helm-buffers-list)
 
  ("M-h" . evil-window-left)
  ("M-j" . evil-window-down)
