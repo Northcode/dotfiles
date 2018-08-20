@@ -21,8 +21,6 @@
 (straight-use-package 'use-package)
 (use-package diminish :straight t)
 
-(add-to-list 'custom-theme-load-path (file-truename "~/.emacs.d/northcode-theme.el/"))
-
 ;;; Base config
 
 ;;;; Mode line
@@ -43,10 +41,10 @@
 		" "
 		(:eval (if (buffer-modified-p) "(!!)"))
 		" "
-		(:propertize
-		 (:eval (when (magit-get-current-branch)
-			  (concat " [" (magit-get-current-branch) "]")))
-		 face font-lock-string-face)
+		;; (:propertize
+		;;  (:eval (when (magit-get-current-branch)
+		;; 	  (concat " [" (magit-get-current-branch) "]")))
+		;;  face font-lock-string-face)
 		" :: "
 		(:propertize "%m"
 			     face font-lock-constant-face)
@@ -71,6 +69,12 @@
   :straight t
   :init (evil-commentary-mode t))
 
+(use-package evil-collection
+  :straight t
+  :init
+  (setq evil-want-integration nil)
+  (evil-collection-init))
+
 ;;;; Helm
 
 (use-package helm
@@ -87,7 +91,12 @@
    :map helm-find-files-map
    ("M-l". helm-execute-persistent-action)))
 
-(use-package helm-projectile :straight t)
+(use-package helm-projectile 
+  :straight t
+  :bind
+  (("C-c p p" . helm-projectile-switch-project)
+   ("C-c p d" . projectile-dired)
+   ("C-c p h" . helm-projectile)))
 
 (use-package popup
   :straight t
@@ -145,6 +154,11 @@
       save-interprogram-paste-before-kill t
       )
 
+;; make scrolling more smooth on laptops
+(setq mouse-wheel-scroll-amount '(1 ((shift) . 1))
+      mouse-wheel-progressive-speed nil)
+
+;; only setup gnutls on unix systems
 (if (not (memq system-type '(windows-nt ms-dos)))
     (progn
       (require 'tls)
@@ -392,7 +406,8 @@ With prefix ARG non-nil, insert the result at the end of region."
 
 (use-package mark-multiple
     :straight t
-    :bind (("M-3" . mark-next-like-this)))
+    :bind (("M-3" . mark-next-like-this)
+	   ("M-#" . mark-previous-like-this)))
 
 ;;;; Auto complete
 ;; (use-package auto-complete
@@ -415,6 +430,10 @@ With prefix ARG non-nil, insert the result at the end of region."
   :init
   (add-hook 'prog-mode-hook 'company-mode))
 
+(use-package company-lsp
+  :straight t
+  :init
+  (add-to-list 'company-backends 'company-lsp))
 
 
 ;;;; Outlining
@@ -486,7 +505,9 @@ With prefix ARG non-nil, insert the result at the end of region."
 ;;;; Searching
 
 (use-package ag
-  :straight t)
+  :straight t
+  :bind
+  (("C-c p s" . projectile-ag)))
 
 ;;;; IX
 
@@ -496,7 +517,9 @@ With prefix ARG non-nil, insert the result at the end of region."
 ;;;; Yas
 
 (use-package yasnippet
-  :straight t)
+  :straight t
+  :init
+  (add-hook 'prog-mode-hook 'yas-snippet-mode))
 
 (defun yas-popup-isearch-prompt (prompt choices &optional display-fn)
   (when (featurep 'popup)
@@ -523,7 +546,9 @@ With prefix ARG non-nil, insert the result at the end of region."
   :straight t)
 
 (use-package lsp-ui
-  :straight t)
+  :straight t
+  :init
+  (add-hook 'lsp-mode-hook 'lsp-ui-mode))
 
 ;;;; Clojure
 
@@ -558,7 +583,9 @@ With prefix ARG non-nil, insert the result at the end of region."
    
 ;;;; Web
 (use-package web-mode
-  :straight t)
+  :straight t
+  :init
+  (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode)))
 
 (use-package zencoding-mode
   :straight t
@@ -591,6 +618,19 @@ With prefix ARG non-nil, insert the result at the end of region."
 
 (add-hook 'java-mode-hook 'my-java-mode-hook)
 
+;;;; Groovy
+
+(use-package groovy-mode :straight t
+  :init
+  (add-to-list 'auto-mode-alist '("\\.build.gradle" . groovy-mode)))
+
+;;;; Js
+
+(use-package indium
+  :straight t
+  :init
+  (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode)))
+
 ;;; Organization tools
 ;;;; Org mode
 (use-package org-bullets :straight t)
@@ -611,6 +651,8 @@ With prefix ARG non-nil, insert the result at the end of region."
   (add-hook 'evil-org-mode-hook
 	    (lambda ()
 	      (evil-org-set-key-theme '(navigation insert textobjects additional calendar)))))
+
+(load-file "~/.emacs.d/elisp/ox-s5.el")
 
 ;;;; Drawing stuff
 
@@ -680,7 +722,14 @@ With prefix ARG non-nil, insert the result at the end of region."
 
 ;; (add-hook 'after-make-frame-functions 'nord-theme-hook)
 
-(load-theme 'northcode t)
+;; just using the one from melpa
+(use-package northcode-theme
+  :straight t)
+
+;; for developing northcode-theme
+;; (add-to-list 'custom-theme-load-path (file-truename "~/projects/northcode-theme.el/northcode-theme.el"))
+;; (load-file (file-truename "~/projects/northcode-theme.el/northcode-theme.el"))
+
 
 ;;; Management Tools
 ;;;; Eshell and term
@@ -732,6 +781,7 @@ With prefix ARG non-nil, insert the result at the end of region."
  ("M-z" . universal-argument)
  ("C-x C-b" . lastbuf)
  ("C-x b" . helm-buffers-list)
+ ("C-x B" . ibuffer)
 
  ("M-h" . evil-window-left)
  ("M-j" . evil-window-down)
@@ -748,7 +798,6 @@ With prefix ARG non-nil, insert the result at the end of region."
  ("M-j" . evil-window-down)
  ("M-k" . evil-window-up)
  ("M-l" . evil-window-right)
- 
 )
 
 (evil-define-key 'visual global-map "gdc" 'calc-eval-region)
@@ -836,7 +885,7 @@ With prefix ARG non-nil, insert the result at the end of region."
    ["#212526" "#ff4b4b" "#b4fa70" "#fce94f" "#729fcf" "#e090d7" "#8cc4ff" "#eeeeec"])
  '(custom-safe-themes
    (quote
-    ("f2209573c119616e65886982f68198297462410486064f533943d7bd725e213b" "60d675485a5582693ab8419e6525481cbc5b19e7a403430a4aa9e1d31d87d832" "3fa7d0fc26c8483c6fdffc9fa5eda229b2f08ab7944728ccdc6743083693750e" "a4d11382b57e6c08c26db2793670642b1fbb828e642cf41ae58685b4e37aeca9" "f8cf128fa0ef7e61b5546d12bb8ea1584c80ac313db38867b6e774d1d38c73db" "8e0c6a96a17a5b45979c31265821053aff9beea9fb5ac5e41130e0c27a89214e" default)))
+    ("efa785ca9b6da184d934101900d741d60bf274b46ea68addbcd59585302861e3" "39fe48be738ea23b0295cdf17c99054bb439a7d830248d7e6493c2110bfed6f8" "f2209573c119616e65886982f68198297462410486064f533943d7bd725e213b" "60d675485a5582693ab8419e6525481cbc5b19e7a403430a4aa9e1d31d87d832" "3fa7d0fc26c8483c6fdffc9fa5eda229b2f08ab7944728ccdc6743083693750e" "a4d11382b57e6c08c26db2793670642b1fbb828e642cf41ae58685b4e37aeca9" "f8cf128fa0ef7e61b5546d12bb8ea1584c80ac313db38867b6e774d1d38c73db" "8e0c6a96a17a5b45979c31265821053aff9beea9fb5ac5e41130e0c27a89214e" default)))
  '(evil-want-C-u-scroll t)
  '(fci-rule-color "#343d46")
  '(org-agenda-files
@@ -859,7 +908,6 @@ With prefix ARG non-nil, insert the result at the end of region."
      ("j" "Journal Entry" entry
       (file+olp+datetree "~/Documents/org/journal.org.gpg")
       "* %?" :empty-lines 1))))
- '(org-trello-current-prefix-keybinding "C-c o" nil (org-trello))
  '(vc-annotate-background nil)
  '(vc-annotate-color-map
    (quote
@@ -889,10 +937,16 @@ With prefix ARG non-nil, insert the result at the end of region."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:family "Inconsolata")))))
+ )
 
 
 ;;; Media stuff
+
+;;;; PDF-Tools
+
+(use-package pdf-tools
+  :straight t
+  :init (pdf-tools-install))
 
 ;;;; EMMS
 
