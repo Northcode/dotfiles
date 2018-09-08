@@ -762,6 +762,12 @@ With prefix ARG non-nil, insert the result at the end of region."
 
 
 
+;;;; Docker
+
+(use-package dockerfile-mode :straight t)
+
+(use-package docker :straight t)
+
 ;;; General Emacs behaviour
 ;;;; Hooks to stuff
 (add-hook 'focus-out-hook 'save-all)
