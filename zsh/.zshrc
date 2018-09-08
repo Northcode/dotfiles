@@ -70,6 +70,6 @@ else
 	echo "you should really get fortune, cowsay and lolcat"
     fi
 
-    set -o vi
+    # set -o vi
 
 fi
