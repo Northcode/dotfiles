@@ -314,6 +314,12 @@ With prefix ARG non-nil, insert the result at the end of region."
   (use-package mu4e-alert :straight t)
   (use-package helm-mu :straight t)
 
+  (require 'mu4e-contrib)
+  (setq mu4e-html2text-command 'mu4e-shr2text
+	shr-color-visible-luminance-min 60
+	shr-color-visible-distance-min 5
+	shr-use-colors nil)
+
   (bind-keys
    ("C-c m" . mu4e))
 
