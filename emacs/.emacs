@@ -546,7 +546,7 @@ With prefix ARG non-nil, insert the result at the end of region."
 (use-package yasnippet
   :straight t
   :init
-  (add-hook 'prog-mode-hook 'yas-snippet-mode))
+  (add-hook 'prog-mode-hook 'yas-minor-mode))
 
 (defun yas-popup-isearch-prompt (prompt choices &optional display-fn)
   (when (featurep 'popup)
@@ -695,7 +695,7 @@ With prefix ARG non-nil, insert the result at the end of region."
 	    (lambda ()
 	      (evil-org-set-key-theme '(navigation insert textobjects additional calendar)))))
 
-(load-file "~/.emacs.d/elisp/ox-s5.el")
+;; (load-file "~/.emacs.d/elisp/ox-s5.el")
 
 ;;;; Drawing stuff
 
