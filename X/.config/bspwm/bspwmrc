@@ -30,12 +30,12 @@ fi
 bspc config click_to_focus true
 
 bspc rule -r "*"
-bspc rule -a Navigator desktop=www follow=off
-bspc rule -a MPlayer state=fullscreen
+# bspc rule -a Navigator desktop=www follow=off
+bspc rule -a mpv state=fullscreen
 bspc rule -a Screenkey manage=off
-bspc rule -a Telegram desktop=chat follow=off
-bspc rule -a Gimp follow=on state=floating
-bspc rule -a "Ardour-5.9.0" follow=on state=floating
+# bspc rule -a Telegram desktop=chat follow=off
+# bspc rule -a Gimp follow=on state=floating
+# bspc rule -a "Ardour-5.9.0" follow=on state=floating
 
 bspc config focus_follows_pointer true
 

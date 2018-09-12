@@ -12,4 +12,4 @@ source ~/.xsetup
 # xscreensaver &
 dunst &
 sxhkd &
-dbus-launch -- bspwm
+exec bspwm
