@@ -44,7 +44,7 @@ super + meta + d
       # Remove desktop
 
 super + space
-      rofi -combi-modi window,run -show combi -modi combi
+      rofi -combi-modi window,run,ssh -terminal st -show combi -modi combi
 
 super + alt + Escape
       bspc quit
@@ -68,7 +68,7 @@ super + a ; f
       firefox-nightly
 
 super + a ; s
-      pavucontrol
+      st pulsemixer
 
 super + a ; c
       emacsclient -s /tmp/emacs1000/server -c -e '(eshell)'
