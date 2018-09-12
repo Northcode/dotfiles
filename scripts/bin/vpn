@@ -1,0 +1,39 @@
+#!/bin/bash
+
+usage() {
+    echo "Usage:"
+    echo "vpn [on|off]"
+}
+
+SERVICE=openvpn-client@
+LOCATION=Norway
+
+SERVICESTR=$SERVICE$LOCATION.service
+
+if [[ $# -eq 0 ]]
+then
+    systemctl status $SERVICESTR
+fi
+
+while [[ $# -gt 0 ]]
+do
+    key="$1"
+    case $key in
+	on)
+	    echo "Turning vpn on..."
+	    sudo systemctl start $SERVICESTR
+	    ;;
+	off)
+	    echo "Turning vpn off..."
+	    sudo systemctl stop $SERVICESTR
+	    ;;
+	help)
+	    usage
+	    ;;
+	*)
+	    break
+	    ;;
+    esac
+    shift
+done
+
