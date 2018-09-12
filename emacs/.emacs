@@ -154,8 +154,7 @@
       save-interprogram-paste-before-kill t
       )
 
-;; make scrolling more smooth on laptops
-(setq mouse-wheel-scroll-amount '(1 ((shift) . 1))
+(setq mouse-wheel-scroll-amount (if (string-equal "andreas-d0" (system-name)) '(5) '(1))
       mouse-wheel-progressive-speed nil)
 
 ;; only setup gnutls on unix systems
@@ -171,6 +170,10 @@
 			  "gnutls-cli --priority secure256 -p %p %h"))))
 
 (put 'narrow-to-region 'disabled nil)
+
+;;;; Epkg
+
+(use-package epkg :straight t)
 
 ;;; Util functions
 
@@ -340,6 +343,7 @@ With prefix ARG non-nil, insert the result at the end of region."
   (mu4e-alert-enable-notifications)
   (mu4e-alert-enable-mode-line-display))
 
+
 ;;;; Erc tls auth source and formatting
 
 (defun erc-tls-auth-source (&rest args)
@@ -481,6 +485,23 @@ With prefix ARG non-nil, insert the result at the end of region."
 ;;   (add-hook  'LaTeX-mode-hook 'flyspell-mode)
 ;;   (add-hook  'LaTeX-mode-hook 'LaTeX-math-mode))
 
+(straight-use-package 'auctex)
+(add-hook 'LaTeX-mode-hook 'visual-line-mode)
+(add-hook  'LaTeX-mode-hook 'flyspell-mode)
+(add-hook  'LaTeX-mode-hook 'LaTeX-math-mode)
+(add-hook  'LaTeX-mode-hook 'yas-minor-mode)
+
+
+(use-package pdf-tools
+  :straight t
+  :init
+  (pdf-tools-install)
+  :bind
+  (:map pdf-view-mode-map
+	("k" . pdf-view-previous-line-or-previous-page)
+	("j" . pdf-view-next-line-or-next-page)))
+
+
 ;; (use-package latex-preview-pane
 ;;   :straight t
 ;;   :init
@@ -546,15 +567,22 @@ With prefix ARG non-nil, insert the result at the end of region."
 
 ;;; Programming languages
 
-;;;; General
+;;;; Language Server Protocol
 
 (use-package lsp-mode
-  :straight t)
+  :straight t
+  :bind
+  (:map prog-mode-map
+	("C-c f" . helm-imenu)))
+
 
 (use-package lsp-ui
+  :straight t)
+
+(use-package company-lsp
   :straight t
-  :init
-  (add-hook 'lsp-mode-hook 'lsp-ui-mode))
+  :config
+  (add-to-list 'company-backends 'company-lsp))
 
 ;;;; Clojure
 
@@ -631,11 +659,20 @@ With prefix ARG non-nil, insert the result at the end of region."
   (add-to-list 'auto-mode-alist '("\\.build.gradle" . groovy-mode)))
 
 ;;;; Js
-
 (use-package indium
   :straight t
   :init
   (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode)))
+;;;; C++
+
+(use-package cquery
+  :straight t
+  :config
+  (add-to-list 'evil-emacs-state-modes 'cquery-tree-mode)
+  :bind
+  (:map c++-mode-map
+	("C-c SPC c" . cquery-call-hierarchy)
+	("C-c SPC i" . cquery-inheritance-hierarchy)))
 
 ;;; Organization tools
 ;;;; Org mode
@@ -763,8 +800,8 @@ With prefix ARG non-nil, insert the result at the end of region."
 
 ;;;; Epkg
 
-(use-package epkg
-  :straight t)
+;; (use-package epkg
+;;   :straight t)
 
 
 
