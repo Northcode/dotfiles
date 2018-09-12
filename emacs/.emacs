@@ -56,22 +56,25 @@
 ;;;; Evil
 
 (use-package evil :straight t
-  :init (evil-mode t)
-  :config (setq evil-move-cursor-back nil))
+  :config
+  (evil-mode t)
+  :config
+  (setq evil-move-cursor-back nil))
 
-(use-package evil-surround :straight t)
+(use-package evil-surround :straight t
+  :config (evil-surround-mode t))
 
 (use-package evil-magit
   :straight t
-  :init (evil-magit-init))
+  :config (evil-magit-init))
 
 (use-package evil-commentary
   :straight t
-  :init (evil-commentary-mode t))
+  :config (evil-commentary-mode t))
 
 (use-package evil-collection
   :straight t
-  :init
+  :config
   (setq evil-want-integration nil)
   (evil-collection-init))
 
@@ -79,7 +82,7 @@
 
 (use-package helm
   :straight t
-  :init (helm-mode t)
+  :config (helm-mode t)
   :bind
   (("C-c x" . helm-M-x)
    ("C-x C-f" . helm-find-files)
@@ -422,7 +425,7 @@ With prefix ARG non-nil, insert the result at the end of region."
 
 (use-package projectile
   :straight t
-  :init
+  :config
   (projectile-global-mode t)
   (defun save-and-run () (interactive) (save-all) (projectile-run-project nil))
   (defun save-and-compile () (interactive) (save-all) (projectile-compile-project nil))
@@ -477,12 +480,12 @@ With prefix ARG non-nil, insert the result at the end of region."
 
 (use-package company
   :straight t
-  :init
+  :config
   (add-hook 'prog-mode-hook 'company-mode))
 
 (use-package company-lsp
   :straight t
-  :init
+  :config
   (add-to-list 'company-backends 'company-lsp))
 
 
@@ -500,7 +503,7 @@ With prefix ARG non-nil, insert the result at the end of region."
 
 (use-package outshine
   :straight t
-  :init
+  :config
   (require 'outshine)
   (add-hook 'outline-minor-mode-hook 'outshine-hook-function))
 
@@ -532,19 +535,11 @@ With prefix ARG non-nil, insert the result at the end of region."
 (add-hook  'LaTeX-mode-hook 'yas-minor-mode)
 
 
-(use-package pdf-tools
-  :straight t
-  :init
-  (pdf-tools-install)
-  :bind
-  (:map pdf-view-mode-map
-	("k" . pdf-view-previous-line-or-previous-page)
-	("j" . pdf-view-next-line-or-next-page)))
 
 
 ;; (use-package latex-preview-pane
 ;;   :straight t
-;;   :init
+;;   :config
 ;;   (latex-preview-pane-enable))
 
 ;;;;; Functions for latex stuff
@@ -585,7 +580,7 @@ With prefix ARG non-nil, insert the result at the end of region."
 
 (use-package yasnippet
   :straight t
-  :init
+  :config
   (add-hook 'prog-mode-hook 'yas-minor-mode))
 
 (defun yas-popup-isearch-prompt (prompt choices &optional display-fn)
@@ -629,7 +624,7 @@ With prefix ARG non-nil, insert the result at the end of region."
 (use-package clojure-mode :straight t)
 (use-package inf-clojure :straight t)
 (use-package cider :straight t
-  :init (add-to-list 'evil-emacs-state-modes 'cider-stacktrace-mode))
+  :config (add-to-list 'evil-emacs-state-modes 'cider-stacktrace-mode))
 
 
 ;;;; Rust
@@ -639,7 +634,7 @@ With prefix ARG non-nil, insert the result at the end of region."
 
 (use-package flycheck-rust
   :straight t
-  :init
+  :config
   (add-hook 'rust-mode-hook 'flycheck-mode))
 
 (use-package cargo :straight t)
@@ -647,7 +642,7 @@ With prefix ARG non-nil, insert the result at the end of region."
 (use-package lsp-rust
   :straight t
   :after lsp-mode
-  :init
+  :config
   (require 'lsp-rust)
   (add-hook 'rust-mode-hook #'lsp-rust-enable)
   :bind
@@ -658,7 +653,7 @@ With prefix ARG non-nil, insert the result at the end of region."
 ;;;; Web
 (use-package web-mode
   :straight t
-  :init
+  :config
   (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode)))
 
 (use-package zencoding-mode
@@ -673,7 +668,7 @@ With prefix ARG non-nil, insert the result at the end of region."
 
 (use-package omnisharp
   :straight t
-  :init
+  :config
   (add-hook 'csharp-mode-hook 'omnisharp-mode)
   (add-to-list 'company-backends 'company-omnisharp)
   :bind
@@ -695,13 +690,13 @@ With prefix ARG non-nil, insert the result at the end of region."
 ;;;; Groovy
 
 (use-package groovy-mode :straight t
-  :init
+  :config
   (add-to-list 'auto-mode-alist '("\\.build.gradle" . groovy-mode)))
 
 ;;;; Js
 (use-package indium
   :straight t
-  :init
+  :config
   (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode)))
 ;;;; C++
 
@@ -763,7 +758,7 @@ With prefix ARG non-nil, insert the result at the end of region."
 ;;;; Ledger
 (use-package hledger-mode 
   :straight t
-  :init
+  :config
   (add-to-list 'auto-mode-alist '("\\.journal\\'" . hledger-mode)))
 
 ;;; UI/UX
@@ -1035,7 +1030,12 @@ With prefix ARG non-nil, insert the result at the end of region."
 
 (use-package pdf-tools
   :straight t
-  :init (pdf-tools-install))
+  :config
+  (pdf-tools-install)
+  :bind
+  (:map pdf-view-mode-map
+	("k" . pdf-view-previous-line-or-previous-page)
+	("j" . pdf-view-next-line-or-next-page)))
 
 ;;;; EMMS
 
