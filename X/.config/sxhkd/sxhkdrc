@@ -118,3 +118,6 @@ XF86AudioMute
 
 super + q
       	~/bin/notify_info
+
+super + Pause
+      	systemctl suspend
