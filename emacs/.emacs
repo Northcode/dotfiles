@@ -280,7 +280,7 @@ With prefix ARG non-nil, insert the result at the end of region."
    message-send-mail-function 'smtpmail-send-it
    )
 
-  (dolist (account (plist-get conf :accounts))
+  (dolist (account (reverse (plist-get conf :accounts)))
     (add-to-list 'mu4e-user-mail-address-list (plist-get account :email))
     (add-to-list 'mu4e-contexts (make-mu4e-context
 				 :name (eval (plist-get account :name))
@@ -916,18 +916,7 @@ With prefix ARG non-nil, insert the result at the end of region."
 		 :name "Andreas Larsen"
 		 :signature "----\nAndreas Larsen - northcode.no"
 		 :accounts
-		 ((:name "gmail"
-			 :email "northcode.no@gmail.com"
-			 :smtp "smtp.gmail.com"
-			 :inbox "Inbox"
-			 :sent "[Gmail]/Sent Mail"
-			 :archive "[Gmail]/All Mail"
-			 :draft "drafts"
-			 :trash "[Gmail]/Bin"
-			 :match-func (lambda (msg)
-				       (when msg
-					 (mu4e-message-contact-field-matches msg :to "northcode.no@gmail.com"))))
-		  (:name "northcode"
+		 ((:name "northcode"
 			 :email "andreas@northcode.no"
 			 :smtp "northcode.no"
 			 :inbox "Inbox"
@@ -938,6 +927,17 @@ With prefix ARG non-nil, insert the result at the end of region."
 			 :match-func (lambda (msg)
 				       (when msg
 					 (mu4e-message-contact-field-matches msg :to "andreas@northcode.no"))))
+		  (:name "gmail"
+			 :email "northcode.no@gmail.com"
+			 :smtp "smtp.gmail.com"
+			 :inbox "Inbox"
+			 :sent "[Gmail]/Sent Mail"
+			 :archive "[Gmail]/All Mail"
+			 :draft "drafts"
+			 :trash "[Gmail]/Bin"
+			 :match-func (lambda (msg)
+				       (when msg
+					 (mu4e-message-contact-field-matches msg :to "northcode.no@gmail.com"))))
 		  (:name "uit"
 			 :email "ala107@uit.no"
 			 :smtp "smtpserver.uit.no"
