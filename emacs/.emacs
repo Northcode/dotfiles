@@ -516,6 +516,18 @@ With prefix ARG non-nil, insert the result at the end of region."
 (use-package parinfer
   :straight t)
 
+;;;; Paredit
+
+(use-package paredit
+  :straight t
+  :init
+  (add-hook 'emacs-lisp-mode-hook 'paredit-mode))
+
+(use-package evil-paredit
+  :straight t
+  :config
+  (add-hook 'paredit-mode-hook 'evil-paredit-mode))
+
 ;;;; LaTeX
 
 ;; (use-package auctex
