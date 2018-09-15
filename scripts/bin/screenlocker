@@ -1,0 +1,3 @@
+#!/bin/bash
+xset dpms force standby
+ls Pictures/Wallpapers/0.0 | shuf | head -n 1 | xargs -I _ i3lock --clock -t -i "Pictures/Wallpapers/0.0/_" --line-uses-inside --timecolor="eeeeeeff" --datecolor="eeeeeeff" --timestr="%H:%M" --timesize=80 --timepos="2300:950" --time-font="Inconsolata" --radius 150 --ring-width 50 
