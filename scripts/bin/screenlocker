@@ -1,18 +1,49 @@
 #!/bin/bash
 LOCKSCREENWALLS="$HOME/Pictures/lockwalls/"
 
-# only select images which are a multiple of 1920, this avoids weird edge issues where the edge of the image is in the middle of one of the screens
-LOCKIMG=$LOCKSCREENWALLS"/"$(for i in $(ls $LOCKSCREENWALLS)
-	  do
-	      RES=$(identify "$LOCKSCREENWALLS"$i | cut -d ' ' -f 3)
-	      echo $i $RES
-	  done | grep "1920\|3840" | cut -d ' ' -f 1 | shuf | head -n 1)
+# if lockscreenwalls dir exists, use that to select a lockscreen wall, if not then do nothing so the script doesn't fail and fails to lock
+LOCKIMG=""
+if [ -d "$LOCKSCREENWALLS" ]
+then
+    # only select images which are a multiple of 1920, this avoids weird edge issues where the edge of the image is in the middle of one of the screens
+    LOCKIMG=$LOCKSCREENWALLS"/"$(for i in $(ls $LOCKSCREENWALLS)
+				 do
+				     RES=$(identify "$LOCKSCREENWALLS"$i | cut -d ' ' -f 3)
+				     echo $i $RES
+				 done | grep "1920\|3840" | cut -d ' ' -f 1 | shuf | head -n 1)
+fi
 
-xset dpms force standby # turn off screens
 
-# show the locker
-i3lock --clock -t -i $LOCKIMG \
-   --line-uses-inside \
-   --timecolor="eeeeeeff" --datecolor="eeeeeeff" \
-   --timestr="%H:%M" --timesize=80 --timepos="2300:950" --time-font="Inconsolata" \
-   --radius 150 --ring-width 50 
+TIMEPOS_X=320 # default position for clock, if xdpyinfo present use that to calculate the new position
+if [ -x "$(command -v xdyinfo)" ]
+then
+    SCREEN_W=$(xdpyinfo | awk '/dimensions/{print $2}' | cut -d 'x' -f 1)
+    TIMEPOS_X=$(echo $SCREEN_W '/ 2 - 580' | bc)
+fi
+
+sleep 2 && xset dpms force standby & # turn off screens, delay by 2 seconds to allow locker to paint over screen on laptops that blank the screen quickly
+
+# show the locker, try a bunch just to make sure we actually lock
+if [ -x "$(command -v i3lock)" ]
+then
+    # Only add the argument for the lock image if the image exists, else the locker would fail and not lock...
+    if [ -f "$LOCKIMG" ]; then 
+	LOCKARG="-i $LOCKIMG"
+    else
+	LOCKARG=""
+    fi
+    i3lock --clock -c '121212' -t $LOCKARG \
+	   --line-uses-inside \
+	   --timecolor="eeeeeeff" --datecolor="eeeeeeff" \
+	   --timestr="%H:%M" --timesize=80 --timepos="$TIMEPOS_X:850" --time-font="Inconsolata" \
+	   --radius 150 --ring-width 50
+elif [ -x "$(command -v slock)" ]
+then
+    slock
+elif [ -x "$(command -v sxlock)" ]
+then
+    sxlock
+elif [ -x "$(command -v sflock)" ]
+then
+    sflock
+fi 
