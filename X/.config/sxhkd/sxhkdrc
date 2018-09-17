@@ -68,7 +68,7 @@ super + a ; f
       firefox-nightly
 
 super + a ; s
-      st pulsemixer
+      st -c ST_FLOAT pulsemixer
 
 super + a ; c
       emacsclient -s /tmp/emacs1000/server -c -e '(eshell)'

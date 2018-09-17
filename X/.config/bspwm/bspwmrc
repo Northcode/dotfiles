@@ -36,6 +36,7 @@ bspc rule -a Screenkey manage=off
 # bspc rule -a Telegram desktop=chat follow=off
 # bspc rule -a Gimp follow=on state=floating
 # bspc rule -a "Ardour-5.9.0" follow=on state=floating
+bspc rule -a ST_FLOAT state=floating
 
 bspc config focus_follows_pointer true
 
