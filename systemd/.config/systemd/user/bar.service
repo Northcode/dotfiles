@@ -1,0 +1,10 @@
+[Unit]
+Description=Service for statusbar
+
+[Service]
+Environment=DISPLAY=:0
+ExecStart=/home/andreas/bin/clock-bar.sh
+Restart=always
+
+[Install]
+WantedBy=default.target
