@@ -1,3 +1,18 @@
 #!/bin/bash
-xset dpms force standby
-ls Pictures/Wallpapers/0.0 | shuf | head -n 1 | xargs -I _ i3lock --clock -t -i "Pictures/Wallpapers/0.0/_" --line-uses-inside --timecolor="eeeeeeff" --datecolor="eeeeeeff" --timestr="%H:%M" --timesize=80 --timepos="2300:950" --time-font="Inconsolata" --radius 150 --ring-width 50 
+LOCKSCREENWALLS="$HOME/Pictures/lockwalls/"
+
+# only select images which are a multiple of 1920, this avoids weird edge issues where the edge of the image is in the middle of one of the screens
+LOCKIMG=$LOCKSCREENWALLS"/"$(for i in $(ls $LOCKSCREENWALLS)
+	  do
+	      RES=$(identify "$LOCKSCREENWALLS"$i | cut -d ' ' -f 3)
+	      echo $i $RES
+	  done | grep "1920\|3840" | cut -d ' ' -f 1 | shuf | head -n 1)
+
+xset dpms force standby # turn off screens
+
+# show the locker
+i3lock --clock -t -i $LOCKIMG \
+   --line-uses-inside \
+   --timecolor="eeeeeeff" --datecolor="eeeeeeff" \
+   --timestr="%H:%M" --timesize=80 --timepos="2300:950" --time-font="Inconsolata" \
+   --radius 150 --ring-width 50 
