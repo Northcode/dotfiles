@@ -13,13 +13,22 @@ fi
 
 while true
 do
+
     clock=$(date +"%H:%M")
     date=$(date +"%d.%m")
 
     unread_mails=$(mu find 'flag:unread AND NOT maildir:/northcode/Junk' 2> /dev/null | wc -l)
 
     vpn_active=$(systemctl is-active openvpn-client@Norway.service)
+
+    bartxt="vpn: $vpn_active | unread email: $unread_mails | $clock | $date  "
+
+    if [ -x "$(command -v acpi)" ]
+    then
+	battery="battery: "$(acpi -b | cut -d ' ' -f 4 | tr -d ',')
+	bartxt=$battery" | "$bartxt
+    fi
     
-    echo '%{r}' "vpn: $vpn_active | unread email: $unread_mails | $clock | $date  "
+    echo '%{r}' $bartxt
     sleep 10
 done | lemonbar -g 1920x25+$BAR_X+1055 -f $FONT -B $BG -F $FG
