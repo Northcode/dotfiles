@@ -10,6 +10,5 @@
 source ~/.xsetup
 
 # xscreensaver &
-dunst &
 sxhkd &
 exec bspwm

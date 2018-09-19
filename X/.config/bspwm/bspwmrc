@@ -47,9 +47,15 @@ libinput-gestures-setup stop
 sleep 0.5
 
 ~/bin/nwall
+
 libinput-gestures-setup start
+
 compton -f -c &> /dev/null &
+
 dunst &
+
 bar start
-systemctl --user start xautolock.service
+
+pkill xautolock
+xautolock -time 15 -locker "~/bin/screenlocker" &
 # xscreensaver &
