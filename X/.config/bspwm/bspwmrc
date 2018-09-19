@@ -50,4 +50,6 @@ sleep 0.5
 libinput-gestures-setup start
 compton -f -c &> /dev/null &
 dunst &
+bar start
+systemctl --user start xautolock.service
 # xscreensaver &

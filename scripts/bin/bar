@@ -1,0 +1,84 @@
+#!/bin/bash
+
+usage() {
+    echo "Usage:"
+    echo "bar (serve|start|stop|restart)"
+}
+
+PID_FILE=/var/run/user/$UID/bar_pid
+LOOP_PID_FILE=/var/run/user/$UID/bar_loop_pid
+
+finish() {
+    pkill -F $LOOP_PID_FILE
+    rm $LOOP_PID_FILE
+    rm $PID_FILE
+}
+
+serve() {
+    FG='#9999A0'
+    BG='#CC111111'
+    # FONT='-*-terminus-*-*-*-*-14-*-*-*-*-*-*-*'
+    FONT='xft:Hack:pixelsize=14:antialias=true'
+
+    BAR_X=0
+    if [ "$(hostname)" == "andreas-d0" ]
+    then
+	BAR_X=1920 # custom offset for 3 screens
+    fi
+
+    trap finish EXIT
+
+    (while [ -f $PID_FILE ]
+    do
+
+	clock=$(date +"%H:%M")
+	date=$(date +"%d.%m")
+
+	unread_mails=$(mu find 'flag:unread AND NOT maildir:/northcode/Junk' 2> /dev/null | wc -l)
+
+	vpn_active=$(systemctl is-active openvpn-client@Norway.service)
+
+	bartxt="vpn: $vpn_active | unread email: $unread_mails | $clock | $date  "
+
+	if [ -x "$(command -v acpi)" ]
+	then
+	    battery="battery: "$(acpi -b | cut -d ' ' -f 4 | tr -d ',')
+	    bartxt=$battery" | "$bartxt
+	fi
+	
+	echo '%{r}' $bartxt
+	sleep 10
+
+    done & echo $! > $LOOP_PID_FILE) | lemonbar -g 1920x25+$BAR_X+1055 -f $FONT -B $BG -F $FG
+}
+
+
+start() {
+    if [ -f $PID_FILE ]; then
+	echo "already running, or $PID_FILE is lingering"
+    else 
+	$0 serve &
+	echo $! > $PID_FILE
+    fi
+}
+
+stop() {
+    if [ -f $PID_FILE ]; then
+	PID=$(<$PID_FILE)
+	kill $PID
+    else
+	echo "bar is not running. or $PID_FILE is missing, kill manually in that case"
+    fi
+}
+
+restart() {
+    stop
+    start
+}
+
+if [ $# -ne 1 ]
+then
+    usage
+else
+    $1
+fi
