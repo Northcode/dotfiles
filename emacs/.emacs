@@ -721,6 +721,9 @@ With prefix ARG non-nil, insert the result at the end of region."
 	("C-c SPC c" . cquery-call-hierarchy)
 	("C-c SPC i" . cquery-inheritance-hierarchy)))
 
+;;;; Systemd units
+
+(use-package systemd :straight t)
 ;;; Organization tools
 ;;;; Org mode
 (use-package org-bullets :straight t)
@@ -927,6 +930,17 @@ With prefix ARG non-nil, insert the result at the end of region."
 			 :match-func (lambda (msg)
 				       (when msg
 					 (mu4e-message-contact-field-matches msg :to "andreas@northcode.no"))))
+		  (:name "sopra"
+			 :email "andreas.larsen@soprasteria.com"
+			 :smtp "localhost"
+			 :inbox "Inbox"
+			 :sent "Sent"
+			 :archive "Arkiv"
+			 :draft "Drafts"
+			 :trash "Junk"
+			 :match-func (lambda (msg)
+				       (when msg
+					 (mu4e-message-contact-field-matches msg :to "andreas.larsen@soprasteria.com"))))
 		  (:name "gmail"
 			 :email "northcode.no@gmail.com"
 			 :smtp "smtp.gmail.com"

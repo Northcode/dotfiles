@@ -110,3 +110,29 @@ Create Both
 Remove Both
 Sync All
 SyncState *
+
+IMAPAccount soprasteria
+Host localhost
+Port 1143
+User andreas.larsen@soprasteria.com
+PassCmd "gpg -d --no-tty -q ~/.authinfo.gpg | grep 'login andreas.larsen@soprasteria.com' | cut -d ' ' -f 4"
+SSLType None
+AuthMechs LOGIN
+
+IMAPStore soprasteria-remote
+Account soprasteria
+
+MaildirStore soprasteria-local
+Path ~/.mail/sopra/
+Inbox ~/.mail/sopra/Inbox
+SubFolders verbatim
+
+Channel soprasteria
+Master :soprasteria-remote:
+Slave :soprasteria-local:
+MaxMessages 0
+Patterns *
+Create Both
+Remove Both
+Sync All
+SyncState *
