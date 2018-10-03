@@ -21,6 +21,8 @@
 (straight-use-package 'use-package)
 (use-package diminish :straight t)
 
+(add-to-list 'load-path (file-truename "~/.emacs.d/elisp/"))
+
 ;;; Base config
 
 ;;;; Mode line
@@ -437,7 +439,9 @@ With prefix ARG non-nil, insert the result at the end of region."
   (:map projectile-mode-map
 	("<f5>" . save-and-run)
 	("<f6>" . save-and-compile)
-	("<f7>" . toggle-compilation-read-command)))
+	("<f7>" . toggle-compilation-read-command)
+	("C-c p c" . save-and-compile)
+	("C-c p r" . save-and-run)))
 
 
 (defun projectile-get-first-file-matching (re)
@@ -592,7 +596,7 @@ With prefix ARG non-nil, insert the result at the end of region."
 
 (use-package yasnippet
   :straight t
-  :config
+  :init
   (add-hook 'prog-mode-hook 'yas-minor-mode))
 
 (defun yas-popup-isearch-prompt (prompt choices &optional display-fn)
@@ -1047,7 +1051,7 @@ With prefix ARG non-nil, insert the result at the end of region."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(default ((t (:height 110 :family "Hack")))))
 
 
 ;;; Media stuff
