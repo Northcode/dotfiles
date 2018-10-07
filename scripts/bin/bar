@@ -42,7 +42,11 @@ serve() {
 
 	if [ -x "$(command -v acpi)" ]
 	then
-	    battery="battery: "$(acpi -b | cut -d ' ' -f 4 | tr -d ',')
+	    battery_p=$(acpi -b | cut -d ' ' -f 4 | tr -d ',' | tr -d '%')
+	    battery="battery: "$battery_p"%"
+	    if (( battery_p < 15 )); then
+		battery='%{B#FF3333}%{F#FFFFFF}'$battery'%{B-F-}'
+	    fi
 	    bartxt=$battery" | "$bartxt
 	fi
 	
@@ -73,6 +77,8 @@ stop() {
 
 restart() {
     stop
+    echo "waiting for lemonbar to shut down..."
+    sleep 5
     start
 }
 
