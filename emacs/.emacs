@@ -1038,7 +1038,7 @@ With prefix ARG non-nil, insert the result at the end of region."
       (file "notes.org")
       "")
      ("j" "Journal Entry" entry
-      (file+olp+datetree "~/Documents/org/journal.org.gpg")
+      (file+olp+datetree "journal.org.gpg")
       "* %?" :empty-lines 1))))
  '(vc-annotate-background nil)
  '(vc-annotate-color-map
