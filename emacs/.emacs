@@ -27,6 +27,21 @@
 
 (add-to-list 'load-path (file-truename "~/.emacs.d/elisp/"))
 
+;;;; Startup optimization
+
+;;;;; Temporarily reduce garbage collection during startup. Inspect `gcs-done'.
+(defun ambrevar/reset-gc-cons-threshold ()
+  (setq gc-cons-threshold (car (get 'gc-cons-threshold 'standard-value))))
+(setq gc-cons-threshold (* 64 1024 1024))
+(add-hook 'after-init-hook #'ambrevar/reset-gc-cons-threshold)
+
+;;;;; Temporarily disable the file name handler.
+(setq default-file-name-handler-alist file-name-handler-alist)
+(setq file-name-handler-alist nil)
+(defun ambrevar/reset-file-name-handler-alist ()
+  (setq file-name-handler-alist default-file-name-handler-alist))
+(add-hook 'after-init-hook #'ambrevar/reset-file-name-handler-alist)
+
 
 ;;; Base config
 
@@ -62,6 +77,7 @@
 
 ;;;; Evil
 
+(setq evil-want-keybinding nil)
 (use-package evil :straight t
   :config
   (evil-mode t)
@@ -434,8 +450,9 @@ With prefix ARG non-nil, insert the result at the end of region."
 
 (use-package projectile
   :straight t
+  :init
+  (projectile-mode t)
   :config
-  (projectile-global-mode t)
   (defun save-and-run () (interactive) (save-all) (projectile-run-project nil))
   (defun save-and-compile () (interactive) (save-all) (projectile-compile-project nil))
   (defun toggle-compilation-read-command () (interactive)
