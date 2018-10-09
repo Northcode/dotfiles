@@ -1,25 +1,2 @@
 #!/bin/bash
 
-export XDG_RUNTIME_DIR="/run/user/$UID"
-export DBUS_SESSION_BUS_ADDRESS="unix:path=$XDG_RUNTIME_DIR/bus"
-xrdb ~/.config/X/resources
-
-if [ -d "~/Android/Sdk/" ]
-then
-    export ANDROID_HOME="~/Android/Sdk/"
-fi
-
-export PATH="~/bin:$PATH"
-
-touchpad_id=$(xinput list --short | grep -i touchpad | cut -f 2 | cut -d = -f 2)
-xinput set-prop $touchpad_id "libinput Tapping Enabled" 1
-xinput set-prop $touchpad_id "libinput Natural Scrolling Enabled" 1
-
-setxkbmap no
-
-# map caps lock to escape if pressed once, or control if held
-setxkbmap -option caps:ctrl_modifier
-xcape -e Caps_Lock=Escape
-
-xset r rate 200 70
-xset -b

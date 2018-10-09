@@ -3,7 +3,7 @@ Description=Mailbox synchronization service
 
 [Service]
 Type=oneshot
-ExecStart=/home/andreas/bin/syncmail.sh
+ExecStart=/home/%u/bin/syncmail.sh
 StandardOutput=syslog
 StandardError=syslog
 TimeoutStartSec=120s

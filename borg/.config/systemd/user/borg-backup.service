@@ -3,4 +3,4 @@ Description=Borg Backup Service
 
 [Service]
 Type=simple
-ExecStart=/home/andreas/bin/borg-backup.sh
+ExecStart=/home/%u/bin/borg-backup.sh

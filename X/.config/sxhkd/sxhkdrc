@@ -83,16 +83,16 @@ super + alt + Return
       ~/bin/lockscreen
 
 Print
-	scrot '/home/andreas/scrots/%Y-%m-%d-%H%M%S.png'
+	scrot "$SCROT_DIR/%Y-%m-%d-%H%M%S.png"
 
 alt + Print
-	scrot -u '/home/andreas/scrots/%Y-%m-%d-%H%M%S.png'
+	scrot -u "$SCROT_DIR/%Y-%m-%d-%H%M%S.png"
 
 shift + Print
-      	scrot -s '/home/andreas/scrots/%Y-%m-%d-%H%M%S.png'
+      	scrot -s "$SCROT_DIR/%Y-%m-%d-%H%M%S.png"
 
 control + Print
-	hsetroot -full "$(find /home/andreas/Wallpapers -type f | shuf | head -n 1)" 1> ~/hsetroot-errors.log 2> ~/hsetroot-2.log
+	nwall
 
 # make sxhkd reload its configuration files:
 super + Escape

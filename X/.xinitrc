@@ -7,8 +7,6 @@
 # invoke global X session script
 #. /etc/X11/Xsession
 
-source ~/.xsetup
+[ -f ~/.xprofile ] && source ~/.xprofile
 
-# xscreensaver &
-sxhkd &
 exec bspwm

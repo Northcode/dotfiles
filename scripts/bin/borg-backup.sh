@@ -3,7 +3,9 @@
 source ~/.borg-conf 
 
 borg create -v --stats --compression lz4 \
-     $REPOSITORY::'{hostname}-{now:%Y-%m-%d@%H:%M}' "$HOME/" \
+     $REPOSITORY::'{hostname}-{now:%Y-%m-%d@%H:%M}' \
+     "$HOME/" \
+     "/data/Music" \
      --exclude "$HOME/.cache/" \
      --exclude "$HOME/.ccache/" \
      --exclude "$HOME/.local/share/" \
