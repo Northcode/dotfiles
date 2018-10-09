@@ -3,6 +3,10 @@
 
 ;;; Bootstrapping
 
+;;;; Get the actual home directory on windows
+(if (eq system-type 'windows-nt)
+    (setq win-home (file-truename "~/../../")))
+
 ;;;; bootstrap straight.el
 
 (let ((bootstrap-file (concat user-emacs-directory "straight/repos/straight.el/bootstrap.el"))
@@ -22,6 +26,7 @@
 (use-package diminish :straight t)
 
 (add-to-list 'load-path (file-truename "~/.emacs.d/elisp/"))
+
 
 ;;; Base config
 
@@ -116,8 +121,10 @@
 (use-package org
   :straight t
   :config
-  (setq org-agenda-files
-	'("~/Documents/org/todo.org" "~/Documents/org/bachelor/diary.org")
+  (if (eq system-type 'windows-nt)
+      (setq org-directory (concat win-home "Nextcloud/org/"))
+    (setq org-directory (file-truename "~/Documents/org/")))
+  (setq org-agenda-files (list (concat org-directory "todo.org"))
 	org-clock-idle-time 15)
   :bind
   (("C-c a" . org-agenda)
@@ -1002,22 +1009,16 @@ With prefix ARG non-nil, insert the result at the end of region."
     ("efa785ca9b6da184d934101900d741d60bf274b46ea68addbcd59585302861e3" "39fe48be738ea23b0295cdf17c99054bb439a7d830248d7e6493c2110bfed6f8" "f2209573c119616e65886982f68198297462410486064f533943d7bd725e213b" "60d675485a5582693ab8419e6525481cbc5b19e7a403430a4aa9e1d31d87d832" "3fa7d0fc26c8483c6fdffc9fa5eda229b2f08ab7944728ccdc6743083693750e" "a4d11382b57e6c08c26db2793670642b1fbb828e642cf41ae58685b4e37aeca9" "f8cf128fa0ef7e61b5546d12bb8ea1584c80ac313db38867b6e774d1d38c73db" "8e0c6a96a17a5b45979c31265821053aff9beea9fb5ac5e41130e0c27a89214e" default)))
  '(evil-want-C-u-scroll t)
  '(fci-rule-color "#343d46")
- '(org-agenda-files
-   (quote
-    ("~/Documents/org/todo.org" "~/Documents/org/bachelor/diary.org")))
  '(org-capture-templates
    (quote
     (("t" "Todo" entry
-      (file "~/Documents/org/todo.org")
+      (file "todo.org")
       "* TODO ")
      ("c" "Clock in something" entry
-      (file "~/Documents/org/clock.org")
+      (file "clock.org")
       "* clock-entry: " :clock-in t)
-     ("a" "Bachelor project diary clock todo" entry
-      (file+headline "~/Documents/org/bachelor/diary.org" "Clocked")
-      "** TODO ")
      ("n" "Add Note about something" entry
-      (file "~/Documents/org/notes.org")
+      (file "notes.org")
       "")
      ("j" "Journal Entry" entry
       (file+olp+datetree "~/Documents/org/journal.org.gpg")
