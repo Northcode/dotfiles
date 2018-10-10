@@ -337,10 +337,10 @@ With prefix ARG non-nil, insert the result at the end of region."
 
 (defun load-mu4e-conf ()
   (use-package mu4e
-    :config
+    :init
     (require 'mu4e)
+    :config
     (require 'smtpmail)
-    (require 'mu4e-contrib)
     (setq mu4e-html2text-command 'mu4e-shr2text
 	  shr-color-visible-luminance-min 60
 	  shr-color-visible-distance-min 5
@@ -531,7 +531,7 @@ With prefix ARG non-nil, insert the result at the end of region."
 
 (use-package outshine
   :straight t
-  :config
+  :init
   (require 'outshine)
   (add-hook 'outline-minor-mode-hook 'outshine-hook-function))
 
@@ -682,7 +682,7 @@ With prefix ARG non-nil, insert the result at the end of region."
 (use-package lsp-rust
   :straight t
   :after lsp-mode
-  :config
+  :init
   (require 'lsp-rust)
   (add-hook 'rust-mode-hook #'lsp-rust-enable)
   :bind
