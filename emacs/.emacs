@@ -1087,30 +1087,30 @@ With prefix ARG non-nil, insert the result at the end of region."
 
 ;;;; EMMS
 
-(use-package emms
-  :straight t
-  :config
-  (require 'emms-setup)
-  (require 'emms-player-mpd)
-  (emms-all)
-  (setq emms-seek-seconds 5
-	emms-player-list '(emms-player-mpd)
-	emms-info-functions '(emms-info-mpd)
-	emms-player-mpd-server-name "localhost"
-	emms-player-mpd-server-port "6600")
-  (defun emms-maybe-connect-mpd ()
-    "Connect EMMS to mpd and set the cache"
-    (interactive)
-    (when (not emms-player-mpd-process)
-      (emms-player-mpd-connect)
-      (emms-cache-set-from-mpd-all))
-    (emms-browser))
-  :bind
-  (("C-c d" . emms-maybe-connect-mpd)
-   :map emms-playlist-mode-map
-   ("j" . next-line)
-   ("k" . previous-line)
-   :map emms-browser-mode-map
-   ("j" . next-line)
-   ("k" . previous-line)))
+;; (use-package emms
+;;   :straight t
+;;   :init
+;;   (require 'emms-setup)
+;;   (require 'emms-player-mpd)
+;;   (emms-all)
+;;   (setq emms-seek-seconds 5
+;; 	emms-player-list '(emms-player-mpd)
+;; 	emms-info-functions '(emms-info-mpd)
+;; 	emms-player-mpd-server-name "localhost"
+;; 	emms-player-mpd-server-port "6600")
+;;   (defun emms-maybe-connect-mpd ()
+;;     "Connect EMMS to mpd and set the cache"
+;;     (interactive)
+;;     (when (not emms-player-mpd-process)
+;;       (emms-player-mpd-connect)
+;;       (emms-cache-set-from-mpd-all))
+;;     (emms-browser))
+;;   :bind
+;;   (("C-c d" . emms-maybe-connect-mpd)
+;;    :map emms-playlist-mode-map
+;;    ("j" . next-line)
+;;    ("k" . previous-line)
+;;    :map emms-browser-mode-map
+;;    ("j" . next-line)
+;;    ("k" . previous-line)))
 
