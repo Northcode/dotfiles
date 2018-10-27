@@ -7,3 +7,6 @@
 /.config/X/colors
 /octave-workspace
 **.wants
+/emacs/.emacs.d/straight/
+/emacs/.emacs.d/projectile.cache
+/emacs/.emacs.d/projectile-bookmarks.eld

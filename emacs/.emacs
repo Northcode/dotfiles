@@ -139,7 +139,7 @@
   :config
   (if (eq system-type 'windows-nt)
       (setq org-directory (concat win-home "Nextcloud/org/"))
-    (setq org-directory (file-truename "~/Documents/org/")))
+    (setq org-directory (file-truename "~/Nextcloud/org/")))
   (setq org-agenda-files (list (concat org-directory "todo.org"))
 	org-clock-idle-time 15)
   :bind
