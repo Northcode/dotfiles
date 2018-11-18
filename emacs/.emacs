@@ -365,51 +365,21 @@ With prefix ARG non-nil, insert the result at the end of region."
 
     )
   
-  ;; (add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e")
-  ;; (require 'mu4e)
-  ;; (require 'smtpmail)
-
   (use-package evil-mu4e :straight t)
   (use-package mu4e-maildirs-extension :straight t
     :config
     (mu4e-maildirs-extension)
     )
-  (use-package mu4e-alert :straight t
-    :config
-    (mu4e-alert-set-default-style 'libnotify)
-    (add-hook 'after-init-hook #'mu4e-alert-enable-notifications)
-    (add-hook 'after-init-hook #'mu4e-alert-enable-mode-line-display)
-    (mu4e-alert-enable-notifications)
-    (mu4e-alert-enable-mode-line-display)
-    )
+  ;; (use-package mu4e-alert :straight t
+  ;;   :config
+  ;;   (mu4e-alert-set-default-style 'libnotify)
+  ;;   (add-hook 'after-init-hook #'mu4e-alert-enable-notifications)
+  ;;   (add-hook 'after-init-hook #'mu4e-alert-enable-mode-line-display)
+  ;;   (mu4e-alert-enable-notifications)
+  ;;   (mu4e-alert-enable-mode-line-display)
+  ;;   )
 
   (use-package helm-mu :straight t)
-
-  ;; (require 'mu4e-contrib)
-  ;; (setq mu4e-html2text-command 'mu4e-shr2text
-  ;; 	shr-color-visible-luminance-min 60
-  ;; 	shr-color-visible-distance-min 5
-  ;; 	shr-use-colors nil)
-
-  ;; (bind-keys
-  ;;  ("C-c m" . mu4e))
-
-  ;; (load-mailconf user-mailconf)
-
-  ;; (mu4e-maildirs-extension)
-  ;; (mu4e-alert-set-default-style 'libnotify)
-
-  ;; (add-hook 'after-init-hook #'mu4e-alert-enable-notifications)
-  ;; (add-hook 'after-init-hook #'mu4e-alert-enable-mode-line-display)
-
-  ;; (setq mu4e-bookmarks
-  ;; 	'(("flag:unread AND NOT flag:trashed AND NOT maildir:/northcode/Junk" "Unread messages" 117)
-  ;; 	  ("date:today..now" "Today's messages" 116)
-  ;; 	  ("date:7d..now" "Last 7 days" 119)
-  ;; 	  ("mime:image/*" "Messages with images" 112)))
-
-  ;; (mu4e-alert-enable-notifications)
-  ;; (mu4e-alert-enable-mode-line-display))
   )
 
 ;;;; Erc tls auth source and formatting
