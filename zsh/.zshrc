@@ -67,7 +67,6 @@ else
     then
 	fortune | cowsay -s | lolcat
     else
-	echo "you should really get fortune, cowsay and lolcat"
     fi
 
     # set -o vi
