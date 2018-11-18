@@ -37,8 +37,15 @@ serve() {
 	unread_mails=$(mu find 'flag:unread AND NOT maildir:/northcode/Junk' 2> /dev/null | wc -l)
 
 	vpn_active=$(systemctl is-active openvpn-client@Norway.service)
-
+	
 	bartxt="vpn: $vpn_active | unread email: $unread_mails | $clock | $date  "
+
+	if [ -x "$(command -v mpc)" ]; then
+	    if [ "$(mpc status | grep playing | wc -l)" == "1" ]; then
+		current_song=$(mpc current)
+		bartxt="playing: $current_song | "$bartxt
+	    fi
+	fi
 
 	if [ -x "$(command -v acpi)" ]
 	then
@@ -53,7 +60,8 @@ serve() {
 	echo '%{r}' $bartxt
 	sleep 10
 
-    done & echo $! > $LOOP_PID_FILE) | lemonbar -g 1920x25+$BAR_X+1055 -f $FONT -B $BG -F $FG
+    done & echo $! > $LOOP_PID_FILE) | lemonbar -f $FONT -B $BG -F $FG -g 1920x25+$BAR_X+1055
+    
 }
 
 
