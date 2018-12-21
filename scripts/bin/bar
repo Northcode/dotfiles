@@ -37,7 +37,11 @@ serve() {
 	unread_mails=$(mu find 'flag:unread AND NOT maildir:/northcode/Junk' 2> /dev/null | wc -l)
 
 	vpn_active=$(systemctl is-active openvpn-client@Norway.service)
-	
+
+	if [ $vpn_active == "active" ]; then
+	    vpn_active='%{F#22BB22}'$vpn_active'%{F-}'
+	fi
+
 	bartxt="vpn: $vpn_active | unread email: $unread_mails | $clock | $date  "
 
 	if [ -x "$(command -v mpc)" ]; then
