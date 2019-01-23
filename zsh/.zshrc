@@ -31,6 +31,8 @@ else
     export LANG=en_GB.UTF-8
     export LC_ALL=en_GB.UTF-8
 
+    export MAKEFLAGS="-j4"
+
     if [ -d "$HOME/.composer/vendor/laravel/installer/" ]; then
 	export PATH=$PATH:"$HOME/.composer/vendor/laravel/installer/"
     fi
