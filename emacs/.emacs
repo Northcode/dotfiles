@@ -140,12 +140,13 @@
   (if (eq system-type 'windows-nt)
       (setq org-directory (concat win-home "Nextcloud/org/"))
     (setq org-directory (file-truename "~/Nextcloud/org/")))
-  (setq org-agenda-files (list (concat org-directory "todo.org"))
+  (setq org-agenda-files (list org-directory (concat org-directory "habits.org.gpg")) 
 	org-clock-idle-time 15)
   :bind
   (("C-c a" . org-agenda)
    ("C-c c" . org-capture)
    ("C-c l" . org-store-link)))
+
 
 ;; (use-package org-trello
 ;;   :straight t
@@ -303,6 +304,7 @@ With prefix ARG non-nil, insert the result at the end of region."
    mu4e-contexts nil
    mu4e-sent-messages-behavior 'delete
    message-send-mail-function 'smtpmail-send-it
+   mu4e-change-filenames-when-moving t
    )
 
   (dolist (account (reverse (plist-get conf :accounts)))
@@ -722,6 +724,13 @@ With prefix ARG non-nil, insert the result at the end of region."
 ;;;; Systemd units
 
 (use-package systemd :straight t)
+
+;;;; Cobol
+
+(use-package cobol-mode :straight t
+  :init
+  (add-to-list 'auto-mode-alist '("\\.cob\\'" . cobol-mode)))
+
 ;;; Organization tools
 ;;;; Org mode
 (use-package org-bullets :straight t)
@@ -738,12 +747,16 @@ With prefix ARG non-nil, insert the result at the end of region."
   :straight t
   :after org
   :config
+  (defun nc-org-todo-cycle () (interactive) (org-todo 'right))
+  (evil-define-key 'normal evil-org-mode-map (kbd "gt") 'nc-org-todo-cycle)
+  (evil-define-key 'normal evil-org-mode-map (kbd "gT") 'org-todo)
   (add-hook 'org-mode-hook 'evil-org-mode)
   (add-hook 'evil-org-mode-hook
 	    (lambda ()
 	      (evil-org-set-key-theme '(navigation insert textobjects additional calendar)))))
 
 ;; (load-file "~/.emacs.d/elisp/ox-s5.el")
+
 
 ;;;; Drawing stuff
 
@@ -996,6 +1009,7 @@ With prefix ARG non-nil, insert the result at the end of region."
     ("efa785ca9b6da184d934101900d741d60bf274b46ea68addbcd59585302861e3" "39fe48be738ea23b0295cdf17c99054bb439a7d830248d7e6493c2110bfed6f8" "f2209573c119616e65886982f68198297462410486064f533943d7bd725e213b" "60d675485a5582693ab8419e6525481cbc5b19e7a403430a4aa9e1d31d87d832" "3fa7d0fc26c8483c6fdffc9fa5eda229b2f08ab7944728ccdc6743083693750e" "a4d11382b57e6c08c26db2793670642b1fbb828e642cf41ae58685b4e37aeca9" "f8cf128fa0ef7e61b5546d12bb8ea1584c80ac313db38867b6e774d1d38c73db" "8e0c6a96a17a5b45979c31265821053aff9beea9fb5ac5e41130e0c27a89214e" default)))
  '(evil-want-C-u-scroll t)
  '(fci-rule-color "#343d46")
+ '(org-agenda-files nil)
  '(org-capture-templates
    (quote
     (("t" "Todo" entry
@@ -1010,6 +1024,9 @@ With prefix ARG non-nil, insert the result at the end of region."
      ("j" "Journal Entry" entry
       (file+olp+datetree "journal.org.gpg")
       "* %?" :empty-lines 1))))
+ '(org-modules
+   (quote
+    (org-bbdb org-bibtex org-docview org-eww org-gnus org-habit org-info org-irc org-mhe org-rmail org-w3m)))
  '(vc-annotate-background nil)
  '(vc-annotate-color-map
    (quote
