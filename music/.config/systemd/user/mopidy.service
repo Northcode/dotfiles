@@ -1,0 +1,11 @@
+[Unit]
+Description=Mopidy music daemon
+After=graphical.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/mopidy
+Restart=always
+
+[Install]
+WantedBy=graphical.target
