@@ -2,7 +2,7 @@ super + {h,j,k,l}
       bspc node -f {west,south,north,east}
 
 super + shift + {h,j,k,l}
-      bspc node -s {west,south,north,east}
+      bspc node -s {west,south,north,east} --follow
 
 super + control + {h,j,k,l}
       bspc node -p {west,south,north,east}
@@ -78,6 +78,9 @@ super + Return
 
 super + b
       bspc desktop focused -f last
+
+super + {p,m}
+      bspc node -f @{parent,first}
 
 super + alt + Return
       ~/bin/lockscreen
