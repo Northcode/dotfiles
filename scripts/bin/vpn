@@ -5,7 +5,7 @@ usage() {
     echo "vpn [on|off]"
 }
 
-SERVICE=openvpn-client@
+SERVICE=pia@
 LOCATION=Norway
 
 SERVICESTR=$SERVICE$LOCATION.service
