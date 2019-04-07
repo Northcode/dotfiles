@@ -526,7 +526,11 @@ With prefix ARG non-nil, insert the result at the end of region."
 (use-package evil-paredit
   :straight t
   :config
-  (add-hook 'paredit-mode-hook 'evil-paredit-mode))
+  (add-hook 'paredit-mode-hook 'evil-paredit-mode)
+  (evil-define-key 'normal paredit-mode-map (kbd "g s l") 'paredit-forward-slurp-sexp)
+  (evil-define-key 'normal paredit-mode-map (kbd "g s h") 'paredit-forward-barf-sexp)
+  (evil-define-key 'normal paredit-mode-map (kbd "g S l") 'paredit-backward-barf-sexp)
+  (evil-define-key 'normal paredit-mode-map (kbd "g S h") 'paredit-backward-slurp-sexp))
 
 ;;;; LaTeX
 
@@ -794,7 +798,7 @@ With prefix ARG non-nil, insert the result at the end of region."
   :config
   (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
   aw-scope 'frame
-  :bind ("C-x C-o" . ace-window))
+  :bind ("C-x o" . ace-window))
 
 ;;;; Disable default fluff
 (progn ;; disable gui fluff
@@ -893,16 +897,22 @@ With prefix ARG non-nil, insert the result at the end of region."
  ("C-x b" . helm-buffers-list)
  ("C-x B" . ibuffer)
 
+ ("C-x C-o" . other-window)
+
  ("M-h" . evil-window-left)
  ("M-j" . evil-window-down)
  ("M-k" . evil-window-up)
  ("M-l" . evil-window-right)
  
  :map evil-normal-state-map
+ ("SPC a" . helm-M-x)
+ ("SPC f" . helm-mini)
  ("SPC c" . quick-find-file)
- ("SPC n" . quick-find-file)
- ("SPC t" . quick-find-file)
- ("SPC f" . quick-find-file)
+ ("SPC s" . save-buffer)
+ ("SPC e" . eval-last-sexp)
+ ;; ("SPC n" . quick-find-file)
+ ;; ("SPC t" . quick-find-file)
+ ;; ("SPC f" . quick-find-file)
 
  ("M-h" . evil-window-left)
  ("M-j" . evil-window-down)
@@ -1056,48 +1066,19 @@ With prefix ARG non-nil, insert the result at the end of region."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:height 110 :family "Hack")))))
+ '(default ((t (:height 110 :family "Inconsolata")))))
 
 
 ;;; Media stuff
 
 ;;;; PDF-Tools
-
-(use-package pdf-tools
-  :straight t
-  :config
-  (pdf-tools-install)
-  :bind
-  (:map pdf-view-mode-map
-	("k" . pdf-view-previous-line-or-previous-page)
-	("j" . pdf-view-next-line-or-next-page)))
-
-;;;; EMMS
-
-;; (use-package emms
-;;   :straight t
-;;   :init
-;;   (require 'emms-setup)
-;;   (require 'emms-player-mpd)
-;;   (emms-all)
-;;   (setq emms-seek-seconds 5
-;; 	emms-player-list '(emms-player-mpd)
-;; 	emms-info-functions '(emms-info-mpd)
-;; 	emms-player-mpd-server-name "localhost"
-;; 	emms-player-mpd-server-port "6600")
-;;   (defun emms-maybe-connect-mpd ()
-;;     "Connect EMMS to mpd and set the cache"
-;;     (interactive)
-;;     (when (not emms-player-mpd-process)
-;;       (emms-player-mpd-connect)
-;;       (emms-cache-set-from-mpd-all))
-;;     (emms-browser))
-;;   :bind
-;;   (("C-c d" . emms-maybe-connect-mpd)
-;;    :map emms-playlist-mode-map
-;;    ("j" . next-line)
-;;    ("k" . previous-line)
-;;    :map emms-browser-mode-map
-;;    ("j" . next-line)
-;;    ("k" . previous-line)))
+(if (not (eq system-type 'windows-nt))
+    (use-package pdf-tools
+      :straight t
+      :config
+      (pdf-tools-install)
+      :bind
+      (:map pdf-view-mode-map
+	    ("k" . pdf-view-previous-line-or-previous-page)
+	    ("j" . pdf-view-next-line-or-next-page))))
 
