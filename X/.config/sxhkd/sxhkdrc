@@ -85,17 +85,17 @@ super + {p,m}
 super + alt + Return
       ~/bin/lockscreen
 
-Print
-	scrot "$SCROT_DIR/%Y-%m-%d-%H%M%S.png"
+# Print
+# 	scrot "$SCROT_DIR/%Y-%m-%d-%H%M%S.png"
 
-alt + Print
-	scrot -u "$SCROT_DIR/%Y-%m-%d-%H%M%S.png"
+# alt + Print
+# 	scrot -u "$SCROT_DIR/%Y-%m-%d-%H%M%S.png"
 
-shift + Print
-      	scrot -s "$SCROT_DIR/%Y-%m-%d-%H%M%S.png"
+# shift + Print
+#       	scrot -s "$SCROT_DIR/%Y-%m-%d-%H%M%S.png"
 
-control + Print
-	nwall
+# control + Print
+# 	nwall
 
 # make sxhkd reload its configuration files:
 super + Escape

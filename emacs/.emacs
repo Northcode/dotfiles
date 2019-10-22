@@ -3,6 +3,8 @@
 
 ;;; Bootstrapping
 
+(require 'cl)
+
 ;;;; Get the actual home directory on windows
 (if (eq system-type 'windows-nt)
     (setq win-home (file-truename "~/../../")))
@@ -85,7 +87,7 @@
   (setq evil-move-cursor-back nil))
 
 (use-package evil-surround :straight t
-  :config (evil-surround-mode t))
+  :config (global-evil-surround-mode t))
 
 (use-package evil-magit
   :straight t
@@ -95,11 +97,12 @@
   :straight t
   :config (evil-commentary-mode t))
 
-(use-package evil-collection
-  :straight t
-  :config
-  (setq evil-want-integration nil)
-  (evil-collection-init))
+;; (use-package evil-collection
+;;   :straight t
+;;   :config
+;;   (setq evil-want-integration nil)
+;;   (evil-collection-init))
+
 
 ;;;; Helm
 
@@ -505,7 +508,7 @@ With prefix ARG non-nil, insert the result at the end of region."
   :straight t
   :init
   (require 'outshine)
-  (add-hook 'outline-minor-mode-hook 'outshine-hook-function))
+  (add-hook 'outline-minor-mode-hook 'outshine-mode))
 
 ;;;; Flycheck
 (use-package flycheck
@@ -624,7 +627,8 @@ With prefix ARG non-nil, insert the result at the end of region."
   :straight t
   :bind
   (:map prog-mode-map
-	("C-c f" . helm-imenu)))
+	("C-c f" . helm-imenu)
+	("C-c C-c" . lsp-execute-code-action)))
 
 
 (use-package lsp-ui
@@ -655,15 +659,15 @@ With prefix ARG non-nil, insert the result at the end of region."
 
 (use-package cargo :straight t)
 
-(use-package lsp-rust
-  :straight t
-  :after lsp-mode
-  :init
-  (require 'lsp-rust)
-  (add-hook 'rust-mode-hook #'lsp-rust-enable)
-  :bind
-  (:map rust-mode-map
-	("C-c C-c" . lsp-execute-code-action)))
+;; (use-package lsp-rust
+;;   :straight t
+;;   :after lsp-mode
+;;   :init
+;;   (require 'lsp-rust)
+;;   (add-hook 'rust-mode-hook #'lsp-rust-enable)
+;;   :bind
+;;   (:map rust-mode-map
+;; 	("C-c C-c" . lsp-execute-code-action)))
 
    
 ;;;; Web
@@ -850,6 +854,11 @@ With prefix ARG non-nil, insert the result at the end of region."
 (use-package term
   :bind
   (("C-c E" . ansi-term)))
+
+(if (file-exists-p "~/build/emacs-libvterm/vterm.el")
+    (progn
+      (add-to-list 'load-path "~/build/emacs-libvterm/")
+      (require 'vterm)))
 
 ;;;; Dired
 

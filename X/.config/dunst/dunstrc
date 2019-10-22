@@ -29,7 +29,7 @@
 
     # alignment of message text.
     # Possible values are "left", "center" and "right"
-    alignment = left
+    alignment = center
 
     # The frequency with wich text that is longer than the notification
     # window allows bounces back and forth.
@@ -143,7 +143,7 @@
     # history = mod4+n
 
     # context menu
-    # context = mod4+shift+i
+    context = mod4+shift+i
 
 [urgency_low]
     # IMPORTANT: colors have to be defined in quotation marks.

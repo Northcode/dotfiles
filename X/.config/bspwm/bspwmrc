@@ -17,11 +17,7 @@ browdesks="www music"
 playdesks="steam wine"
 extrdesks="spc1 spc2"
 
-bspc monitor HDMI-0 -d 1 2 3 4 5 6
-bspc monitor DVI-I-0 -d 1 2 3 4 5 6
-bspc monitor DVI-D-0 -d 1 2 3 4 5 6
-bspc monitor eDP-1 -d 1 2 3 4 5 6
-bspc monitor eDP1 -d 1 2 3 4 5 6
+bspc query --monitors --names | xargs -I _ bspc monitor _ -d 1 2 3 4 5 6
 
 # set PATH so it includes user's private bin if it exists
 if [ -d "$HOME/bin" ] ; then
