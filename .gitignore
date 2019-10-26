@@ -10,3 +10,12 @@
 /emacs/.emacs.d/straight/
 /emacs/.emacs.d/projectile.cache
 /emacs/.emacs.d/projectile-bookmarks.eld
+/emacs/.emacs.d/epkgs
+/emacs/.emacs.d/eshell
+/emacs/.emacs.d/meghanada
+/emacs/.emacs.d/network-security.data
+/emacs/.emacs.d/nov-places
+/emacs/.emacs.d/recentf
+/emacs/.emacs.d/transient
+/emacs/.emacs.d/url
+/emacs/.emacs.d/.lsp-session-v1
