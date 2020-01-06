@@ -22,13 +22,16 @@ set $editor emc
 set $menu $term --class=launcher -e "sway-launcher"
 for_window [app_id="^launcher$"] floating enable, border none
 
+set $mainmonitor DP-1
+set $secondarymonitor HDMI-A-1
+
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
 output * bg ~/Pictures/Wallpapers/0.2/04-ColdShoulder.png fill
 
 
-output DP-3 res 3440x1440@99Hz
+output DP-1 res 3440x1440@99Hz
 #
 # Example configuration:
 #
@@ -123,16 +126,19 @@ input * {
 
     bindsym $mod+Alt+$left workspace prev
     bindsym $mod+Alt+$right workspace next
+
+    bindsym $mod+b workspace back_and_forth
 #
 # Workspaces:
 #
 
-workspace 2 output DP-3
-workspace 3 output DP-3
-workspace 4 output DP-3
-workspace 5 output DP-3
-workspace 6 output DP-3
-workspace 7 output DP-3
+workspace 1 output $secondarymonitor
+workspace 2 output $mainmonitor
+workspace 3 output $mainmonitor
+workspace 4 output $mainmonitor
+workspace 5 output $mainmonitor
+workspace 6 output $mainmonitor
+workspace 7 output $mainmonitor
 
     # Switch to workspace
     bindsym $mod+1 workspace 1
@@ -164,8 +170,10 @@ workspace 7 output DP-3
     # You can "split" the current object of your focus with
     # $mod+b or $mod+v, for horizontal and vertical splits
     # respectively.
-    bindsym $mod+b splith
-    bindsym $mod+v splitv
+    # bindsym $mod+b splith
+    # bindsym $mod+v splitv
+    bindsym $mod+u splith
+    bindsym $mod+i splitv
 
     # Switch the current container between different layout styles
     bindsym $mod+s layout stacking
@@ -268,3 +276,28 @@ default_border pixel 2
 
 gaps inner 8
 gaps outer 2
+
+bindsym --release Print exec grim -g "$(slurp)" - | wl-copy
+
+# music controls
+bindsym XF86AudioPlay exec playerctl play-pause
+bindsym XF86AudioStop exec playerctl stop
+bindsym XF86AudioNext exec playerctl next
+bindsym XF86AudioPrev exec playerctl previous
+
+# other special keys
+bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%
+bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
+bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
+bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
+bindsym XF86MonBrightnessDown exec brightnessctl set 5%-
+bindsym XF86MonBrightnessUp exec brightnessctl set +5%
+
+for_window [app_id="waybar" floating] {
+    move position cursor
+    move down 25px
+}
+
+for_window [class="TelegramDesktop"] {
+    move workspace 1
+}
