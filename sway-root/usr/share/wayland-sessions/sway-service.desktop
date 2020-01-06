@@ -1,0 +1,5 @@
+[Desktop Entry]
+Name=Sway Service
+Comment=An i3-compatible Wayland compositor running with systemd
+Exec=/usr/local/bin/sway-service.sh
+Type=Application
