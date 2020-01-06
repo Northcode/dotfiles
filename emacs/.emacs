@@ -434,6 +434,10 @@ With prefix ARG non-nil, insert the result at the end of region."
 	 (if compilation-read-command
 	     (setq compilation-read-command nil)
 	   (setq compilation-read-command t)))
+  (setq (alist-get 'gradlew  projectile-project-types)
+	(plist-put (alist-get 'gradlew projectile-project-types)
+		   'run-command
+		   "./gradlew run"))
   :bind
   (:map projectile-mode-map
 	("<f5>" . save-and-run)
@@ -738,6 +742,23 @@ With prefix ARG non-nil, insert the result at the end of region."
 (use-package cobol-mode :straight t
   :init
   (add-to-list 'auto-mode-alist '("\\.cob\\'" . cobol-mode)))
+
+;;;; Yaml mode
+(use-package yaml-mode
+  :straight t)
+
+;;;; Fish-shell
+
+(use-package fish-mode
+  :straight t)
+
+(use-package fish-completion
+  :straight t
+  :init
+  (when (and (executable-find "fish")
+	     (require 'fish-completion nil t))
+    (global-fish-completion-mode)))
+
 
 ;;; Organization tools
 ;;;; Org mode
