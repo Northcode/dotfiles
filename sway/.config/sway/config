@@ -74,6 +74,12 @@ input * {
       repeat_rate 70
 }
 
+input * {
+      tap enabled
+      natural_scroll enabled
+      dwt enabled
+}
+
 ### Key bindings
 #
 # Basics:
