@@ -428,16 +428,17 @@ With prefix ARG non-nil, insert the result at the end of region."
   :init
   (projectile-mode t)
   :config
+  ;; (progn
+  ;;   (setq (alist-get 'gradlew  projectile-project-types)
+  ;; 	  (plist-put (alist-get 'gradlew projectile-project-types)
+  ;; 		     'run-command
+  ;; 		     "./gradlew run")))
   (defun save-and-run () (interactive) (save-all) (projectile-run-project nil))
   (defun save-and-compile () (interactive) (save-all) (projectile-compile-project nil))
   (defun toggle-compilation-read-command () (interactive)
 	 (if compilation-read-command
 	     (setq compilation-read-command nil)
 	   (setq compilation-read-command t)))
-  (setq (alist-get 'gradlew  projectile-project-types)
-	(plist-put (alist-get 'gradlew projectile-project-types)
-		   'run-command
-		   "./gradlew run"))
   :bind
   (:map projectile-mode-map
 	("<f5>" . save-and-run)
@@ -489,12 +490,6 @@ With prefix ARG non-nil, insert the result at the end of region."
   :straight t
   :config
   (add-hook 'prog-mode-hook 'company-mode))
-
-(use-package company-lsp
-  :straight t
-  :config
-  (add-to-list 'company-backends 'company-lsp))
-
 
 ;;;; Outlining
 
@@ -629,6 +624,8 @@ With prefix ARG non-nil, insert the result at the end of region."
 
 (use-package lsp-mode
   :straight t
+  ;; :config
+  ;; (setq lsp-rust-server "rust-analyzer")
   :bind
   (:map prog-mode-map
 	("C-c f" . helm-imenu)
@@ -1032,7 +1029,9 @@ With prefix ARG non-nil, insert the result at the end of region."
       (quote
        (("northcode.no" 8667 t
 	 ((freenode "northcode/freenode" "")
+	  (oftc "northcode/OFTC" "")
 	  (snoonet "northcode/snoonet" ""))))))
+
 ;;; Customize-stuff
 ;;;; Vars
 (custom-set-variables
@@ -1096,7 +1095,7 @@ With prefix ARG non-nil, insert the result at the end of region."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:height 110 :family "Inconsolata")))))
+ '(default ((t (:height 110 :foundry "SRC" :family "Hack")))))
 
 
 ;;; Media stuff
