@@ -74,3 +74,5 @@ else
     # set -o vi
 
 fi
+
+source /home/andreas/.config/broot/launcher/bash/br
