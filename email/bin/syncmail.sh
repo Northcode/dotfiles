@@ -1,8 +1,8 @@
 #!/bin/bash
-davmail -server > /tmp/davmail.log 2>&1 &
+# davmail -server > /tmp/davmail.log 2>&1 &
 sleep 1
 mbsync -aV
-kill %1
+# kill %1
 mu index -m ~/.mail
 
 UNREADCOUNT=$(mu find 'flag:unread AND NOT maildir:/northcode/Junk' | wc -l)
