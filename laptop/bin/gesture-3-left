@@ -1,9 +1,12 @@
 #!/bin/bash
-_W_CLASSNAME=$(bspc query -N -n focused | xargs bspc query -T -n | jq .client.className | tr -d '\"')
-if [ "$_W_CLASSNAME" == "Nightly" ]
+
+_WM_STATE=$(swaymsg -t get_tree)
+_W_CLASSNAME=$(echo $_WM_STATE | jq '.nodes[]|.nodes[]|.nodes[]?|select(.focused == true)|.window_properties.class')
+_W_APPID=$(echo $_WM_STATE | jq '.nodes[]|.nodes[]|.nodes[]?|select(.focused == true)|.app_id')
+
+if [ "$_W_CLASSNAME" == '"Nightly"' ]
 then
     xdotool key ctrl+Tab
-else
-    # notify-send "no gesture found for classname $_W_CLASSNAME"
-    nop
+# else
+    # toastify send "no gesture found for classname $_W_CLASSNAME or appid $_W_APPID"
 fi

@@ -21,10 +21,10 @@ then
     TIMEPOS_X=$(echo $SCREEN_W '/ 2 - 580' | bc)
 fi
 
-sleep 2 && xset dpms force standby & # turn off screens, delay by 2 seconds to allow locker to paint over screen on laptops that blank the screen quickly
+# sleep 2 && xset dpms force standby & # turn off screens, delay by 2 seconds to allow locker to paint over screen on laptops that blank the screen quickly
 
 # show the locker, try a bunch just to make sure we actually lock
-if [ -x "$(command -v i3lock)" ]
+if [ -x "$(command -v swaylock)" ]
 then
     # Only add the argument for the lock image if the image exists, else the locker would fail and not lock...
     if [ -f "$LOCKIMG" ]; then 
@@ -32,11 +32,7 @@ then
     else
 	LOCKARG=""
     fi
-    i3lock --clock -c '121212' -t $LOCKARG \
-	   --line-uses-inside \
-	   --timecolor="eeeeeeff" --datecolor="eeeeeeff" \
-	   --timestr="%H:%M" --timesize=80 --timepos="$TIMEPOS_X:850" --time-font="Inconsolata" \
-	   --radius 150 --ring-width 50
+    swaylock $LOCKARG --font "Inconsolata" -K -L 
 elif [ -x "$(command -v slock)" ]
 then
     slock

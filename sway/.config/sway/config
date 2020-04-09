@@ -97,6 +97,8 @@ input * {
     # Start your launcher
     bindsym $mod+space exec $menu
 
+    bindsym $mod+v exec screenlocker
+
     # Drag floating windows by holding down $mod and left mouse button.
     # Resize them with right mouse button + $mod.
     # Despite the name, also works for non-floating windows.
@@ -312,3 +314,6 @@ for_window [class="TelegramDesktop"] {
     move workspace 1
 }
 
+exec mako
+
+exec lockscreen
