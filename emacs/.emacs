@@ -184,6 +184,7 @@
       version-control t
       evil-want-C-u-scroll t
       save-interprogram-paste-before-kill t
+      shell-file-name "/bin/sh"
       )
 
 (setq mouse-wheel-scroll-amount (if (string-equal "andreas-d0" (system-name)) '(5) '(1))
@@ -1095,7 +1096,7 @@ With prefix ARG non-nil, insert the result at the end of region."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:height 110 :foundry "SRC" :family "Hack")))))
+ '(default ((t (:background "#1c1c1c" :foreground "#f6f3e8" :family "Hack")))))
 
 
 ;;; Media stuff
