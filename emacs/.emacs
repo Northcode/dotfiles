@@ -3,8 +3,6 @@
 
 ;;; Bootstrapping
 
-(require 'cl)
-
 ;;;; Get the actual home directory on windows
 (if (eq system-type 'windows-nt)
     (setq win-home (file-truename "~/../../")))
@@ -29,6 +27,10 @@
 
 (add-to-list 'load-path (file-truename "~/.emacs.d/elisp/"))
 
+;;;; cl-lib
+
+(use-package cl-lib :straight t)
+
 ;;;; Startup optimization
 
 ;;;;; Temporarily reduce garbage collection during startup. Inspect `gcs-done'.
@@ -51,7 +53,7 @@
 
 (setq-default mode-line-format
 	      '("    "
-		(:eval (case evil-state
+		(:eval (cl-case evil-state
 			 ('normal "N")
 			 ('insert "I")
 			 ('visual "V")
@@ -627,6 +629,8 @@ With prefix ARG non-nil, insert the result at the end of region."
   :straight t
   ;; :config
   ;; (setq lsp-rust-server "rust-analyzer")
+  :config
+  (evil-define-key 'normal prog-mode-map (kbd "gl") 'lsp-execute-code-action)
   :bind
   (:map prog-mode-map
 	("C-c f" . helm-imenu)
@@ -654,10 +658,10 @@ With prefix ARG non-nil, insert the result at the end of region."
 (use-package rust-mode
   :straight t)
 
-(use-package flycheck-rust
+(use-package rustic
   :straight t
   :config
-  (add-hook 'rust-mode-hook 'flycheck-mode))
+  (setq rustic-lsp-server 'rust-analyzer))
 
 (use-package cargo :straight t)
 
@@ -855,7 +859,9 @@ With prefix ARG non-nil, insert the result at the end of region."
 
 ;; just using the one from melpa
 (use-package northcode-theme
-  :straight t)
+  :straight t
+  :init
+  (load-theme 'northcode t))
 
 ;; for developing northcode-theme
 ;; (add-to-list 'custom-theme-load-path (file-truename "~/projects/northcode-theme.el/northcode-theme.el"))
@@ -904,6 +910,14 @@ With prefix ARG non-nil, insert the result at the end of region."
 
 (use-package docker :straight t)
 
+;;;; K3S
+
+(use-package kubel
+  :straight t)
+
+(use-package kubel-evil
+  :straight t)
+
 ;;; General Emacs behaviour
 ;;;; Hooks to stuff
 (add-hook 'focus-out-hook 'save-all)
@@ -913,7 +927,7 @@ With prefix ARG non-nil, insert the result at the end of region."
 
 (defun quick-find-file ()
   (interactive)
-  (find-file (case last-command-event
+  (find-file (cl-case last-command-event
 	       (?c user-init-file)
 	       (?n "~/Documents/org/notes.org")
 	       (?t "~/Documents/org/todo.org")
@@ -938,6 +952,7 @@ With prefix ARG non-nil, insert the result at the end of region."
  ("SPC c" . quick-find-file)
  ("SPC s" . save-buffer)
  ("SPC e" . eval-last-sexp)
+ ("SPC k" . kubel)
  ;; ("SPC n" . quick-find-file)
  ;; ("SPC t" . quick-find-file)
  ;; ("SPC f" . quick-find-file)
@@ -1045,14 +1060,12 @@ With prefix ARG non-nil, insert the result at the end of region."
  '(ansi-color-names-vector
    ["#212526" "#ff4b4b" "#b4fa70" "#fce94f" "#729fcf" "#e090d7" "#8cc4ff" "#eeeeec"])
  '(custom-safe-themes
-   (quote
-    ("efa785ca9b6da184d934101900d741d60bf274b46ea68addbcd59585302861e3" "39fe48be738ea23b0295cdf17c99054bb439a7d830248d7e6493c2110bfed6f8" "f2209573c119616e65886982f68198297462410486064f533943d7bd725e213b" "60d675485a5582693ab8419e6525481cbc5b19e7a403430a4aa9e1d31d87d832" "3fa7d0fc26c8483c6fdffc9fa5eda229b2f08ab7944728ccdc6743083693750e" "a4d11382b57e6c08c26db2793670642b1fbb828e642cf41ae58685b4e37aeca9" "f8cf128fa0ef7e61b5546d12bb8ea1584c80ac313db38867b6e774d1d38c73db" "8e0c6a96a17a5b45979c31265821053aff9beea9fb5ac5e41130e0c27a89214e" default)))
+   '("5b20570781c33819c0b4bcb009305dbe5a9ed12fcedca10e29f1703b5b9d3f96" "efa785ca9b6da184d934101900d741d60bf274b46ea68addbcd59585302861e3" "39fe48be738ea23b0295cdf17c99054bb439a7d830248d7e6493c2110bfed6f8" "f2209573c119616e65886982f68198297462410486064f533943d7bd725e213b" "60d675485a5582693ab8419e6525481cbc5b19e7a403430a4aa9e1d31d87d832" "3fa7d0fc26c8483c6fdffc9fa5eda229b2f08ab7944728ccdc6743083693750e" "a4d11382b57e6c08c26db2793670642b1fbb828e642cf41ae58685b4e37aeca9" "f8cf128fa0ef7e61b5546d12bb8ea1584c80ac313db38867b6e774d1d38c73db" "8e0c6a96a17a5b45979c31265821053aff9beea9fb5ac5e41130e0c27a89214e" default))
  '(evil-want-C-u-scroll t)
  '(fci-rule-color "#343d46")
  '(org-agenda-files nil)
  '(org-capture-templates
-   (quote
-    (("t" "Todo" entry
+   '(("t" "Todo" entry
       (file "todo.org")
       "* TODO ")
      ("c" "Clock in something" entry
@@ -1063,14 +1076,12 @@ With prefix ARG non-nil, insert the result at the end of region."
       "")
      ("j" "Journal Entry" entry
       (file+olp+datetree "journal.org.gpg")
-      "* %?" :empty-lines 1))))
+      "* %?" :empty-lines 1)))
  '(org-modules
-   (quote
-    (org-bbdb org-bibtex org-docview org-eww org-gnus org-habit org-info org-irc org-mhe org-rmail org-w3m)))
+   '(org-bbdb org-bibtex org-docview org-eww org-gnus org-habit org-info org-irc org-mhe org-rmail org-w3m))
  '(vc-annotate-background nil)
  '(vc-annotate-color-map
-   (quote
-    ((20 . "#bf616a")
+   '((20 . "#bf616a")
      (40 . "#DCA432")
      (60 . "#ebcb8b")
      (80 . "#B4EB89")
@@ -1087,8 +1098,9 @@ With prefix ARG non-nil, insert the result at the end of region."
      (300 . "#bf616a")
      (320 . "#DCA432")
      (340 . "#ebcb8b")
-     (360 . "#B4EB89"))))
- '(vc-annotate-very-old-color nil))
+     (360 . "#B4EB89")))
+ '(vc-annotate-very-old-color nil)
+ '(warning-suppress-types '((comp) (comp) (comp))))
 ;;;; Faces
 
 (custom-set-faces
@@ -1096,7 +1108,7 @@ With prefix ARG non-nil, insert the result at the end of region."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:background "#1c1c1c" :foreground "#f6f3e8" :family "Hack")))))
+ '(default ((t (:height 110 :family "Hack")))))
 
 
 ;;; Media stuff

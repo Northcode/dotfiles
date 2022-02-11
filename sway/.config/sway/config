@@ -19,23 +19,21 @@ set $editor emc
 # Your preferred application launcher
 # Note: it's recommended that you pass the final command to sway
 # set $menu dmenu_path | dmenu | xargs swaymsg exec --
-set $menu $term --class=launcher -e "sway-launcher"
+#set $menu $term --class=launcher -e "sway-launcher"
+set $menu ~/bin/sway-launcher
 for_window [app_id="^launcher$"] floating enable, border none
 
-set $mainmonitor DP-1
-set $secondarymonitor HDMI-A-1
+set $mainmonitor eDP-1
+set $secondarymonitor DP-1
 
-output $secondarymonitor mode 1920x1080@60Hz position 0 357 scale 1.00
-output $mainmonitor mode 3440x1440@99Hz position 1920 0 scale 1.00
+output $mainmonitor mode 1920x1080@60Hz position 0 0 scale 1.00
+output $secondarymonitor mode 1920x1080@60Hz position 1920 0 scale 1.00
 
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
 output * bg ~/Pictures/Wallpapers/0.2/04-ColdShoulder.png fill
 
-
-
-output DP-1 res 3440x1440@99Hz
 #
 # Example configuration:
 #
@@ -78,7 +76,7 @@ input * {
       repeat_rate 70
 }
 
-input * {
+input "1267:12377:ELAN1300:00_04F3:3059_Touchpad" {
       tap enabled
       natural_scroll enabled
       dwt enabled
@@ -90,12 +88,14 @@ input * {
 #
     # Start a terminal
     bindsym $mod+Return exec $term
+    bindsym $mod+m exec $term
 
     # Kill focused window
     bindsym $mod+d kill
 
     # Start your launcher
     bindsym $mod+space exec $menu
+    bindsym $mod+n exec $menu
 
     bindsym $mod+v exec screenlocker
 
@@ -143,14 +143,6 @@ input * {
 #
 # Workspaces:
 #
-
-workspace 1 output $secondarymonitor
-workspace 2 output $mainmonitor
-workspace 3 output $mainmonitor
-workspace 4 output $mainmonitor
-workspace 5 output $mainmonitor
-workspace 6 output $mainmonitor
-workspace 7 output $mainmonitor
 
     # Switch to workspace
     bindsym $mod+1 workspace 1
@@ -304,6 +296,10 @@ bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
 bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
 bindsym XF86MonBrightnessDown exec brightnessctl set 5%-
 bindsym XF86MonBrightnessUp exec brightnessctl set +5%
+
+
+# launch programs
+bindsym $mod+F1 exec firefox
 
 for_window [app_id="waybar" floating] {
     move position cursor

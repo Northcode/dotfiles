@@ -32,7 +32,7 @@ then
     else
 	LOCKARG=""
     fi
-    swaylock $LOCKARG --font "Inconsolata" -K -L 
+    swaylock -f $LOCKARG --font "Inconsolata" -K -L 
 elif [ -x "$(command -v slock)" ]
 then
     slock

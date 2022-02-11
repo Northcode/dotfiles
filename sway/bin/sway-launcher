@@ -20,10 +20,15 @@ else
     command_history=""
 fi
 
-# search command list
+# # search command list
+# command_str=$(printf "%s\n" "${command_history}" "${command_list}" | \
+#     sed -E 's/^[0-9]+ (.+)$/\1/' | \
+#     fzf --no-extended --print-query --no-sort | \
+#     tail -n1) || exit 1
+
 command_str=$(printf "%s\n" "${command_history}" "${command_list}" | \
     sed -E 's/^[0-9]+ (.+)$/\1/' | \
-    fzf --no-extended --print-query --no-sort | \
+    ~/bin/bemenu-wrapper | \
     tail -n1) || exit 1
 
 if [ "$command_str" = "" ]; then

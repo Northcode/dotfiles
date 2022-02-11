@@ -1,0 +1,13 @@
+#!/bin/bash
+
+bemenu \
+	-H 50 \
+	--ch 15 \
+	-c \
+	-M 250 \
+	--fn 'Hack' \
+	--list 7 \
+	-p ':>' \
+	--scrollbar always \
+	-P '>' \
+	--ifne
