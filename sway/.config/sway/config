@@ -23,11 +23,11 @@ set $editor emc
 set $menu ~/bin/sway-launcher
 for_window [app_id="^launcher$"] floating enable, border none
 
-set $mainmonitor eDP-1
-set $secondarymonitor DP-1
+set $mainmonitor 'Samsung Electric Company C34H89x HTOM801427'
+set $secondarymonitor 'BenQ Corporation BenQ GL2460 ACC06116SL0'
 
-output $mainmonitor mode 1920x1080@60Hz position 0 0 scale 1.00
-output $secondarymonitor mode 1920x1080@60Hz position 1920 0 scale 1.00
+output $mainmonitor mode 3440x1440@59.973Hz position 1920 0 scale 1.00
+output $secondarymonitor mode 1920x1080@60Hz position 0 0 scale 1.00
 
 ### Output configuration
 #
@@ -119,6 +119,7 @@ input "1267:12377:ELAN1300:00_04F3:3059_Touchpad" {
     bindsym $mod+$down focus down
     bindsym $mod+$up focus up
     bindsym $mod+$right focus right
+    bindsym $mod+y focus parent
     # Or use $mod+[up|down|left|right]
     bindsym $mod+Left focus left
     bindsym $mod+Down focus down
@@ -183,6 +184,7 @@ input "1267:12377:ELAN1300:00_04F3:3059_Touchpad" {
     bindsym $mod+s layout stacking
     bindsym $mod+w layout tabbed
     bindsym $mod+e layout toggle split
+    bindsym $mod+Shift+f floating toggle
 
     bindsym $mod+z exec $editor
 
