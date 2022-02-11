@@ -301,7 +301,7 @@ bindsym XF86MonBrightnessUp exec brightnessctl set +5%
 
 
 # launch programs
-bindsym $mod+F1 exec firefox
+bindsym $mod+F1 exec firefox-nightly
 
 for_window [app_id="waybar" floating] {
     move position cursor
@@ -313,5 +313,5 @@ for_window [class="TelegramDesktop"] {
 }
 
 exec mako
-
+exec wlsunset
 exec lockscreen
