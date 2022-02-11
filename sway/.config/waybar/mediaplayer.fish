@@ -7,20 +7,16 @@ for p in (pgrep $me | grep -v $fish_pid)
 end
 
 while true
-    if pgrep spotifyd
-	if test (playerctl status) = 'Playing'
-	
-	    set song (playerctl metadata "xesam:title")
-	    set artist (playerctl metadata "xesam:artist")
-	    set album (playerctl metadata "xesam:album")
+    set playing_status (playerctl status)
+    if test "$playing_status" = 'Playing'
 
-	    printf '{ "text":"%s / %s - %s" }\n' $song $album $artist
-	else
-	    printf '{ "text":"nothing playing..." }\n'
-	end
+	set song (playerctl metadata "xesam:title")
+	set artist (playerctl metadata "xesam:artist")
+	set album (playerctl metadata "xesam:album")
 
+	printf '{ "text":"%s / %s - %s" }\n' $song $album $artist
     else
-	printf '{ "text":"" }\n'
+	printf '{ "text":"nothing playing..." }\n'
     end
 
     sleep 10
