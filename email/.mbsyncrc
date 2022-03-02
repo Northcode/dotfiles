@@ -17,8 +17,8 @@ Inbox ~/.mail/gmail/Inbox
 SubFolders verbatim
 
 Channel gmail
-Master :gmail-remote:
-Slave :gmail-local:
+Far :gmail-remote:
+Near :gmail-local:
 MaxMessages 0
 # Patterns * ![Gmail]* "[Gmail]/All Mail" "[Gmail]/Sent Mail" "[Gmail]/Bin"
 Patterns *
@@ -65,7 +65,7 @@ IMAPAccount northcode
 Host northcode.no
 User andreas@northcode.no
 PassCmd "gpg -d --no-tty -q ~/.authinfo.gpg | grep 'login andreas@northcode.no' | cut -d ' ' -f 8"
-SSLType IMAPS
+SSLType STARTTLS
 CertificateFile /etc/ssl/certs/ca-certificates.crt
 
 IMAPStore northcode-remote
@@ -77,8 +77,8 @@ Inbox ~/.mail/northcode/Inbox
 SubFolders verbatim
 
 Channel northcode
-Master :northcode-remote:
-Slave :northcode-local:
+Far :northcode-remote:
+Near :northcode-local:
 MaxMessages 0
 Patterns * 
 Create Both
@@ -86,53 +86,3 @@ Remove Both
 Sync All
 SyncState *
 
-IMAPAccount uit
-Host outlook.office365.com
-User ala107@uit.no
-PassCmd "gpg -d --no-tty -q ~/.authinfo.gpg | grep 'login ala107@uit.no' | cut -d ' ' -f 8"
-SSLType IMAPS
-CertificateFile /etc/ssl/certs/ca-certificates.crt
-
-IMAPStore uit-remote
-Account uit
-
-MaildirStore uit-local
-Path ~/.mail/uit/
-Inbox ~/.mail/uit/Inbox
-# SubFolders verbatim
-
-Channel uit
-Master :uit-remote:
-Slave :uit-local:
-MaxMessages 0
-Patterns * 
-Create Both
-Remove Both
-Sync All
-SyncState *
-
-IMAPAccount soprasteria
-Host localhost
-Port 1143
-User andreas.larsen@soprasteria.com
-PassCmd "gpg -d --no-tty -q ~/.authinfo.gpg | grep 'login andreas.larsen@soprasteria.com' | cut -d ' ' -f 4"
-SSLType None
-AuthMechs LOGIN
-
-IMAPStore soprasteria-remote
-Account soprasteria
-
-MaildirStore soprasteria-local
-Path ~/.mail/sopra/
-Inbox ~/.mail/sopra/Inbox
-SubFolders verbatim
-
-Channel soprasteria
-Master :soprasteria-remote:
-Slave :soprasteria-local:
-MaxMessages 0
-Patterns *
-Create Both
-Remove Both
-Sync All
-SyncState *
