@@ -74,7 +74,7 @@ super + a ; c
       emacsclient -s /tmp/emacs1000/server -c -e '(eshell)'
 
 super + Return
-      st
+      alacritty
 
 super + b
       bspc desktop focused -f last
