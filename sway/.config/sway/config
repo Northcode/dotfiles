@@ -26,7 +26,7 @@ for_window [app_id="^launcher$"] floating enable, border none
 set $mainmonitor 'Samsung Electric Company C34H89x HTOM801427'
 set $secondarymonitor 'BenQ Corporation BenQ GL2460 ACC06116SL0'
 
-output $mainmonitor mode 3440x1440@59.973Hz position 1920 0 scale 1.00
+output $mainmonitor mode 3440x1440@59.973Hz position 1920 0 scale 1.00 adaptive_sync on
 output $secondarymonitor mode 1920x1080@60Hz position 0 0 scale 1.00
 
 ### Output configuration
