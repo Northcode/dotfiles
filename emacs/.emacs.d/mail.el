@@ -1,3 +1,4 @@
+(if (file-exists-p "/usr/share/emacs/site-lisp/mu4e/mu4e.el")
 (use-package mu4e 
   :config
   (setq
@@ -48,4 +49,4 @@
 		      ))
 	  ))
   :general
-  ("C-c m" 'mu4e))
+  ("C-c m" 'mu4e)))
