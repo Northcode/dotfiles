@@ -211,3 +211,9 @@ With prefix ARG non-nil, insert the result at the end of region."
 
 (if (file-exists-p "~/.emacs.d/mail.el")
     (load-file "~/.emacs.d/mail.el"))
+
+;; IRC
+
+(use-package rirc
+  :general
+  ("C-c i" 'irc))
