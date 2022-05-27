@@ -203,6 +203,9 @@ With prefix ARG non-nil, insert the result at the end of region."
 
 (use-package rustic :straight t)
 
+(use-package yaml-mode :straight t)
+
+
 
 ;; Mail
 
