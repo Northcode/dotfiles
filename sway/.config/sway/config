@@ -301,7 +301,7 @@ bindsym XF86MonBrightnessUp exec brightnessctl set +5%
 
 
 # launch programs
-bindsym $mod+F1 exec firefox-nightly
+bindsym $mod+F1 exec firefox
 
 for_window [app_id="waybar" floating] {
     move position cursor
