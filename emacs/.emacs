@@ -97,6 +97,9 @@
   :general
   ("C-x o" 'ace-window))
 
+(use-package undo-tree :straight t
+  :config (global-undo-tree-mode t))
+
 (defun lastbuf () "Switch to last buffer instantly."
        (interactive)
        (switch-to-buffer (other-buffer (current-buffer))))
