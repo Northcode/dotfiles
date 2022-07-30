@@ -205,7 +205,8 @@ With prefix ARG non-nil, insert the result at the end of region."
 
 ;; Languages
 
-(use-package lsp-mode :straight t)
+(use-package lsp-mode :straight t
+  :general ("C-c c" 'lsp-execute-code-action))
 
 (use-package rustic :straight t)
 
