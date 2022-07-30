@@ -64,6 +64,12 @@
 ;; Key bindings
 (use-package general :straight t)
 
+(use-package back-button :straight t
+  :init (back-button-mode t)
+  :general
+  ("C--" 'back-button-global)
+  ("C-_" 'back-button-global-forward))
+
 (use-package evil :straight t
   :init
   (setq evil-want-keybinding nil
