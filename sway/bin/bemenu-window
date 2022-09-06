@@ -1,0 +1,11 @@
+#!/bin/bash
+
+selected_window=$(swaymsg -t get_tree | jq '[recurse(.nodes[]) | select(.type == "con") | select(.name != null) | {id,name,app_id}] |.[].name' -r | bemenu-wrapper --no-exec)
+
+echo $selected_window
+
+con_id=$(swaymsg -t get_tree | jq '[recurse(.nodes[]) | select(.type == "con") | select(.name == "'"$selected_window"'") | {id,name,app_id}] | first | .id')
+
+echo con_id: $con_id
+
+swaymsg "[con_id=$con_id] focus"

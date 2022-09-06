@@ -21,6 +21,7 @@ set $editor emc
 # set $menu dmenu_path | dmenu | xargs swaymsg exec --
 #set $menu $term --class=launcher -e "sway-launcher"
 set $menu ~/bin/sway-launcher
+set $winmenu ~/bin/bemenu-window
 for_window [app_id="^launcher$"] floating enable, border none
 
 set $mainmonitor 'Samsung Electric Company C34H89x HTOM801427'
@@ -96,6 +97,7 @@ input "1267:12377:ELAN1300:00_04F3:3059_Touchpad" {
     # Start your launcher
     bindsym $mod+space exec $menu
     bindsym $mod+n exec $menu
+    bindsym $mod+period exec $winmenu
 
     bindsym $mod+v exec screenlocker
 
