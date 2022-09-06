@@ -7,6 +7,8 @@
 (if (eq system-type 'windows-nt)
     (setq win-home (file-truename "~/../../")))
 
+(add-to-list 'load-path "~/.emacs.d/custom-lisp/")
+
 ;;;; bootstrap straight.el
 
 (let ((bootstrap-file (concat user-emacs-directory "straight/repos/straight.el/bootstrap.el"))
@@ -87,6 +89,9 @@
 (use-package evil-surround :straight t
   :config (global-evil-surround-mode t))
 
+(use-package ace-window :straight t
+  :general
+  ("C-x o" 'ace-window))
 
 (defun lastbuf () "Switch to last buffer instantly."
        (interactive)
@@ -165,7 +170,7 @@
   (add-hook 'eshell-mode-hook (lambda ()
 				(setq-local corfu-auto nil)
 				(corfu-mode)))
-  (corfu-global-mode t)
+  (global-corfu-mode t)
   :general
   (corfu-map
    "C-SPC" 'corfu-insert-separator))
@@ -205,10 +210,68 @@ With prefix ARG non-nil, insert the result at the end of region."
 
 ;; Languages
 
+(use-package flycheck :straight t) 
+
 (use-package lsp-mode :straight t
-  :general ("C-c c" 'lsp-execute-code-action))
+  :config
+  (setq lsp-keymap-prefix "C-c s"
+	gc-cons-threshold 100000000
+	read-process-output-max (* 1024 1024) ;; 1mb
+	)
+  :general
+  ("C-c c" 'lsp-execute-code-action))
+
+(use-package lsp-ui :straight t
+  :config
+  (general-def :states 'normal "g]" 'lsp-ui-peek-find-implementation)
+  (general-def :states 'normal "g[" 'lsp-ui-peek-find-references)
+  (general-define-key :keymaps 'lsp-ui-peek-mode-map "M-j" 'lsp-ui-peek--select-next)
+  (general-define-key :keymaps 'lsp-ui-peek-mode-map "M-k" 'lsp-ui-peek--select-prev)
+  )
+
+(require 'dap-running-session-mode)
+
+(use-package dap-mode :straight t
+  :general
+  (:keymaps 'dap-running-session-mode-map "M-n" 'dap-next "C-c q" 'dap-disconnect)
+  :config
+  (add-hook 'dap-session-created-hook 'dap-running-session-mode)
+  (add-hook 'dap-stopped-hook 'dap-running-session-mode)
+  (add-hook 'dap-stack-frame-changed-hook (lambda (session)
+					    (when (dap--session-running session)
+					      (dap-running-session-mode 1))))
+  )
+
+(defun java-get-project-name (relpath)
+  (let* ((pos (string-match "[^/]*/src" relpath))
+	 (posend (string-match "/src" relpath))
+	 (name (substring relpath pos posend)))
+    name))
+
 
 (use-package rustic :straight t)
+
+(use-package treemacs :straight t
+  :general
+  ("C-c t" 'treemacs))
+
+
+(defun java-set-indent ()
+  (setq c-basic-offset 2
+	indent-tabs-mode nil)
+  )
+
+(use-package lsp-java :straight t
+  :init
+  (add-hook 'java-mode-hook #'lsp)
+  (add-hook 'java-mode-hook #'java-set-indent))
+
+  ;; :config
+  ;; (setq lsp-java-jdt-download-url "https://download.eclipse.org/jdtls/milestones/1.12.0/jdt-language-server-1.12.0-202206011637.tar.gz"))
+
+  ;; :config
+  ;; (setq lsp-java-jdt-download-url "https://download.eclipse.org/jdtls/milestones/1.14.0/jdt-language-server-1.14.0-202207211651.tar.gz"))
+
 
 (use-package yaml-mode :straight t)
 
