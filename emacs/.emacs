@@ -89,6 +89,10 @@
 (use-package evil-surround :straight t
   :config (global-evil-surround-mode t))
 
+(use-package relative-line-numbers :straight t
+  :config (add-hook 'prog-mode-hook 'relative-line-numbers-mode))
+
+
 (use-package ace-window :straight t
   :general
   ("C-x o" 'ace-window))
