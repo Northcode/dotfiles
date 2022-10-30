@@ -192,6 +192,12 @@
 ;; Org
 (use-package org :straight t)
 
+(use-package org-present :straight t
+  :config
+  (add-hook 'org-present-mode-hook
+	    (lambda ()
+	      (org-present-big))))
+
 ;; Projects
 (use-package projectile :straight t)
 
