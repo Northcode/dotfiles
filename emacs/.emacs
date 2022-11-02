@@ -190,7 +190,14 @@
 	completion-category-overrides '((file (styles . (partial-completion))))))
 
 ;; Org
-(use-package org :straight t)
+(use-package org :straight t
+  :config
+  (org-babel-do-load-languages 'org-babel-load-languages
+			       '(
+				 (shell . t)
+				 )
+			       )
+  )
 
 (use-package org-present :straight t
   :config
