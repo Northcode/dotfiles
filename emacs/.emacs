@@ -196,7 +196,9 @@
   :config
   (add-hook 'org-present-mode-hook
 	    (lambda ()
-	      (org-present-big))))
+	      (org-present-big)))
+  :general
+  (:keymaps 'org-mode-map "C-c p" 'org-present))
 
 ;; Projects
 (use-package projectile :straight t)
