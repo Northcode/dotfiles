@@ -75,7 +75,8 @@
 (use-package evil :straight t
   :init
   (setq evil-want-keybinding nil
-	evil-move-cursor-back nil)
+	evil-move-cursor-back nil
+	evil-want-minibuffer t)
   (evil-mode t))
 
 (use-package evil-collection :straight t
