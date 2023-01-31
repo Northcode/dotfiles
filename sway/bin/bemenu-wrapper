@@ -9,6 +9,6 @@ bemenu \
 	--list 7 \
 	-p ':>' \
 	--scrollbar always \
-	-P '>' \
 	-i \
-	--ifne
+	--ifne \
+	$@

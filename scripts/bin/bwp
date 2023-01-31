@@ -1,0 +1,73 @@
+#!/bin/bash
+
+JQ=jq
+
+if [ "$(command -v 'jql')" != "" ]; then
+    JQ=jql
+fi
+
+create_session() {
+    passw=$(echo "" | bemenu-wrapper -x -p "Bitwarden-password: ")
+    export passw
+    BW_SESSION=$(bw unlock --passwordenv passw --raw)
+    export BW_SESSION
+
+    items=$(bw list items | $JQ '. | map({id,name})')
+}
+
+
+prompt_item() {
+
+    item_name=$(echo -n "$items" | $JQ '.[].name' -r | bemenu-wrapper)
+
+    if [ -n "$item_name" ]; then
+	item_id=$(echo -n "$items" | $JQ ".[] | select(.name == \"$item_name\") | .id" -r)
+	echo $item_id
+    fi
+}
+
+copy_password() {
+    item_id=$(prompt_item)
+
+    if [ -n "$item_id" ]; then
+	if bw get password $item_id | wl-copy; then
+	    notify-send -t 2000 'password copied'
+	else
+	    notify-send -t 2000 'no password for this login'
+	fi
+    else
+	notify-send -t 2000 'no item selected'
+    fi
+}
+
+copy_username() {
+    item_id=$(prompt_item)
+
+    if [ -n "$item_id" ]; then
+	if bw get username $item_id | wl-copy; then
+	    notify-send -t 2000 'username copied'
+	else
+	    notify-send -t 2000 'no username for this login'
+	fi
+    else
+	notify-send -t 2000 'no item selected'
+    fi
+}
+
+exit_script() {
+    echo got sigint, locking vault and shutting down!
+    bw lock
+    exit
+}
+
+trap copy_password SIGUSR1
+trap copy_username SIGUSR2
+trap exit_script SIGINT
+
+create_session
+
+while :
+do
+    sleep infinity &
+    wait $!
+done
