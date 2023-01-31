@@ -99,6 +99,9 @@ input "1267:12377:ELAN1300:00_04F3:3059_Touchpad" {
     bindsym $mod+n exec $menu
     bindsym $mod+period exec $winmenu
 
+    bindsym $mod+f11 exec pkill bwp --signal SIGUSR1
+    bindsym $mod+f12 exec pkill bwp --signal SIGUSR2
+
     bindsym $mod+v exec screenlocker
 
     # Drag floating windows by holding down $mod and left mouse button.
