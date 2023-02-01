@@ -146,6 +146,8 @@ input "1267:12377:ELAN1300:00_04F3:3059_Touchpad" {
     bindsym $mod+Alt+$right workspace next
 
     bindsym $mod+b workspace back_and_forth
+
+    bindsym $mod+Shift+b move workspace to output left
 #
 # Workspaces:
 #
