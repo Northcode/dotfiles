@@ -1,0 +1,3 @@
+#!/bin/bash
+
+swaymsg -t get_tree -r | jq '.. | (.nodes? // empty)[] | select(.focused) | .pid'
