@@ -103,6 +103,11 @@
   :straight (:type git :host nil :repo "http://www.dr-qubit.org/git/undo-tree.git")
   :config (global-undo-tree-mode t))
 
+(use-package back-button :straight t
+  :config (back-button-mode t)
+  :general
+  ("C--" 'back-button-global))
+
 (defun lastbuf () "Switch to last buffer instantly."
        (interactive)
        (switch-to-buffer (other-buffer (current-buffer))))
