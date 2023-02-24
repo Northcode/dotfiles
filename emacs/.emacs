@@ -76,7 +76,8 @@
   :init
   (setq evil-want-keybinding nil
 	evil-move-cursor-back nil
-	evil-want-minibuffer t)
+	evil-want-minibuffer t
+	evil-undo-system 'undo-tree)
   (evil-mode t))
 
 (use-package evil-collection :straight t
@@ -98,7 +99,8 @@
   :general
   ("C-x o" 'ace-window))
 
-(use-package undo-tree :straight t
+(use-package undo-tree 
+  :straight (:type git :host nil :repo "http://www.dr-qubit.org/git/undo-tree.git")
   :config (global-undo-tree-mode t))
 
 (defun lastbuf () "Switch to last buffer instantly."
