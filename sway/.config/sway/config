@@ -99,6 +99,10 @@ input "1267:12377:ELAN1300:00_04F3:3059_Touchpad" {
     bindsym $mod+n exec $menu
     bindsym $mod+period exec $winmenu
 
+    # bluetooth control
+    bindsym $mod+f5 exec btmenu connect
+    bindsym $mod+f6 exec btmenu disconnect
+
     bindsym $mod+f11 exec pkill bwp --signal SIGUSR1
     bindsym $mod+f12 exec pkill bwp --signal SIGUSR2
 

@@ -1,0 +1,22 @@
+#!/bin/bash
+BT=bluetoothctl
+
+ARG=$1
+
+if [ "$ARG" = "connect" ]; then
+    NR_CONNECTED=$($BT devices Paired | wc -l)
+    if [ "$NR_CONNECTED" = '0' ]; then
+	notify-send 'no bt device paired'
+    else
+	DEVICE=$($BT devices Paired | bemenu-wrapper -p 'connect:' | arg 2)
+	$BT connect $DEVICE
+    fi
+elif [ "$ARG" = "disconnect" ]; then
+    NR_CONNECTED=$($BT devices Connected | wc -l)
+    if [ "$NR_CONNECTED" = '0' ]; then
+	notify-send 'no bt device connected'
+    else
+	DEVICE=$($BT devices Connected | bemenu-wrapper -p 'disconnect:' | arg 2)
+	$BT disconnect $DEVICE
+    fi
+fi
