@@ -1,0 +1,13 @@
+#!/bin/bash
+
+DATA=$(pactl -f json list cards | jq '.[] | { index: .index, name: .properties["device.description"], active_profile: .active_profile, profiles: .profiles | keys }')
+
+CARD_NAME=$(echo "$DATA" | jq -r '.name' | bemenu-wrapper -p 'card:')
+
+CARD=$(echo "$DATA" | jq "select(.name == \"$CARD_NAME\")")
+
+INDEX=$(echo "$CARD" | jq '.index')
+
+PROFILE=$(echo "$CARD" | jq -r '.profiles[]' | bemenu-wrapper -p 'profile:')
+
+pactl set-card-profile "$INDEX" "$PROFILE"
