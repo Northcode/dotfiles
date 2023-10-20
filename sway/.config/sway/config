@@ -103,6 +103,7 @@ input "1267:12377:ELAN1300:00_04F3:3059_Touchpad" {
     bindsym $mod+f5 exec btmenu connect
     bindsym $mod+f6 exec btmenu disconnect
     bindsym $mod+f7 exec pa-profile-menu
+    bindsym $mod+f8 exec pa-default-menu
 
     bindsym $mod+f11 exec pkill bwp --signal SIGUSR1
     bindsym $mod+f12 exec pkill bwp --signal SIGUSR2
