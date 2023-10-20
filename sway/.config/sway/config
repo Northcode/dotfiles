@@ -154,6 +154,9 @@ input "1267:12377:ELAN1300:00_04F3:3059_Touchpad" {
     bindsym $mod+b workspace back_and_forth
 
     bindsym $mod+Shift+b move workspace to output left
+
+    bindsym $mod+o exec makoctl invoke
+    bindsym $mod+Shift+o exec makoctl dismiss
 #
 # Workspaces:
 #
