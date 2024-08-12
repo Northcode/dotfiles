@@ -118,8 +118,6 @@ vim.keymap.set("", "<c-x><c-b>", "<c-^>", { desc = "quickly switch to previous [
 
 -- aliasing some awkward commands on scandinavian layouts
 vim.keymap.set("n", "ø", "/")
-vim.keymap.set("", "<c-s-k>", "g;", { desc = "Jump backwards in jumplist" })
-vim.keymap.set("", "<c-s-j>", "g,", { desc = "Jump forwards in jumplist" })
 
 -- vim.cmd("autocmd BufEnter * silent! lcd %:p:h")
 
@@ -331,7 +329,9 @@ require("lazy").setup({
 			local builtin = require("telescope.builtin")
 			vim.keymap.set("n", "<leader>sh", builtin.help_tags, { desc = "[S]earch [H]elp" })
 			vim.keymap.set("n", "<leader>sk", builtin.keymaps, { desc = "[S]earch [K]eymaps" })
-			vim.keymap.set("n", "<leader>sf", builtin.find_files, { desc = "[S]earch [F]iles" })
+
+			vim.keymap.set("n", "<leader>sf", ":Telescope find_files hidden=true<cr>", { desc = "[S]earch [F]iles" })
+
 			vim.keymap.set("n", "<leader>ss", builtin.builtin, { desc = "[S]earch [S]elect Telescope" })
 			vim.keymap.set("n", "<leader>sw", builtin.grep_string, { desc = "[S]earch current [W]ord" })
 			vim.keymap.set("n", "<leader>sg", builtin.live_grep, { desc = "[S]earch by [G]rep" })
@@ -363,6 +363,21 @@ require("lazy").setup({
 				builtin.find_files({ cwd = vim.fn.stdpath("config") })
 			end, { desc = "[S]earch [N]eovim files" })
 		end,
+	},
+
+	{
+		"prochri/telescope-all-recent.nvim",
+		dependencies = {
+			"nvim-telescope/telescope.nvim",
+			"kkharji/sqlite.lua",
+			-- optional, if using telescope for vim.ui.select
+			"stevearc/dressing.nvim",
+		},
+		opts = {
+			defaults = {
+				sorting = "frecent",
+			},
+		},
 	},
 
 	-- LSP Plugins
@@ -594,6 +609,20 @@ require("lazy").setup({
 					end,
 				},
 			})
+		end,
+	},
+
+	{
+		"someone-stole-my-name/yaml-companion.nvim",
+		dependencies = {
+			"neovim/nvim-lspconfig",
+			"nvim-lua/plenary.nvim",
+			"nvim-telescope/telescope.nvim",
+		},
+		config = function(self, opts)
+			local cfg = require("yaml-companion").setup({})
+			require("lspconfig")["yamlls"].setup(cfg)
+			require("telescope").load_extension("yaml_schema")
 		end,
 	},
 
@@ -952,20 +981,16 @@ require("lazy").setup({
 		},
 		config = function(self, opts)
 			require("triptych").setup({
+				options = {
+					border = "none",
+				},
 				extension_mappings = {
 					["<leader>sf"] = {
 						mode = "n",
 						fn = function(target, _)
-							if target.is_dir then
-								require("telescope.builtin").fd({
-									search_dirs = { target.path },
-								})
-							else
-								local dirname = target.path:match("(.*/)")
-								require("telescope.builtin").fd({
-									search_dirs = { dirname },
-								})
-							end
+							require("telescope.builtin").fd({
+								search_dirs = { target.dirname },
+							})
 						end,
 					},
 					["<c-f>"] = {
