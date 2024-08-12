@@ -602,6 +602,16 @@ require("lazy").setup({
 		"mfussenegger/nvim-dap",
 		config = function(self, opts)
 			require("config.kotlin")
+
+			local dap = require("dap")
+
+			vim.keymap.set("n", "<leader>dd", ":DapNew<CR>", { desc = "[D]ebug start" })
+			vim.keymap.set("n", "<leader>db", dap.toggle_breakpoint, { desc = "[D]ebug toggle breakpoint" })
+			vim.keymap.set("n", "<F5>", dap.continue, { desc = "Debug continue" })
+			vim.keymap.set("n", "<F6>", dap.step_into, { desc = "Debug step into" })
+			vim.keymap.set("n", "<F7>", dap.step_over, { desc = "Debug step over" })
+			vim.keymap.set("n", "<F8>", dap.step_out, { desc = "Debug step out" })
+			vim.keymap.set("n", "<leader>dt", dap.terminate, { desc = "[D]ebug [t]erminate" })
 		end,
 	},
 
@@ -609,7 +619,10 @@ require("lazy").setup({
 		"rcarriga/nvim-dap-ui",
 		dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
 		config = function(self, opts)
-			require("dapui").setup()
+			local dapui = require("dapui")
+			dapui.setup()
+
+			vim.keymap.set("n", "<leader>du", dapui.toggle, { desc = "[D]ebug toggle [u]i " })
 		end,
 	},
 
