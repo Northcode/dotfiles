@@ -1,10 +1,3 @@
-# enable_experimental_conpty_backend = false
-live_config_reload = true
-working_directory = "None"
-
-import = [
-	"~/.config/alacritty/themes/themes/catppuccin_macchiato.toml"
-]
 
 [bell]
 animation = "EaseOutExpo"
@@ -590,3 +583,12 @@ lines = 0
 [window.padding]
 x = 15
 y = 15
+
+[general]
+# enable_experimental_conpty_backend = false
+live_config_reload = true
+working_directory = "None"
+
+import = [
+	"~/.config/alacritty/themes/themes/catppuccin_macchiato.toml"
+]
