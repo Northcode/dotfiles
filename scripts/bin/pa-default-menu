@@ -3,6 +3,7 @@
 DATA=$(pactl -f json list sinks | jq '.[] | { index: .index, name: .description }')
 
 SINK_NAME=$(echo "$DATA" | jq -r '.name' | bemenu-wrapper -p 'sink:')
+test "$SINK_NAME" != "" || exit 1
 
 SINK=$(echo "$DATA" | jq "select(.name == \"$SINK_NAME\")")
 

@@ -15,13 +15,14 @@ set $up k
 set $right l
 # Your preferred terminal emulator
 set $term alacritty
-set $editor emc 
+set $editor ~/bin/emc 
 # Your preferred application launcher
 # Note: it's recommended that you pass the final command to sway
 # set $menu dmenu_path | dmenu | xargs swaymsg exec --
 #set $menu $term --class=launcher -e "sway-launcher"
 set $menu ~/bin/sway-launcher
 set $winmenu ~/bin/bemenu-window
+set $screenlocker ~/bin/screenlocker
 for_window [app_id="^launcher$"] floating enable, border none
 
 set $mainmonitor 'Samsung Electric Company C34H89x HTOM801427'
@@ -83,6 +84,12 @@ input "1267:12377:ELAN1300:00_04F3:3059_Touchpad" {
       dwt enabled
 }
 
+input "1267:12693:ELAN0676:00_04F3:3195_Touchpad" {
+      tap enabled
+      natural_scroll enabled
+      dwt enabled
+}
+
 ### Key bindings
 #
 # Basics:
@@ -100,15 +107,15 @@ input "1267:12377:ELAN1300:00_04F3:3059_Touchpad" {
     bindsym $mod+period exec $winmenu
 
     # bluetooth control
-    bindsym $mod+f5 exec btmenu connect
-    bindsym $mod+f6 exec btmenu disconnect
-    bindsym $mod+f7 exec pa-profile-menu
-    bindsym $mod+f8 exec pa-default-menu
+    bindsym $mod+f5 exec ~/bin/btmenu connect
+    bindsym $mod+f6 exec ~/bin/btmenu disconnect
+    bindsym $mod+f7 exec ~/bin/pa-profile-menu
+    bindsym $mod+f8 exec ~/bin/pa-default-menu
 
     bindsym $mod+f11 exec pkill bwp --signal SIGUSR1
     bindsym $mod+f12 exec pkill bwp --signal SIGUSR2
 
-    bindsym $mod+v exec screenlocker
+    bindsym $mod+v exec $screenlocker
 
     # Drag floating windows by holding down $mod and left mouse button.
     # Resize them with right mouse button + $mod.
@@ -296,8 +303,8 @@ include /etc/sway/config.d/*
 
 default_border pixel 2
 
-gaps inner 8
-gaps outer 2
+gaps inner 20
+gaps outer 20
 
 bindsym --release Print exec grim -g "$(slurp)" - | wl-copy
 
@@ -317,7 +324,8 @@ bindsym XF86MonBrightnessUp exec brightnessctl set +5%
 
 
 # launch programs
-bindsym $mod+F1 exec firefox
+bindsym $mod+F1 exec uwsm app -- firefox
+bindsym $mod+F2 exec uwsm app -- intellij-idea-ultimate-edition
 
 for_window [app_id="waybar" floating] {
     move position cursor
@@ -328,6 +336,7 @@ for_window [class="TelegramDesktop"] {
     move workspace 1
 }
 
+exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
 exec mako
 exec wlsunset
 exec lockscreen

@@ -11,4 +11,5 @@ bemenu \
 	--scrollbar always \
 	-i \
 	--ifne \
+	-s \
 	$@

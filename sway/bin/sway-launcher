@@ -65,5 +65,5 @@ printf "%s\n" "${update_line}" "${command_history}" | \
 
 # execute command
 echo "$command_str"
-swaymsg -t command exec "$command_str"
+swaymsg -t command exec "uwsm app $command_str"
 

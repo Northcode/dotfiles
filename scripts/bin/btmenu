@@ -9,6 +9,7 @@ if [ "$ARG" = "connect" ]; then
 	notify-send 'no bt device paired'
     else
 	DEVICE=$($BT devices Paired | bemenu-wrapper -p 'connect:' | arg 2)
+	test "$DEVICE" != "" || exit 1
 	$BT connect $DEVICE
     fi
 elif [ "$ARG" = "disconnect" ]; then
@@ -17,6 +18,7 @@ elif [ "$ARG" = "disconnect" ]; then
 	notify-send 'no bt device connected'
     else
 	DEVICE=$($BT devices Connected | bemenu-wrapper -p 'disconnect:' | arg 2)
+	test "$DEVICE" != "" || exit 1
 	$BT disconnect $DEVICE
     fi
 fi

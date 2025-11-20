@@ -7,10 +7,10 @@ if [ -d "$LOCKSCREENWALLS" ]
 then
     # only select images which are a multiple of 1920, this avoids weird edge issues where the edge of the image is in the middle of one of the screens
     LOCKIMG=$LOCKSCREENWALLS"/"$(for i in $(ls $LOCKSCREENWALLS)
-				 do
-				     RES=$(identify "$LOCKSCREENWALLS"$i | cut -d ' ' -f 3)
-				     echo $i $RES
-				 done | grep "1920\|3840" | cut -d ' ' -f 1 | shuf | head -n 1)
+do
+    RES=$(identify "$LOCKSCREENWALLS"$i | cut -d ' ' -f 3)
+    echo $i $RES
+done | cut -d ' ' -f 1 | shuf | head -n 1)
 fi
 
 
@@ -43,3 +43,4 @@ elif [ -x "$(command -v sflock)" ]
 then
     sflock
 fi 
+
