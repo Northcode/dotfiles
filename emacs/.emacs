@@ -76,6 +76,15 @@
   ("C--" 'back-button-global)
   ("C-_" 'back-button-global-forward))
 
+(use-package undo-tree :straight t
+  :init
+  (global-undo-tree-mode t)
+  :config
+  (setq
+   undo-tree-auto-save-history t
+   undo-tree-history-directory-alist '((".*" . "~/.emacs.d/undo")))
+  )
+
 (use-package evil :straight t
   :init
   (setq evil-want-keybinding nil
