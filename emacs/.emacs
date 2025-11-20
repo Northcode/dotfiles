@@ -63,6 +63,10 @@
   :straight t
   :config (load-theme 'northcode t))
 
+(set-frame-parameter nil 'alpha-background 80) ; For current frame
+(add-to-list 'default-frame-alist '(alpha-background . 80)) ; For all new frames henceforth
+
+
 ;; Key bindings
 (use-package general :straight t)
 
