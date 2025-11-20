@@ -266,24 +266,24 @@ With prefix ARG non-nil, insert the result at the end of region."
 
 (use-package lsp-ui :straight t
   :config
-  (general-def :states 'normal "g]" 'lsp-ui-peek-find-implementation)
-  (general-def :states 'normal "g[" 'lsp-ui-peek-find-references)
+  (general-def :states 'normal "gj" 'lsp-ui-peek-find-implementation)
+  (general-def :states 'normal "gr" 'lsp-ui-peek-find-references)
   (general-define-key :keymaps 'lsp-ui-peek-mode-map "M-j" 'lsp-ui-peek--select-next)
   (general-define-key :keymaps 'lsp-ui-peek-mode-map "M-k" 'lsp-ui-peek--select-prev)
   )
 
-(require 'dap-running-session-mode)
+;; (require 'dap-running-session-mode)
 
-(use-package dap-mode :straight t
-  :general
-  (:keymaps 'dap-running-session-mode-map "M-n" 'dap-next "C-c q" 'dap-disconnect)
-  :config
-  (add-hook 'dap-session-created-hook 'dap-running-session-mode)
-  (add-hook 'dap-stopped-hook 'dap-running-session-mode)
-  (add-hook 'dap-stack-frame-changed-hook (lambda (session)
-					    (when (dap--session-running session)
-					      (dap-running-session-mode 1))))
-  )
+;; (use-package dap-mode :straight t
+;;   :general
+;;   (:keymaps 'dap-running-session-mode-map "M-n" 'dap-next "C-c q" 'dap-disconnect)
+;;   :config
+;;   (add-hook 'dap-session-created-hook 'dap-running-session-mode)
+;;   (add-hook 'dap-stopped-hook 'dap-running-session-mode)
+;;   (add-hook 'dap-stack-frame-changed-hook (lambda (session)
+;; 					    (when (dap--session-running session)
+;; 					      (dap-running-session-mode 1))))
+;;   )
 
 (defun java-get-project-name (relpath)
   (let* ((pos (string-match "[^/]*/src" relpath))
